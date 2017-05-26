@@ -1,0 +1,10 @@
+{
+  "attributes": {
+    "FormName": "Autoform",
+    "Notices": "Open,,,,;Assigned,,,,;Completed,,,,;Cancelled,,,,;In Progress,,,,;Alert,,,,;Jeopardy,,,,;Forward,,,,;"
+  },
+  "category": "GEN",
+  "logicalId": "subtaskA",
+  "name": "Subtask A",
+  "version": "0.1"
+}

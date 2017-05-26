@@ -1,0 +1,12 @@
+{
+  "name": "myApp",
+  "version": "1.0.03",
+  "description": "for mdw-demo",
+  "main": "myApp.js",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "angular": "^1.6.4",
+    "angular-resource": "^1.6.4",
+    "hub-ui": "^6.0.02"
+  }
+}

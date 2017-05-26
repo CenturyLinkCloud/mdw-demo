@@ -1,0 +1,103 @@
+applications:
+- name: mdw-demo
+  instances: 1
+  host: mdw-demo
+  buildpack: https://github.com/mdw-dev/mdw-buildpack.git
+  timeout: 180
+
+env:
+  JAVA_OPTS: -Dmdw.runtime.env=appFogDev -Dmdw.property.manager=com.centurylink.mdw.config.PaaSPropertyManager 
+  
+  JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: "[enabled: false]"
+  
+  MDW_VERSION: "6.0.04-SNAPSHOT"
+  MDW_OAUTH_TOKEN_LOCATION: "http://clc-login.useast.appfog.ctl.io/oauth/token"
+  MDW_ASSET_LOCATION: "assets"
+  
+  mdw_seed_users: '{
+    "users":  [
+      {
+        "name": "MDW Admin",
+        "id": "mdwadmin",
+        "groups": [
+          "Developers",
+          "Site Admin"
+        ],
+        "roles": [
+          "User Admin",
+          "Process Execution",
+          "Process Design",
+          "Task Execution"
+        ]
+      }    
+    ]
+  }'
+    
+  mdw_properties: '{
+    "mdw.container.datasource_provider": "Tomcat",
+    "mdw.container.jms_provider": "ActiveMQ",
+    "mdw.activemq.connector.url": "tcp://localhost:62626",
+    "mdw.activemq.connection.factory": "mdw-activemq",
+    "mdw.activemq.local.connector.url": "vm://mdw-activemq",
+    "mdw.container.threadpool_provider": "MDW",
+    "mdw.container.messenger": "jms",
+    
+    "mdw.database.driver": "org.mariadb.jdbc.Driver",
+    "mdw.database.url": "jdbc:mariadb://localhost:3308/mdw",
+    "mdw.database.username": "mdw",
+    "mdw.database.password": "mdw",
+    "mdw.database.poolsize": "10",
+    "mdw.database.poolMaxIdle": "5",
+    
+    "mdw.server.list": "mdw-demo.useast.appfog.ctl.io:80",
+    
+    "mdw.logging.level": "DEBUG",
+  
+    "mdw.temp.dir": "../mdw/.temp",
+    
+    "mdw.git.local.path": ".",
+    "mdw.git.remote.url": "https://github.com/mdw-dev/mdw-demo.git",
+    "mdw.git.branch": "master",
+  
+    "mdw.hub.url": "https://mdw-demo.useast.appfog.ctl.io/mdw",
+    "mdw.services.url": "http://mdw-demo.useast.appfog.ctl.io:80/mdw",
+      
+    "mdw.application.name": "mdw",
+    
+    "mdw.script.executor.groovy": "com.centurylink.mdw.script.GroovyExecutor",
+    "mdw.script.executor.javascript": "com.centurylink.mdw.script.JavaScriptExecutor",
+    
+    "mdw.filepanel.root.dirs": ".",
+    "mdw.filepanel.exclude.patterns": ".git"
+  }'
+  
+  mdw_access: |
+    authMethod: af 
+    authTokenLoc: http://clc-login.useast.appfog.ctl.io/oauth/token
+    
+    devUser: mdwadmin
+    
+    responseHeaders:  
+      X-UA-Compatible: IE=Edge
+      
+    sessionTimeout: 3600
+    
+    authExclusions:
+      - '/login'
+      - '/error'
+      - '/offline'
+      - '/sysInfo'
+      - '/images/*'
+      - '/css/*'
+      - '/doc/*'
+      - '/javadoc/*'
+      - '/filepanel/*'
+      - '/services/*'
+      - '/Services/*'
+      - '/api/*'
+      - '/asset/*'
+    
+    loggingOptions:
+      logResponseTimes: false  
+      logHeaders: false
+      logParameters: false

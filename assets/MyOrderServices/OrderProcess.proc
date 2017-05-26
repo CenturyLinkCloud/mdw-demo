@@ -1,0 +1,97 @@
+{
+  "activities": [
+    {
+      "attributes": {"WORK_DISPLAY_INFO": "x=60,y=260,w=60,h=40"},
+      "id": "A1",
+      "implementor": "com.centurylink.mdw.workflow.activity.process.ProcessStartActivity",
+      "name": "Start",
+      "transitions": [{
+        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=273,ly=229,type=Elbow,xs=124&270,ys=280&280"},
+        "event": "FINISH",
+        "id": "T1",
+        "to": "A3"
+      }]
+    },
+    {
+      "attributes": {"WORK_DISPLAY_INFO": "x=771,y=256,w=60,h=40"},
+      "id": "A2",
+      "implementor": "com.centurylink.mdw.workflow.activity.process.ProcessFinishActivity",
+      "name": "Stop"
+    },
+    {
+      "attributes": {"WORK_DISPLAY_INFO": "x=274,y=240,w=157,h=63"},
+      "id": "A3",
+      "implementor": "MyOrderServices.MyOrderValidatorActivity",
+      "name": "Validate Order",
+      "transitions": [
+        {
+          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=445,ly=249,type=Elbow,xs=435&524,ys=273&273"},
+          "event": "FINISH",
+          "id": "T2",
+          "resultCode": "true",
+          "to": "A5"
+        },
+        {
+          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=358,ly=329,type=Elbow,xs=348&348,ys=307&400"},
+          "event": "FINISH",
+          "id": "T3",
+          "resultCode": "false",
+          "to": "A4"
+        }
+      ]
+    },
+    {
+      "attributes": {"WORK_DISPLAY_INFO": "x=309,y=404,w=79,h=42"},
+      "id": "A4",
+      "implementor": "com.centurylink.mdw.workflow.activity.process.ProcessFinishActivity",
+      "name": "Bad Order"
+    },
+    {
+      "attributes": {
+        "ConnectTimeout": "3600",
+        "DO_LOGGING": "true",
+        "EndpointUri": "http://lxdenvmtc143.dev.qintra.com:8515/mdw/services/Ping",
+        "HttpMethod": "POST",
+        "PostScriptLang": "Groovy",
+        "PreScriptLang": "Groovy",
+        "REQUEST_VARIABLE": "request",
+        "RESPONSE_VARIABLE": "response",
+        "ReadTimeout": "3600",
+        "WORK_DISPLAY_INFO": "x=528,y=243,w=155,h=67"
+      },
+      "id": "A5",
+      "implementor": "com.centurylink.mdw.workflow.adapter.rest.RestServiceAdapter",
+      "name": "Submit Order",
+      "transitions": [{
+        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=740,ly=281,type=Elbow,xs=687&767,ys=276&276"},
+        "event": "FINISH",
+        "id": "T4",
+        "to": "A2"
+      }]
+    }
+  ],
+  "attributes": {
+    "ArrowStyle": "ArrowEnd",
+    "NodeStyle": "BoxIcon",
+    "PROCESS_VISIBILITY": "SERVICE",
+    "WORK_DISPLAY_INFO": "x=50,y=50,w=125,h=27"
+  },
+  "variables": {
+    "orderId": {
+      "category": "LOCAL",
+      "type": "java.lang.String"
+    },
+    "request": {
+      "category": "INPUT",
+      "type": "org.json.JSONObject"
+    },
+    "response": {
+      "category": "OUTPUT",
+      "type": "org.json.JSONObject"
+    },
+    "validationResult": {
+      "category": "LOCAL",
+      "type": "java.lang.String"
+    }
+  }
+}

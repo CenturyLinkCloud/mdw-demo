@@ -1,0 +1,4 @@
+# during "cf push", ignore everything but assets and git metadata
+*
+!assets/
+!.git/

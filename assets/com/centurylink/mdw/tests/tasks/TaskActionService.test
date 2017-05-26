@@ -1,0 +1,118 @@
+package com.centurylink.mdw.tests.tasks
+
+import groovy.json.JsonSlurper
+import org.json.JSONObject
+import com.centurylink.mdw.util.JsonUtil
+
+start process("ManualTaskServices") {
+    variables = [ jaxbVar: "<TaskJaxb/>" ] // missing required: #{jaxbVar.attributeTwo}
+}
+
+sleep 10
+
+// get instance id by claiming
+taskInst = action task("AutoForm Task for Service Access") {
+    outcome = "Claim"
+}
+
+// confirm assignee
+response = get http("services/Tasks/${taskInst.id}")
+def taskInstVO = new JsonSlurper().parseText(response.content)
+assert taskInstVO.assigneeId != null
+
+// Release
+response = post http("services/Tasks/${taskInst.id}/Release") {
+    user = 'mdwapp'
+    password = 'ldap_012'
+    payload = '{"action":"Release","taskInstanceId":${taskInst.id},"user":"mdwapp"}'
+}
+assert response.code == 200
+assert new JsonSlurper().parseText(response.content).status.code == 0
+
+// confirm Release
+response = get http("services/Tasks/${taskInst.id}")
+taskInstVO = new JsonSlurper().parseText(response.content)
+assert taskInstVO.assigneeId == null
+
+// Claim
+response = post http("services/Tasks/${taskInst.id}/Claim") {
+    user = 'mdwapp'
+    password = 'ldap_012'
+    payload = '{"action":"Claim","taskInstanceId":${taskInst.id},"user":"mdwapp"}'
+}
+assert response.code == 200
+assert new JsonSlurper().parseText(response.content).status.code == 0
+
+// confirm Claim
+response = get http("services/Tasks/${taskInst.id}")
+taskInstVO = new JsonSlurper().parseText(response.content)
+assert taskInstVO.assigneeId == 'mdwapp'
+
+// Forward (without comment)
+response = post http("services/Tasks/${taskInst.id}/Forward") {
+    user = 'mdwapp'
+    password = 'ldap_012'
+    payload = '{"action":"Forward","taskInstanceId":${taskInst.id},"user":"mdwapp","destination":"Developers"}'
+}
+assert response.code == 400
+assert new JsonSlurper().parseText(response.content).status.message.startsWith('Comment required')
+
+// Forward (with comment)
+response = post http("services/Tasks/${taskInst.id}/Forward") {
+    user = 'mdwapp'
+    password = 'ldap_012'
+    payload = '{"action":"Forward","taskInstanceId":${taskInst.id},"user":"mdwapp","destination":"Developers","comment":"Forwarding to Developers group"}'
+}
+assert response.code == 200
+
+// confirm Forward
+response = get http("services/Tasks/${taskInst.id}")
+taskInstVO = new JsonSlurper().parseText(response.content)
+assert taskInstVO.assigneeId == null
+assert taskInstVO.workgroups == ['Developers']
+assert taskInstVO.comments == 'Forwarding to Developers group'
+
+// Assign
+response = post http("services/Tasks/${taskInst.id}/Assign") {
+    user = 'mdwapp'
+    password = 'ldap_012'
+    payload = '{"action":"Assign","taskInstanceId":${taskInst.id},"user":"mdwapp","assignee":"mdwapp"}'
+}
+assert response.code == 200
+assert new JsonSlurper().parseText(response.content).status.code == 0
+
+// confirm Assign
+response = get http("services/Tasks/${taskInst.id}")
+taskInstVO = new JsonSlurper().parseText(response.content)
+assert taskInstVO.assigneeId == 'mdwapp'
+
+// Complete (without required attributeTwo)
+response = post http("services/Tasks/${taskInst.id}/Complete") {
+    user = 'mdwapp'
+    password = 'ldap_012'
+    payload = '{"action":"Complete","taskInstanceId":${taskInst.id},"user":"mdwapp"}'
+}
+assert response.code == 400
+assert new JsonSlurper().parseText(response.content).status.message == "Missing required value(s): '#{jaxbVar.attributeTwo}'."
+
+// set required value
+def values = [:]
+values["#{jaxbVar.attributeTwo}"] = "RequiredAttrValue"
+def putPayload = JsonUtil.getJson(values);
+println 'PUT request:\n' + putPayload.toString(2)
+response = put http("services/Tasks/${taskInst.id}/values") {
+    user = 'mdwapp'
+    password = 'ldap_012'
+    payload = putPayload
+}
+assert response.code == 200
+
+// Complete (should succeed)
+response = post http("services/Tasks/${taskInst.id}/Complete") {
+    user = 'mdwapp'
+    password = 'ldap_012'
+    payload = '{"action":"Complete","taskInstanceId":${taskInst.id},"user":"mdwapp"}'
+}
+assert response.code == 200
+
+verify process
