@@ -2,7 +2,7 @@ applications:
 - name: mdw-demo
   instances: 1
   host: mdw-demo
-  buildpack: https://github.com/mdw-dev/mdw-buildpack.git
+  buildpack: https://github.com/CenturyLinkCloud/mdw-buildpack.git
   timeout: 180
 
 env:
@@ -17,8 +17,11 @@ env:
   mdw_seed_users: '{
     "users":  [
       {
-        "name": "MDW Admin",
-        "id": "mdwadmin",
+        "name": "MDW Application",
+        "id": "mdwapp",
+        "attributes": {
+          "emailAddress": "mdwapp@centurylink.com"
+        },      
         "groups": [
           "Developers",
           "Site Admin"
@@ -28,8 +31,8 @@ env:
           "Process Execution",
           "Process Design",
           "Task Execution"
-        ]
-      }    
+        ]            
+      }
     ]
   }'
     
@@ -56,11 +59,12 @@ env:
     "mdw.temp.dir": "../mdw/.temp",
     
     "mdw.git.local.path": ".",
-    "mdw.git.remote.url": "https://github.com/mdw-dev/mdw-demo.git",
+    "mdw.git.remote.url": "https://github.com/CenturyLinkCloud/mdw-demo.git",
     "mdw.git.branch": "master",
   
     "mdw.hub.url": "https://mdw-demo.useast.appfog.ctl.io/mdw",
     "mdw.services.url": "http://mdw-demo.useast.appfog.ctl.io:80/mdw",
+    "mdw.git.user": "anonymous",    
       
     "mdw.application.name": "mdw",
     
@@ -75,7 +79,7 @@ env:
     authMethod: af 
     authTokenLoc: http://clc-login.useast.appfog.ctl.io/oauth/token
     
-    devUser: mdwadmin
+    devUser: mdwapp
     
     responseHeaders:  
       X-UA-Compatible: IE=Edge
