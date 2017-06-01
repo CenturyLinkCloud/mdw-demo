@@ -44,11 +44,11 @@ You can perform many cloud development activities using a remote workflow projec
 
 #### Add Git Repository:
 - The mdw-demo workflow project is hosted in the MDW AppFog Git Repository.  If you prefer to use command line Git, clone the repository from 
-  https://github.com/mdw-dev/mdw-demo.git. 
+  https://github.com/CenturyLinkCloud/mdw-demo.git. 
   
 #### Clone mdw-demo project into your workspace:
 - Access the Git Repositories view by selecting Window > Show View > Other > Git > Git Repositories:
-- Copy the repository URL into your clipboard: https://github.com/mdw-dev/mdw-demo.git
+- Copy the repository URL into your clipboard: https://github.com/CenturyLinkCloud/mdw-demo.git
 - Right-click in Git Repositories view and select Paste Repository Path or URI.
 - Note: The User and Password are not required to clone the mdw-demo project.
 
