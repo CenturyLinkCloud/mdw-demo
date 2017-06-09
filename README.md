@@ -23,6 +23,9 @@
 
   ![alt text](docs/images/designerPlugin2.png "designerPlugin2")
 
+- Buildship (Gradle) Plugin:                            
+  [http://download.eclipse.org/buildship/updates/e46/releases/2.x](http://download.eclipse.org/buildship/updates/e46/releases/2.x)
+  
 - Configure your Eclipse with Java 1.8.x installed JRE available in your workspace (Window > Preferences > Java > Installed JREs > Add):
   ![alt text](docs/images/installJdk8.png "installJdk8")
 
@@ -94,6 +97,14 @@ Before you can deploy your demo project to your server, you will need to do the 
  
  - Now you will need to do an eclipse build: Open Project from the menu and click `Clean`. This will clean and build your mdw project so that it can be deployed to the server.
 
+`Note: Eclipse sometimes will override some of the files without asking you. So you will need to replace them with the original from the GitHub, in order to avoid any issues while trying to add your mdw-demo project to the Tomcat server instance. So do the following:` 
+- After you do the gradle build, expand the `.settings` folder (if you do not see this folder, check the Filters) and replace the following files from GitHub (right click > Replace With > Head Revision) :
+    - org.eclipse.wst.common.component
+    - org.eclipse.wst.common.project.facet.core.xml
+ - Also check the .classpath and .project files and if they have been modified, replace them as well.  
+
+ 
+  
 ### 4. Tomcat Setup & Running a Process                              
 
 #### Create Tomcat Server:
