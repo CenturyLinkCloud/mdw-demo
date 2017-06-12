@@ -64,6 +64,7 @@ dependencies {
     // asset package dependencies
     compile fileTree(dir: "assets/com/centurylink/mdw/camel", includes: ["*.jar"])
     compile fileTree(dir: "assets/com/centurylink/mdw/drools", includes: ["*.jar"])
+    compile fileTree(dir: "assets/com/centurylink/mdw/testing/postman", includes: ["*.jar"])
     
     compile group: "ch.vorburger.mariaDB4j", name: "mariaDB4j-core", version: "2.2.1"
     compile group: "org.apache.poi", name: "poi", version: "3.15"
