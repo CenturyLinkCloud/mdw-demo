@@ -101,9 +101,8 @@ Before you can deploy your demo project to your server, you will need to do the 
 - Expand the `.settings` folder (if you do not see this folder, check the Filters) and replace the following two files from GitHub (right click > Replace With > Head Revision) :
     - org.eclipse.wst.common.component
     - org.eclipse.wst.common.project.facet.core.xml
- - Also check the `.classpath` and `.project` files and if they have been modified by eclipse, replace them as well.  
-
- 
+ - Check the `.classpath` and `.project` files and if they have been modified by eclipse, replace them as well.  
+ - Now should be to add your mdw-demo project to the Tomcat server instance.
   
 ### 4. Tomcat Setup & Running a Process                              
 
