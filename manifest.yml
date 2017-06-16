@@ -10,7 +10,7 @@ env:
   
   JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: "[enabled: false]"
   
-  MDW_VERSION: "6.0.04-SNAPSHOT"
+  MDW_VERSION: "6.0.04"
   MDW_OAUTH_TOKEN_LOCATION: "http://clc-login.useast.appfog.ctl.io/oauth/token"
   MDW_ASSET_LOCATION: "assets"
   

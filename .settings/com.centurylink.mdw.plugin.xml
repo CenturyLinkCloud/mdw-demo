@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdw-workflow>
   <sourceProject name="mdw-demo" author="dxoakes"/>
-  <mdwFramework version="6.0.04-SNAPSHOT"/>
+  <mdwFramework version="6.0.04"/>
   <server host="localhost" port="8080" contextRoot="mdw"/>
   <repository provider="Git" branch="master" localPath="assets"/>
 </mdw-workflow>
