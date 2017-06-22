@@ -19,7 +19,7 @@
 
   ![alt text](docs/images/designerPlugin.png "designerPlugin")
   
-- Click Next and Finish
+- Click Next and Finish. Click Yes on the pop-up window to restart your eclipse.
 
   ![alt text](docs/images/designerPlugin2.png "designerPlugin2")
 
