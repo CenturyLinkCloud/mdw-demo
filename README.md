@@ -24,7 +24,7 @@
   ![alt text](docs/images/designerPlugin2.png "designerPlugin2")
 
 - Buildship (Gradle) Plugin:                            
-  [http://download.eclipse.org/buildship/updates/e46/releases/2.x](http://download.eclipse.org/buildship/updates/e46/releases/2.x)
+  http://download.eclipse.org/buildship/updates/e46/releases/2.x
   
 - Configure your Eclipse with Java 1.8.x installed JRE available in your workspace (Window > Preferences > Java > Installed JREs > Add):
   ![alt text](docs/images/installJdk8.png "installJdk8")
