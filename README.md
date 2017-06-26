@@ -15,30 +15,10 @@
   Here is an example command line that includes appropriate JVM memory settings for running and debugging:
   C:\eclipse_4.6.2\eclipse.exe -vm C:\Java\jdk1.8.0_91\bin\javaw.exe -vmargs -Xms512m -Xmx1024m
   
-- Install the latest version of the MDW Plug-In via Eclipse Software Updates (Help > Install New Software > Add > http://centurylinkcloud.github.io/mdw/designer/updateSite > Install):
-
-  ![alt text](docs/images/designerPlugin.png "designerPlugin")
-  
-- Click Next and Finish. Click Yes on the pop-up window to restart your eclipse.
-
-  ![alt text](docs/images/designerPlugin2.png "designerPlugin2")
-
-- Buildship (Gradle) Plugin:                            
-  http://download.eclipse.org/buildship/updates/e46/releases/2.x
+- For installing eclipse plug-ins, please follow [this link](../../guides/InstallEclipsePluginsGuide/) and return to this guide to continue.
   
 - Configure your Eclipse with Java 1.8.x installed JRE available in your workspace (Window > Preferences > Java > Installed JREs > Add):
   ![alt text](docs/images/installJdk8.png "installJdk8")
-
-
-#### Optional Plug-Ins:
-- Groovy Eclipse Plug-In (Groovy script syntax highlighting, auto-complete, etc.):     
-  http://dist.springsource.org/snapshot/GRECLIPSE/e4.6
-  
-- Yaml:    
-  http://dadacoalition.org/yedit
-  
-- Quantum DB Plug-In (Database querying):    
-  http://quantum.sourceforge.net/update-site
   
 #### Supported Java Container (Apache Tomcat 8)  
 You can perform many cloud development activities using a remote workflow project.  However, there are certain advantages to being able to deploy locally.  To be able to develop locally you need an Apache Tomcat: https://tomcat.apache.org.
