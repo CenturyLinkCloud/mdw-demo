@@ -87,8 +87,6 @@ dependencies {
     compile group: 'junit', name: 'junit', version:'4.8.1'
     compile group: "javax.validation", name: "validation-api", version: "1.1.0.Final"
     compile group: "org.eclipse.jgit", name: "org.eclipse.jgit", version: "3.4.1.201406201815-r"
-    compile group: "commons-cli", name: "commons-cli", version: "1.4"
-    compile group: 'com.centurylink.mdw', name: 'mdw-schemas', version: "5.5.39"
 }
 
 task copy(type: Copy) {
