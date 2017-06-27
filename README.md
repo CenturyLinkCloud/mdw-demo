@@ -82,7 +82,7 @@ Before you can deploy your demo project to your server, you will need to do the 
     - org.eclipse.wst.common.component
     - org.eclipse.wst.common.project.facet.core.xml
  - Check the `.classpath` and `.project` files and if they have been modified by eclipse, replace them as well.  
- - Now you should be to add your mdw-demo project to the Tomcat server instance.
+ - Now you should be ready to add your mdw-demo project to the Tomcat server instance.
   
 ### 4. Tomcat Setup & Running a Process                              
 
