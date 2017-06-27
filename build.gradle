@@ -25,7 +25,7 @@ eclipse {
     }
     wtp {
         facet {
-            facet type: "fixed", name: "jst.web"
+            facet type: "fixed", name: "jst.web", version: "3.0"
             facet name: "mdw.workflow", version: "5.1"
         }
     }
@@ -53,7 +53,6 @@ repositories {
 }
 
 dependencies {
-    
     compile group: 'com.centurylink.mdw', name: 'mdw-common', version: mdwVersion
     compile group: 'com.centurylink.mdw', name: 'mdw-services', version: mdwVersion
     compile group: 'com.centurylink.mdw', name: 'mdw-workflow', version: mdwVersion
@@ -69,6 +68,7 @@ dependencies {
     compile group: "org.apache.poi", name: "poi", version: "3.15"
     compile group: "org.apache.poi", name: "poi-ooxml", version: "3.15"
 
+    // rest services
     compile group: 'org.codehaus.groovy', name: 'groovy-all', version:'2.4.10'
     compile group: 'javax.el', name: 'el-api', version:'1.0'
     compile group: "javax.validation", name: "validation-api", version: "1.1.0.Final"
