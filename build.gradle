@@ -49,7 +49,8 @@ sourceSets {
 }
 
 repositories {
-     maven { url "http://lxdenvmtc143.dev.qintra.com:7021/maven/repository" }
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }  // snapshots
 }
 
 dependencies {
@@ -65,17 +66,6 @@ dependencies {
     compile fileTree(dir: "assets/com/centurylink/mdw/drools", includes: ["*.jar"])
     compile fileTree(dir: "assets/com/centurylink/mdw/testing/postman", includes: ["*.jar"])
     compile group: "ch.vorburger.mariaDB4j", name: "mariaDB4j-core", version: "2.2.1"
-    compile group: "org.apache.poi", name: "poi", version: "3.15"
-    compile group: "org.apache.poi", name: "poi-ooxml", version: "3.15"
-
-    // rest services
-    compile group: 'org.codehaus.groovy', name: 'groovy-all', version:'2.4.10'
-    compile group: 'javax.el', name: 'el-api', version:'1.0'
-    compile group: "javax.validation", name: "validation-api", version: "1.1.0.Final"
-    compile group: 'javax.ws.rs', name: 'jsr311-api', version:'1.1.1'
-    compile group: 'org.json', name: 'json', version: '20160810'
-    compile group: 'io.swagger', name: 'swagger-annotations', version:'1.5.4'
-    compile group: "io.limberest", name: "limberest", version: "1.0.04"
     compile group: 'junit', name: 'junit', version:'4.8.1'
 }
 

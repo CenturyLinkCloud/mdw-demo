@@ -19,9 +19,16 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.centurylink.mdw.model.Jsonable;
+
+@XmlType(name = "", propOrder = { "workstationId", "sapId", "firstName", "lastName" })
 @XmlRootElement(name="GetEmployeeResponse", namespace="http://mdw.centurylink.com/serviceTypes")
-public class Employee implements Serializable
+public class Employee implements Serializable, Jsonable
 {
   private String sapId;
   @XmlElement(name="sapId", namespace="http://mdw.centurylink.com/serviceTypes")
@@ -54,5 +61,18 @@ public class Employee implements Serializable
       return false;
     else
       return toString().equals(other.toString());
+  }
+
+  public Employee() {
+
+  }
+
+  public Employee(JSONObject json) throws JSONException {
+      bind(json);
+  }
+
+  @Override
+  public String getJsonName() {
+      return "employee";
   }
 }
