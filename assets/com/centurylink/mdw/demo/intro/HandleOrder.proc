@@ -170,7 +170,7 @@
   ],
   "attributes": {
     "ArrowStyle": "ArrowEnd",
-    "Documentation": "The HandleOrder process illustrates a number of MDW capabilities:\r\n - Dynamic Java activity\r\n - Dynamic Java object variable\r\n - Custom and AutoForm manual tasks\r\n - Custom task actions\r\n - External Event Handlers\r\n - Web service adapter activity\r\n - Embedded Markdown documentation (like this)\r\n - MDW Automated tests\r\n - TODO: Fallout/Error handling ",
+    "Documentation": "The HandleOrder process illustrates a number of MDW capabilities:\r\n - Dynamic Java activity\r\n - Dynamic Java object variable\r\n - Custom and AutoForm manual tasks\r\n - Custom task actions\r\n - External Event Handlers\r\n - Web service adapter activity\r\n - Embedded Markdown documentation (like this)\r\n - MDW Automated tests\r\n - TODO: Error handling",
     "NodeStyle": "BoxIcon",
     "PROCESS_START_PAGE": "contactCustomer.xhtml",
     "PROCESS_START_PAGE_assetVersion": "0",

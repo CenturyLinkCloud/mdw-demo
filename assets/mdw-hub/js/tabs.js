@@ -1,4 +1,3 @@
-// Copyright (c) 2015 CenturyLink, Inc. All Rights Reserved.
 'use strict';
 
 var tabsSvc = angular.module('tabs', ['mdw']);
@@ -10,7 +9,7 @@ tabsSvc.factory('tabs', ['mdw', function(mdw) {
         id: 'workflowTab',
         label: 'Workflow',
         url: '#/workflow/processes',
-        routes: ['/workflow', '/solutions']
+        routes: ['/workflow', '/solutions', '/workflow/processes', '/workflow/definitions']
       },
       {
         id: 'dashboardTab',
@@ -32,6 +31,12 @@ tabsSvc.factory('tabs', ['mdw', function(mdw) {
         routes: ['/tasks']
       },
       {
+        id: 'bugsTab',
+        label: 'Bugs',     
+        url: '#/bugs',
+        routes: ['/bugs']
+      },
+      {
         id: 'adminTab',
         label: 'Admin',
         url: '#/users',
@@ -44,14 +49,6 @@ tabsSvc.factory('tabs', ['mdw', function(mdw) {
         routes: ['/system'],
         condition: 'user.hasRole("Site Admin")'
       }
-      /*
-       * uncomment (and add a comma) to add the mdwdemo sample tab
-            {
-              id: 'samplesTab',
-              label: 'Samples',
-              url: 'samples/test.html'
-            }     
-       */   
     ]
   };
 }]);

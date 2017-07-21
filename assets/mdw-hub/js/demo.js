@@ -6,15 +6,22 @@ app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/heldOrders', {
     templateUrl: 'demo/heldOrdersChart.html',
     controller: 'HeldOrdersController'
-  }).when('/myMod', {
-    templateUrl: 'demo/greet.html',
-    controller: 'MyController'
+  }).when('/bugs', {
+    templateUrl: 'demo/bugs.html',
+    controller: 'BugsController'
   });
+}]);
+
+app.controller('BugsController', ['$scope', '$controller', function ($scope, $controller) {
+  // Initialize the super class and extend it.
+  angular.extend(this, $controller('TasksController', {$scope: $scope}));
+  
+  $scope.tasksLabel = 'Bugs';
+  $scope.model.taskFilter.category = 'Bug';
 }]);
 
 app.controller('HeldOrdersController', ['$scope', '$http', 'mdw', 'util',
                                         function($scope, $http, mdw, util) {
-  
   // labels for one-week span ending today
   $scope.dates = [];
   $scope.labels = [];
