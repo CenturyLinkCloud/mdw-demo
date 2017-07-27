@@ -16,6 +16,7 @@ app.controller('BugsController', ['$scope', '$controller', function ($scope, $co
   // Initialize the super class and extend it.
   angular.extend(this, $controller('TasksController', {$scope: $scope}));
   
+  $scope.authUser.setActiveTab('/bugs');
   $scope.tasksLabel = 'Bugs';
   $scope.model.taskFilter.category = 'Bug';
 }]);
