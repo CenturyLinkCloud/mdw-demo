@@ -9,7 +9,10 @@ module.exports = {
   getConfig: function(jsxAsset) {
     return {
       context: nodeLoc, 
-      entry: jsxAsset.file,
+      entry:  {
+        app: jsxAsset.file,
+        starter: jsxAsset.starter
+      },
       output: {
         path: path.dirname(jsxAsset.output),
         publicPath: '/',  // logical path for accessing [name].js from index.html
