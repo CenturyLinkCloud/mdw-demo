@@ -6,20 +6,20 @@ var path = require('path');
 var nodeLoc = path.dirname(require.resolve('./webpackConfig'));
 
 module.exports = {
-  getConfig: function(input) {
+  getConfig: function(jsxAsset) {
     return {
       context: nodeLoc, 
-      entry: input.source,
+      entry: jsxAsset.file,
       output: {
-        path: path.dirname(input.output),
+        path: path.dirname(jsxAsset.output),
         publicPath: '/',  // logical path for accessing [name].js from index.html
-        filename: path.basename(input.output)
+        filename: path.basename(jsxAsset.output)
       },
       module: {
         rules: [
           {
             test: /\.(js|jsx)$/,
-            include: [ input.root ],
+            include: [ jsxAsset.root ],
             use: [
               {
                 loader: 'babel-loader',
@@ -31,12 +31,12 @@ module.exports = {
           },      
           {
             test: /\.css$/,
-            include: [ input.root ],
+            include: [ jsxAsset.root ],
             use: ['style-loader', 'css-loader']
           },
           {
             test: /\.png$/,
-            include: [ input.root ],
+            include: [ jsxAsset.root ],
             use: [
               {
                 loader: 'file-loader',

@@ -83,9 +83,8 @@ catch (err) {
     setTestResult(null, {status: 'Errored', message: err.toString()});  
   }
   catch (e) {
-    console.error(e);
-    if (e.stack)
-      console.error(e.stack);
+    console.error(err);
+    console.error(err.stack);
   }
 }
 
