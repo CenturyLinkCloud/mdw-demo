@@ -77,7 +77,16 @@ task copy(type: Copy) {
     rename (jarName, 'mdw-demo.jar')
 }
 
+task copyAssets(type: Copy) {
+	from "${mdwFrameworkDir}/../mdw-workflow/assets/com/centurylink/mdw"
+	into "${assetLoc}/com/centurylink/mdw"
+}
+
 build  {
     dependsOn(copy)
+}
+
+task upgradeMDWVer {
+	dependsOn(copyAssets)
 }
     
