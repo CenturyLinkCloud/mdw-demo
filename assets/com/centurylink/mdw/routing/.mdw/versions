@@ -1,5 +1,0 @@
-#Tue Nov 01 16:21:01 MDT 2016
-DefaultInflightRoutingStrategy.java=1
-LoadBasedRoutingStrategy.java=2
-RoundRobinRoutingStrategy.java=2
-RoutingServiceMonitor.java=6

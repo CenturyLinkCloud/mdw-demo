@@ -19,9 +19,11 @@ The assets in this package illustrate the following MDW features:
  - TODO: Fallout/Error handling
  
  Sample Request:
- ```<donsOrder>
+ ```
+ <donsOrder>
   <orderNumber>X000901</orderNumber>
   <customerId>DHO115360</customerId>
-</donsOrder>```
+</donsOrder>
+```
 
 TODO: more thorough docs
