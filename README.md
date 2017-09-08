@@ -9,11 +9,11 @@
                                                                                                                                                                         
 - Set the path:  %PATH%;%JAVA_HOME%\bin;  
 
-- Install Eclipse Neon (4.6.x) for JavaEE Developers:  [https://www.eclipse.org/downloads](https://www.eclipse.org/downloads)
+- Install Eclipse Neon (6.2.x) for JavaEE Developers:  [https://www.eclipse.org/downloads](https://www.eclipse.org/downloads)
 
 - Launch Eclipse:
   Here is an example command line that includes appropriate JVM memory settings for running and debugging:
-  C:\eclipse_4.6.2\eclipse.exe -vm C:\Java\jdk1.8.0_91\bin\javaw.exe -vmargs -Xms512m -Xmx1024m
+  C:\eclipse_6.2\eclipse.exe -vm C:\Java\jdk1.8.0_91\bin\javaw.exe -vmargs -Xms512m -Xmx1024m
   
 - For installing eclipse plug-ins, please follow [this link](http://centurylinkcloud.github.io/mdw/docs/guides/InstallEclipsePluginsGuide/) and return to this to continue with the next step.   
   
