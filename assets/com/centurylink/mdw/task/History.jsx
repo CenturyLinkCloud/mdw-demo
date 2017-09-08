@@ -2,6 +2,7 @@ import React, { Component } from '../node/node_modules/react';
 import PropTypes from '../node/node_modules/prop-types';
 import Heading from './Heading.jsx';
 import UserDate from '../react/UserDate.jsx';
+import {Link} from '../node/node_modules/react-router-dom';
 
 class History extends Component {
   constructor( ...args ) {
@@ -26,8 +27,15 @@ class History extends Component {
 
   render() {
     return (
-      <div>
-        <Heading task={this.props.task} />
+      <div>            
+        <div className="panel-heading mdw-heading">
+          <div className="mdw-heading-label">
+              {this.props.task.name}
+              <Link to={this.context.hubRoot + '/tasks/' + this.props.task.id} className="mdw-id">
+                {this.props.task.id}
+              </Link>
+          </div>
+        </div> 
         <ul className="mdw-checklist">
           {this.state.taskHistory.map( history => {
             return (
@@ -52,13 +60,6 @@ function HistoryItem( props, context ) {
             <div className="mdw-item-sub" style={{ height: '16px' }}>
               <label>Action:</label>
               {history.eventName}
-              <span>{',   '}
-                <UserDate label="Created" date={history.createDate} />
-              </span>
-              <span>{',   '}
-                <img src={context.hubRoot + '/images/user.png'} alt="user" />
-                {' '}<a className="mdw-link" href={context.hubRoot + '#/users/' + history.createUser}>{history.createUser}</a>
-              </span>
             </div>
             <div className="mdw-item-sub">
               {history.comment &&
@@ -67,6 +68,17 @@ function HistoryItem( props, context ) {
                   {history.comment}
                 </span>
               }
+            </div>
+            <div className="mdw-item-sub">
+              <span>
+              <UserDate label="Created" date={history.createDate} />
+              </span>
+            </div>
+            <div className="mdw-item-sub">
+              <span>
+              <img src={context.hubRoot + '/images/user.png'} alt="user" />
+              {' '}<a className="mdw-link" href={context.hubRoot + '#/users/' + history.createUser}>{history.createUser}</a>
+            </span>
             </div>
           </div>
         </div>

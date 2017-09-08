@@ -8,6 +8,7 @@ import Task from './Task.jsx';
 import Values from './Values.jsx';
 import Discussion from './Discussion.jsx';
 import Subtasks from './Subtasks.jsx';
+import NewSubtask from './NewSubtask.jsx';
 import History from './History.jsx';
 
 class Main extends Component {
@@ -82,17 +83,26 @@ class Main extends Component {
           <div className="col-md-10">
             <div className="panel panel-default mdw-panel">
               <Route exact path={hub}
-                render={(props) => <Task {...props} task={this.state.task} updateTask={this.updateTask} />} />
+                render={(props) => <Task {...props} task={this.state.task} 
+                refreshTask={this.refreshTask} updateTask={this.updateTask} />} />
               <Route exact path={hub + 'tasks/:id'} 
-                render={(props) => <Task {...props} task={this.state.task} />} />
+                render={(props) => <Task {...props} task={this.state.task} 
+                refreshTask={this.refreshTask} updateTask={this.updateTask} />} />
               <Route path={hub + 'tasks/:id/values'} 
-                render={() => <Values task={this.state.task} />} />
+                render={() => <Values task={this.state.task} 
+                refreshTask={this.refreshTask} updateTask={this.updateTask} />} />
               <Route path={hub + 'tasks/:id/discussion'} 
-                render={() => <Discussion task={this.state.task} />} />
+                render={() => <Discussion task={this.state.task} 
+                refreshTask={this.refreshTask} updateTask={this.updateTask} />} />
               <Route path={hub + 'tasks/:id/subtasks'}
-                render={() => <Subtasks task={this.state.task} />} />
+                render={() => <Subtasks task={this.state.task}
+                refreshTask={this.refreshTask} updateTask={this.updateTask} />} />
+              <Route path={hub + 'tasks/:id/newSubtask'}
+                render={() => <NewSubtask task={this.state.task} 
+                refreshTask={this.refreshTask} updateTask={this.updateTask} />} />
               <Route path={hub + 'tasks/:id/history'} 
-                render={() => <History task={this.state.task} />} />
+                render={() => <History task={this.state.task}
+                refreshTask={this.refreshTask} updateTask={this.updateTask} />} />
             </div>
           </div>
         </div>
