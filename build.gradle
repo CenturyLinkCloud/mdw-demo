@@ -77,6 +77,41 @@ task copy(type: Copy) {
     rename (jarName, 'mdw-demo.jar')
 }
 
+task copyAssets(type: Copy) {
+	from "${mdwFrameworkDir}/../mdw-workflow/assets/com/centurylink/mdw"
+	into "${assetLoc}/com/centurylink/mdw"
+}
+
 build  {
     dependsOn(copy)
 }
+
+task upgradeMDWVer {
+	dependsOn(copyAssets)
+	def fileName = "https://ne1itcprhas62.ne1.savvis.net/MDW_DEV/mdw60_internal/raw/master/assets/com/centurylink/mdw/env/manifest.yml.appfog_prod"
+	if (mdwVersion.endsWith("-SNAPSHOT"))
+		fileName = "https://ne1itcprhas62.ne1.savvis.net/MDW_DEV/mdw60_internal/raw/master/assets/com/centurylink/mdw/env/manifest.yml.appfog_dev"
+	println "Downloading manifest file";
+	exec {
+			executable "curl"; args "-k", fileName + "?private_token=zkE2tKBncWDtzosP_y6s", "-o", "manifest.yml"
+	}
+}
+
+task updateManifestFile {
+	dependsOn(upgradeMDWVer)
+	description = "Update manifest.yml file with Version number"
+	
+	fileTree(dir: ".", include:'manifest.yml').each { pkgFile ->
+	println "Updating file  " + pkgFile.name + " with version= " + mdwVersion
+	
+	doLast {
+		pkgFile.setWritable(true)
+		def pkgJson = pkgFile.text
+		pkgFile.withWriter { w ->
+			w << pkgJson.replaceAll("MDW_VERSION: \\\".*?\\\"", "MDW_VERSION: \"${mdwVersion}\"");
+				}
+			}
+		}
+}
+
+    
