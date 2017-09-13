@@ -1,8 +1,0 @@
-package MyOrderServices
-
-//orderId = '12345678'
-start process("OrderProcess") {
-	variables = [ request : '''{"orderId":"12345678"}''']
-}
-wait process
-verify process

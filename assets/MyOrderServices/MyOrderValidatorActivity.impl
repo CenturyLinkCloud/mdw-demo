@@ -1,7 +1,0 @@
-{
-  "category": "com.centurylink.mdw.activity.types.GeneralActivity",
-  "icon": "shape:activity",
-  "implementorClass": "MyOrderServices.MyOrderValidatorActivity",
-  "label": "My Order Validator",
-  "pagelet": "<PAGELET/>"
-}
