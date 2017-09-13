@@ -15,12 +15,18 @@ import com.centurylink.mdw.services.ServiceLocator;
 import com.centurylink.mdw.services.rest.JsonRestService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 
 @Path("/")
 @Api("Bugs REST API")
 public class Bugs extends JsonRestService {
 
     @Override
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="bug", paramType="body", required=true, 
+                dataType="com.centurylink.mdw.demo.bugs.Bug")
+    })
     public JSONObject post(String path, JSONObject content, Map<String,String> headers)
             throws ServiceException, JSONException {
         String requestId = Long.toHexString(System.nanoTime());
