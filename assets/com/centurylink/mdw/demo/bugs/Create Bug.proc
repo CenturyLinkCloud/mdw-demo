@@ -21,7 +21,7 @@
     {
       "attributes": {
         "Output Documents": "[\"response\"]",
-        "Rule": "import com.centurylink.mdw.model.StatusResponse\r\nimport static com.centurylink.mdw.model.Status.ACCEPTED\r\nimport static com.centurylink.mdw.model.Status.BAD_REQUEST\r\n\r\nif (request.title.length() > 512) {\r\n    response = new StatusResponse(BAD_REQUEST)\r\n    return 'invalid'\r\n}\r\nelse {\r\n    response = new StatusResponse(ACCEPTED)\r\n    return 'accepted'\r\n}\r\n",
+        "Rule": "import com.centurylink.mdw.model.StatusResponse\r\nimport static com.centurylink.mdw.model.Status.ACCEPTED\r\nimport static com.centurylink.mdw.model.Status.BAD_REQUEST\r\nimport com.centurylink.mdw.service.api.validator.*\r\n\r\ndef validator = new SwaggerModelValidator('POST', '/demo/api/bugs')\r\n\r\ntry {\r\n\tvalidator.validateRequestBody(request.json, true)\r\n\tresponse = new StatusResponse(ACCEPTED)\r\n\treturn 'accepted'\r\n}\r\ncatch (ValidationException ex) {\r\n\tresponse = new StatusResponse(BAD_REQUEST, ex.message)\r\n\treturn 'invalid'\r\n}\r\n",
         "SCRIPT": "Groovy",
         "WORK_DISPLAY_INFO": "x=221,y=118,w=98,h=74"
       },
