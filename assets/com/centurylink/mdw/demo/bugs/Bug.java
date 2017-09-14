@@ -1,7 +1,10 @@
 package com.centurylink.mdw.demo.bugs;
     
 import org.json.JSONObject;
+
 import com.centurylink.mdw.model.Jsonable;
+
+import io.swagger.annotations.ApiModelProperty;
     
 public class Bug implements Jsonable {
         
@@ -9,6 +12,7 @@ public class Bug implements Jsonable {
         bind(json);
     }
         
+    @ApiModelProperty(readOnly=true)
     private Long id;
     public Long getId() { return id; }
         

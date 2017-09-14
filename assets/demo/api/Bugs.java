@@ -1,5 +1,5 @@
-package api;
-
+package demo.api;
+    
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,12 +17,15 @@ import com.centurylink.mdw.services.rest.JsonRestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-
-@Path("/")
-@Api("Bugs REST API")
+import io.swagger.annotations.ApiOperation;
+    
+@Path("/bugs")
+@Api("Bugs API")
 public class Bugs extends JsonRestService {
-
+    
     @Override
+    @ApiOperation(value="Report a bug",
+    notes="We expect this service never to be used :)", response=StatusResponse.class)
     @ApiImplicitParams({
         @ApiImplicitParam(name="bug", paramType="body", required=true, 
                 dataType="com.centurylink.mdw.demo.bugs.Bug")
