@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import com.centurylink.mdw.common.service.ServiceException;
 import com.centurylink.mdw.demo.bugs.Bug;
+import com.centurylink.mdw.model.Jsonable;
 import com.centurylink.mdw.model.StatusResponse;
 import com.centurylink.mdw.services.ServiceLocator;
 import com.centurylink.mdw.services.rest.JsonRestService;
@@ -35,6 +36,6 @@ public class Bugs extends JsonRestService {
         String requestId = Long.toHexString(System.nanoTime());
         Object response = ServiceLocator.getWorkflowServices().invokeServiceProcess("Create Bug",
                 new Bug(content), requestId, new HashMap<>(), headers);
-        return ((StatusResponse)response).getJson();
+        return ((Jsonable)response).getJson();
     }
 }

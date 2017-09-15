@@ -14,8 +14,12 @@
   </properties>
   <repositories>
     <repository>
-      <id>mdw</id>
-      <url>http://lxdenvmtc143.dev.qintra.com:7021/maven/repository</url>
+      <id>maven-central</id>
+      <url>http://repo1.maven.org/maven2</url>
+    </repository>
+    <repository>
+      <id>snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>

@@ -13,7 +13,12 @@ public class Bug implements Jsonable {
     public Bug(JSONObject json) {
         bind(json);
     }
-        
+
+    public Bug(Long id, JSONObject json) {
+    	this(json);
+    	this.id = id;
+    }
+    
     @ApiModelProperty(readOnly=true)
     private Long id;
     public Long getId() { return id; }

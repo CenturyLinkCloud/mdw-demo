@@ -13,7 +13,7 @@
       }]
     },
     {
-      "attributes": {"WORK_DISPLAY_INFO": "x=442,y=130,w=60,h=40"},
+      "attributes": {"WORK_DISPLAY_INFO": "x=623,y=268,w=60,h=40"},
       "id": "A2",
       "implementor": "com.centurylink.mdw.workflow.activity.process.ProcessFinishActivity",
       "name": "Created"
@@ -30,14 +30,14 @@
       "name": "Validate\r\nRequest",
       "transitions": [
         {
-          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=355,ly=128,type=Elbow,xs=325&438,ys=150&150"},
+          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=350,ly=129,type=Elbow,xs=323&431,ys=154&154"},
           "event": "FINISH",
           "id": "T2",
           "resultCode": "accepted",
-          "to": "A2"
+          "to": "A5"
         },
         {
-          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=276,ly=229,type=Elbow,xs=271&271,ys=196&282"},
+          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=226,ly=233,type=Elbow,xs=270&270&118,ys=192&307&307"},
           "event": "FINISH",
           "id": "T3",
           "resultCode": "invalid",
@@ -46,10 +46,40 @@
       ]
     },
     {
-      "attributes": {"WORK_DISPLAY_INFO": "x=242,y=286,w=60,h=40"},
+      "attributes": {"WORK_DISPLAY_INFO": "x=54,y=288,w=60,h=40"},
       "id": "A4",
       "implementor": "com.centurylink.mdw.workflow.activity.process.ProcessFinishActivity",
       "name": "Rejected"
+    },
+    {
+      "attributes": {"WORK_DISPLAY_INFO": "x=435,y=124,w=100,h=60"},
+      "id": "A5",
+      "implementor": "com.centurylink.mdw.demo.bugs.PersistBugActivity",
+      "name": "Save Bug",
+      "transitions": [{
+        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=468,ly=202,type=Elbow,xs=485&485,ys=188&250"},
+        "event": "FINISH",
+        "id": "T4",
+        "to": "A6"
+      }]
+    },
+    {
+      "attributes": {
+        "WORK_DISPLAY_INFO": "x=436,y=254,w=100,h=71",
+        "processname": "com.centurylink.mdw.demo.bugs/A Bug's Life",
+        "processversion": "[0.1,1)",
+        "synchronous": "false",
+        "variables": "{\"bug\":\"${response}\"}"
+      },
+      "id": "A6",
+      "implementor": "com.centurylink.mdw.workflow.activity.process.InvokeSubProcessActivity",
+      "name": "Invoke Bug\r\nLifecycle",
+      "transitions": [{
+        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=579,ly=288,type=Elbow,xs=540&619,ys=288&288"},
+        "event": "FINISH",
+        "id": "T5",
+        "to": "A2"
+      }]
     }
   ],
   "attributes": {
@@ -63,9 +93,17 @@
       "category": "INPUT",
       "type": "com.centurylink.mdw.model.Jsonable"
     },
+    "requestHeaders": {
+      "category": "INPUT",
+      "type": "java.util.Map<String,String>"
+    },
     "response": {
       "category": "OUTPUT",
       "type": "com.centurylink.mdw.model.Jsonable"
+    },
+    "responseHeaders": {
+      "category": "OUTPUT",
+      "type": "java.util.Map<String,String>"
     }
   }
 }

@@ -20,6 +20,7 @@
     },
     {
       "attributes": {
+        "INSTANCE_ID_VAR": "${bug.id}",
         "STATUS_AFTER_EVENT": "Cancelled",
         "TASK_PAGELET": "com.centurylink.mdw.base/CustomManualTask.pagelet",
         "TASK_TEMPLATE": "com.centurylink.mdw.demo.bugs/ResolveBug.task",
@@ -40,10 +41,10 @@
   "attributes": {
     "ArrowStyle": "ArrowEnd",
     "NodeStyle": "BoxIcon",
-    "PROCESS_START_PAGE": "demo/bug.jsx",
-    "PROCESS_START_PAGE_assetVersion": "[0.1,1)",
+    "PROCESS_START_PAGE": "bug.jsx",
+    "PROCESS_START_PAGE_assetVersion": "0",
     "PROCESS_VISIBILITY": "PUBLIC",
-    "WORK_DISPLAY_INFO": "x=40,y=39,w=124,h=27"
+    "WORK_DISPLAY_INFO": "x=40,y=39,w=109,h=27"
   },
   "variables": {"bug": {
     "category": "INPUT",
