@@ -2,33 +2,19 @@
 
 var app = angular.module('adminApp');
 
-app.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/heldOrders', {
-    templateUrl: 'demo/heldOrdersChart.html',
-    controller: 'HeldOrdersController'
-  }).when('/bugs', {
-    templateUrl: 'demo/bugs.html',
-    controller: 'BugsController'
-  }).when('/bugs/new', {
-    templateUrl: 'demo/bug.html',
-    controller: 'BugController'
-  });
-}]);
+$mdwUi.addRoute('/bugs', 'demo/bugs.html', 'BugsController');
+$mdwUi.addRoute('/bugs/:id');
+$mdwUi.addRoute('/bugs/new');
+$mdwUi.addRoute('/heldOrders', 'demo/heldOrdersController', 'HeldOrdersController');
 
 app.controller('BugsController', ['$scope', '$controller',
-      function ($scope, $controller) {
+      function ($scope, $controller, TasksController) {
   // initialize and extend built-in TasksController
   angular.extend(this, $controller('TasksController', {$scope: $scope}));
   
   $scope.authUser.setActiveTab('/bugs');
   $scope.tasksLabel = 'Bugs';
   $scope.model.taskFilter.category = 'Bug';
-}]);
-
-app.controller('BugController', ['$scope', '$controller',
-  function ($scope, $controller) {
-  // initialize and extend built-in TasksController
-  angular.extend(this, $controller('TaskController', {$scope: $scope}));
 }]);
 
 app.controller('HeldOrdersController', ['$scope', '$http', 'mdw', 'util',

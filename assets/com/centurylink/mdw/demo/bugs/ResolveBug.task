@@ -1,5 +1,9 @@
 {
-  "attributes": {"Notices": "Open,,,,;Assigned,,,,;Completed,,,,;Cancelled,,,,;In Progress,,,,;Alert,,,,;Jeopardy,,,,;Forward,,,,;"},
+  "attributes": {
+    "CustomPage": "demo/Bug.jsx",
+    "CustomPage_assetVersion": "[0.1,1)",
+    "Notices": "Open,,,,;Assigned,,,,;Completed,,,,;Cancelled,,,,;In Progress,,,,;Alert,,,,;Jeopardy,,,,;Forward,,,,;"
+  },
   "category": "BUG",
   "logicalId": "ResolveBug",
   "name": "${bug.title}",

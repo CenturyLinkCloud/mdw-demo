@@ -10,4 +10,4 @@ class Bug extends Component {
   }
 }
 
-export default Bug;
+export default Bug; 
