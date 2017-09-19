@@ -3,9 +3,9 @@
 var app = angular.module('adminApp');
 
 $mdwUi.addRoute('/bugs', 'demo/bugs.html', 'BugsController');
-$mdwUi.addRoute('/bugs/:id');
-$mdwUi.addRoute('/bugs/new');
-$mdwUi.addRoute('/heldOrders', 'demo/heldOrdersController', 'HeldOrdersController');
+$mdwUi.addRoute('/bugs/:id', 'demo/Bug.jsx');
+// $mdwUi.addRoute('/bugs/new', 'demo/Bug.jsx');
+$mdwUi.addRoute('/heldOrders', 'demo/heldOrdersChart.html', 'HeldOrdersController');
 
 app.controller('BugsController', ['$scope', '$controller',
       function ($scope, $controller, TasksController) {
