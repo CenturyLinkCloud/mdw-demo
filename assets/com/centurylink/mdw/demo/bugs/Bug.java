@@ -22,6 +22,7 @@ public class Bug implements Jsonable {
     @ApiModelProperty(readOnly=true)
     private Long id;
     public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
     
     @ApiModelProperty(value="Headline bug information", required=true)
     @Size(max=512)    

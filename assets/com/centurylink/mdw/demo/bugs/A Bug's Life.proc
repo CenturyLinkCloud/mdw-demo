@@ -46,8 +46,14 @@
     "PROCESS_VISIBILITY": "PUBLIC",
     "WORK_DISPLAY_INFO": "x=40,y=39,w=109,h=27"
   },
-  "variables": {"bug": {
-    "category": "INPUT",
-    "type": "com.centurylink.mdw.model.Jsonable"
-  }}
+  "variables": {
+    "bug": {
+      "category": "INPUT",
+      "type": "com.centurylink.mdw.model.Jsonable"
+    },
+    "bug2": {
+      "category": "INPUT",
+      "type": "com.centurylink.mdw.model.Jsonable"
+    }
+  }
 }

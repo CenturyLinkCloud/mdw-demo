@@ -69,7 +69,7 @@
         "processname": "com.centurylink.mdw.demo.bugs/A Bug's Life",
         "processversion": "[0.1,1)",
         "synchronous": "false",
-        "variables": "{\"bug\":\"${response}\"}"
+        "variables": "{\"bug2\":\"$response\",\"bug\":\"${response}\"}"
       },
       "id": "A6",
       "implementor": "com.centurylink.mdw.workflow.activity.process.InvokeSubProcessActivity",
