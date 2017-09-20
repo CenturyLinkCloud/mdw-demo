@@ -2,11 +2,6 @@
 
 var app = angular.module('adminApp');
 
-$mdwUi.addRoute('/bugs', 'demo/bugs.html', 'BugsController');
-$mdwUi.addRoute('/bugs/:id', 'demo/Bug.jsx');
-// $mdwUi.addRoute('/bugs/new', 'demo/Bug.jsx');
-$mdwUi.addRoute('/heldOrders', 'demo/heldOrdersChart.html', 'HeldOrdersController');
-
 app.controller('BugsController', ['$scope', '$controller',
       function ($scope, $controller, TasksController) {
   // initialize and extend built-in TasksController

@@ -1,0 +1,16 @@
+[
+  {
+    "path": '/bugs', 
+    "asset": 'demo/bugs.html', 
+    "controller": 'BugsController'
+  },
+  {
+    "path": "/bugs/:id",
+    "asset": "demo/Bug.jsx"
+  },
+  {
+    "path": "/heldOrders", 
+    "asset": "demo/heldOrdersChart.html", 
+    "controller": "HeldOrdersController"  
+  }
+]
