@@ -33,6 +33,11 @@ public class Bug implements Jsonable {
     private String description;
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+    
+    @ApiModelProperty(value="Lower is more severe; zero means unspecified.")
+    private Integer severity;
+    public Integer getSeverity() { return severity; }
+    public void setSeverity(Integer severity) { this.severity = severity; }
         
     public String toString() {
         return getJson().toString(2);

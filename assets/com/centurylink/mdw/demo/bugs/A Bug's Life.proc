@@ -29,7 +29,7 @@
       },
       "id": "A3",
       "implementor": "com.centurylink.mdw.workflow.activity.task.CustomManualTaskActivity",
-      "name": "Save and\r\nAssign",
+      "name": "Await\r\nResolution",
       "transitions": [{
         "attributes": {"TRANSITION_DISPLAY_INFO": "lx=432,ly=151,type=Elbow,xs=355&489,ys=151&151"},
         "event": "FINISH",

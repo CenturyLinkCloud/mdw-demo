@@ -3,6 +3,7 @@ Bug.java=1
 Categories.java=1
 Create\ Bug.proc=1
 PersistBugActivity.java=1
+Prioritization.java=1
 ResolveBug.task=1
 bug.png=1
 bugsContext.spring=1

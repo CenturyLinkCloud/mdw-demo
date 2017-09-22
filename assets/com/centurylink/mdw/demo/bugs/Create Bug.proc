@@ -73,7 +73,7 @@
       },
       "id": "A6",
       "implementor": "com.centurylink.mdw.workflow.activity.process.InvokeSubProcessActivity",
-      "name": "Invoke Bug\r\nLifecycle",
+      "name": "Invoke Bug\r\nWorkflow",
       "transitions": [{
         "attributes": {"TRANSITION_DISPLAY_INFO": "lx=579,ly=288,type=Elbow,xs=540&619,ys=288&288"},
         "event": "FINISH",

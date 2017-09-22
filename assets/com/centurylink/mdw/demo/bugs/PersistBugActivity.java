@@ -49,7 +49,6 @@ public class PersistBugActivity extends DefaultActivityImpl {
 
 	        // clone request for bug response
 	        Bug bug = new Bug(instance.getTaskInstanceId(), requestBug.getJson());
-	        // TODO: build bug (containing task instance?)
 	        // change the response
 	        setVariableValue("response", bug);
 	        

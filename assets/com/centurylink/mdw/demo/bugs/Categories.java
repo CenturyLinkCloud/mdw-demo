@@ -15,7 +15,7 @@ public class Categories extends MdwBaselineData {
 
     public Categories() {
         bugCategories = new ArrayList<>();
-        bugCategories.add(new TaskCategory(201L, "BUG", "Bug"));
+        bugCategories.add(new TaskCategory(201L, "ISSUE", "Bug"));
     }
 
     private Map<Integer,TaskCategory> taskCategories;

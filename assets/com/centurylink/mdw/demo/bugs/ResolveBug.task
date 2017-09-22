@@ -2,7 +2,9 @@
   "attributes": {
     "CustomPage": "demo/Bug.jsx",
     "CustomPage_assetVersion": "[0.1,1)",
-    "Notices": "Open,,,,;Assigned,,,,;Completed,,,,;Cancelled,,,,;In Progress,,,,;Alert,,,,;Jeopardy,,,,;Forward,,,,;"
+    "Groups": "[\"Developers\"]",
+    "Notices": "Open,,,,;Assigned,,,,;Completed,,,,;Cancelled,,,,;In Progress,,,,;Alert,,,,;Jeopardy,,,,;Forward,,,,;",
+    "PriorityStrategy": "com.centurylink.mdw.demo.bugs.Prioritization"
   },
   "category": "BUG",
   "logicalId": "ResolveBug",
