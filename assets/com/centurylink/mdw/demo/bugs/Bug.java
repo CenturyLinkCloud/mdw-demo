@@ -38,6 +38,10 @@ public class Bug implements Jsonable {
     private Integer severity;
     public Integer getSeverity() { return severity; }
     public void setSeverity(Integer severity) { this.severity = severity; }
+    
+    private String commitId;
+    public String getCommitId() { return commitId; }
+    public void setCommitId(String commitId) { this.commitId = commitId; }
         
     public String toString() {
         return getJson().toString(2);

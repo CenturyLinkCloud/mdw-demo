@@ -1,7 +1,7 @@
 {
   "attributes": {
-    "CustomPage": "demo/Bug.jsx",
-    "CustomPage_assetVersion": "[0.1,1)",
+    "CustomPage": "",
+    "CustomPage_assetVersion": "",
     "Groups": "[\"Developers\"]",
     "Notices": "Open,,,,;Assigned,,,,;Completed,,,,;Cancelled,,,,;In Progress,,,,;Alert,,,,;Jeopardy,,,,;Forward,,,,;",
     "PriorityStrategy": "com.centurylink.mdw.demo.bugs.Prioritization"
