@@ -39,7 +39,7 @@
     },
     {
       "attributes": {
-        "EndpointUri": "http://api.github.com/repos/CenturyLinkCloud/mdw-demo/commits/${bug.commitId}",
+        "EndpointUri": "https://api.github.com/repos/CenturyLinkCloud/mdw-demo/commits/${bug.commitId}",
         "HttpMethod": "GET",
         "RESPONSE_VARIABLE": "commit",
         "WORK_DISPLAY_INFO": "x=180,y=270,w=105,h=71"
