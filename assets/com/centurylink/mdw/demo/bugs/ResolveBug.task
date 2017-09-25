@@ -6,7 +6,7 @@
     "Notices": "Open,,,,;Assigned,,,,;Completed,,,,;Cancelled,,,,;In Progress,,,,;Alert,,,,;Jeopardy,,,,;Forward,,,,;",
     "PriorityStrategy": "com.centurylink.mdw.demo.bugs.Prioritization"
   },
-  "category": "BUG",
+  "category": "ISSUE",
   "logicalId": "ResolveBug",
   "name": "${bug.title}",
   "version": "0.1"

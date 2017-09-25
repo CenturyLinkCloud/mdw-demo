@@ -1,11 +1,11 @@
 [
   {
-    "path": '/bugs', 
-    "asset": 'demo/bugs.html', 
+    "path": '/issues', 
+    "asset": 'demo/issues.html', 
     "controller": 'BugsController'
   },
   {
-    "path": "/bugs/:id",
+    "path": "/issues/:id",
     "asset": "demo/Bug.jsx"
   },
   {

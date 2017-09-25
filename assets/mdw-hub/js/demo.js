@@ -7,9 +7,9 @@ app.controller('BugsController', ['$scope', '$controller',
   // initialize and extend built-in TasksController
   angular.extend(this, $controller('TasksController', {$scope: $scope}));
   
-  $scope.authUser.setActiveTab('/bugs');
-  $scope.tasksLabel = 'Bugs';
-  $scope.model.taskFilter.category = 'Bug';
+  $scope.authUser.setActiveTab('/issues');
+  $scope.tasksLabel = 'Issues';
+  $scope.model.taskFilter.category = 'ISSUE';
 }]);
 
 app.controller('HeldOrdersController', ['$scope', '$http', 'mdw', 'util',

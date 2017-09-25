@@ -31,10 +31,10 @@ tabsSvc.factory('tabs', ['mdw', function(mdw) {
         routes: ['/tasks']
       },
       {
-        id: 'bugsTab',
-        label: 'Bugs',     
-        url: '#/bugs',
-        routes: ['/bugs']
+        id: 'issuesTab',
+        label: 'Issues',     
+        url: '#/issues',
+        routes: ['/issues']
       },
       {
         id: 'adminTab',
