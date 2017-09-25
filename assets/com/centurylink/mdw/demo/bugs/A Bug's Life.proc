@@ -6,7 +6,7 @@
       "implementor": "com.centurylink.mdw.workflow.activity.process.ProcessStartActivity",
       "name": "Create",
       "transitions": [{
-        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=147,ly=169,type=Elbow,xs=116&171,ys=150&150"},
+        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=148,ly=169,type=Elbow,xs=116&172,ys=150&150"},
         "event": "FINISH",
         "id": "T1",
         "to": "A3"
@@ -25,13 +25,14 @@
         "TASK_PAGELET": "com.centurylink.mdw.base/CustomManualTask.pagelet",
         "TASK_TEMPLATE": "com.centurylink.mdw.demo.bugs/ResolveBug.task",
         "TASK_TEMPLATE_assetVersion": "[0.1,1)",
-        "WORK_DISPLAY_INFO": "x=175,y=123,w=108,h=70"
+        "WORK_DISPLAY_INFO": "x=176,y=122,w=108,h=70",
+        "Wait for Task": "true"
       },
       "id": "A3",
-      "implementor": "com.centurylink.mdw.workflow.activity.task.CustomManualTaskActivity",
+      "implementor": "com.centurylink.mdw.workflow.activity.task.AutoformManualTaskActivity",
       "name": "Await\r\nResolution",
       "transitions": [{
-        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=228,ly=227,type=Elbow,xs=231&231,ys=197&266"},
+        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=229,ly=226,type=Elbow,xs=232&232,ys=196&266"},
         "event": "FINISH",
         "id": "T2",
         "to": "A4"

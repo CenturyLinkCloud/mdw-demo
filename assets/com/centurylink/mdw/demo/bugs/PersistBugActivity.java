@@ -26,17 +26,15 @@ import com.centurylink.mdw.workflow.activity.DefaultActivityImpl;
 @Tracked(LogLevel.TRACE)
 public class PersistBugActivity extends DefaultActivityImpl {
 	
-	private static final String TASK_TEMPLATE = "com.centurylink.mdw.demo.bugs/ResolveBug.task";
-
     /**
-     * Create a manual task instance for the bug based on the ResolveBug template.
+     * Create a manual task instance for the bug based on one of the ResolveBug templates.
      */
     @Override
     public Object execute(ActivityRuntimeContext runtimeContext) throws ActivityException {
-    	Bug requestBug = (Bug) this.getVariableValue("request");
-    	
+    	Bug requestBug = (Bug)getValue("request");
+    	String taskTemplate = getTaskTemplate();
     	try {
-	    	AssetVersionSpec templateAsset = new AssetVersionSpec(TASK_TEMPLATE, "0");
+	    	AssetVersionSpec templateAsset = new AssetVersionSpec(taskTemplate, "0");
 	        TaskTemplate template = TaskTemplateCache.getTaskTemplate(templateAsset);
 	        if (template == null)
 	            throw new DataAccessException("Task template not found: " + template);
@@ -45,11 +43,11 @@ public class PersistBugActivity extends DefaultActivityImpl {
 	        TaskInstance instance = taskServices.createTask(template.getTaskId(), getMasterRequestId(), 
 	        		getProcessInstanceId(), null, null, requestBug.getTitle(), requestBug.getDescription());
 	
-	        loginfo("Created task instance " + instance.getId() + " (" + template.getTaskName() + ")");
+	        loginfo("Created task instance " + instance.getId() + " (" + taskTemplate + ")");
 
-	        // clone request for bug response
+	        // clone the request
 	        Bug bug = new Bug(instance.getTaskInstanceId(), requestBug.getJson());
-	        // change the response
+	        // ... to set the response
 	        setVariableValue("response", bug);
 	        
 	        // set response status and headers
@@ -60,8 +58,16 @@ public class PersistBugActivity extends DefaultActivityImpl {
 	        return null;
     	}
     	catch (DataAccessException | ServiceException ex) {
-    		throw new ActivityException("Error creating task " + TASK_TEMPLATE, ex);
+    		throw new ActivityException("Error creating task " + taskTemplate, ex);
     	}
     }
     
+    @SuppressWarnings("unchecked")
+    private String getTaskTemplate() throws ActivityException {
+        Map<String,String> requestHeaders = (Map<String,String>)getValue("requestHeaders");
+        if ("true".equalsIgnoreCase(requestHeaders.get("autoform")))
+            return "com.centurylink.mdw.demo.bugs/ResolveBugAutoform.task";
+        else
+            return "com.centurylink.mdw.demo.bugs/ResolveBugCustom.task";
+    }
 }

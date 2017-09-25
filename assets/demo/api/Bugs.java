@@ -43,11 +43,14 @@ public class Bugs extends JsonRestService {
     @ApiOperation(value="Retrieve a bug by id", response=Bug.class)
     public JSONObject get(String path, Map<String,String> headers)
     throws ServiceException, JSONException {
-        String id = getSegment(path, 1);
+        String id = getSegment(path, 3);
         if (id == null)
             throw new ServiceException(Status.BAD_REQUEST.getCode(), "Missing path parameter: {id}");
         TaskServices taskServices = ServiceLocator.getTaskServices();
         TaskInstance bugTask = taskServices.getInstance(Long.parseLong(id));
-        return new Bug(bugTask.getJson()).getJson();
+        Bug bug = new Bug(bugTask.getJson());
+        bug.setSeverity(bugTask.getPriority());
+        bug.setDescription(bugTask.getComments());
+        return bug.getJson();
     }    
 }
