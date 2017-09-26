@@ -23,13 +23,13 @@
         "INSTANCE_ID_VAR": "${bug.id}",
         "STATUS_AFTER_EVENT": "Cancelled",
         "TASK_PAGELET": "com.centurylink.mdw.base/CustomManualTask.pagelet",
-        "TASK_TEMPLATE": "com.centurylink.mdw.demo.bugs/ResolveBug.task",
+        "TASK_TEMPLATE": "com.centurylink.mdw.demo.bugs/ResolveBugCustom.task",
         "TASK_TEMPLATE_assetVersion": "[0.1,1)",
         "WORK_DISPLAY_INFO": "x=176,y=122,w=108,h=70",
         "Wait for Task": "true"
       },
       "id": "A3",
-      "implementor": "com.centurylink.mdw.workflow.activity.task.AutoFormManualTaskActivity",
+      "implementor": "com.centurylink.mdw.workflow.activity.task.CustomManualTaskActivity",
       "name": "Await\r\nResolution",
       "transitions": [{
         "attributes": {"TRANSITION_DISPLAY_INFO": "lx=240,ly=222,type=Elbow,xs=232&232,ys=196&266"},
