@@ -1,5 +1,6 @@
 package demo.api;
     
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.ws.rs.Path;
@@ -8,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.centurylink.mdw.common.service.ServiceException;
+import com.centurylink.mdw.dataaccess.DataAccessException;
 import com.centurylink.mdw.demo.bugs.Bug;
 import com.centurylink.mdw.model.Status;
 import com.centurylink.mdw.model.StatusResponse;
@@ -43,14 +45,64 @@ public class Bugs extends JsonRestService {
     @ApiOperation(value="Retrieve a bug by id", response=Bug.class)
     public JSONObject get(String path, Map<String,String> headers)
     throws ServiceException, JSONException {
+        TaskInstance bugTask = getBugTask(path);
+        Bug bug = new Bug(bugTask.getJson());
+        bug.setSeverity(bugTask.getPriority());
+        bug.setDescription(bugTask.getComments());
+        return bug.getJson();
+    }
+    
+    @Override
+    @Path("/{id}")
+    @ApiOperation(value="Update a bug", response=StatusResponse.class)
+    @ApiImplicitParams({
+        @ApiImplicitParam(name="bug", paramType="body", required=true, 
+                dataType="com.centurylink.mdw.demo.bugs.Bug")
+    })
+    public JSONObject put(String path, JSONObject content, Map<String,String> headers)
+            throws ServiceException, JSONException {
+        TaskInstance bugTask = getBugTask(path);
+        Bug bug = new Bug(content);
+        TaskServices taskServices = ServiceLocator.getTaskServices();
+        // update header info
+        bugTask.setPriority(bug.getSeverity());
+        bugTask.setComments(bug.getDescription());
+        taskServices.updateTask(getAuthUser(headers), bugTask);
+        // update runtime values
+        Map<String,String> values = new HashMap<>();
+        taskServices.applyValues(bugTask.getTaskInstanceId(), values);
+        return null;  // sends a standard 200 response
+    }
+    
+    
+    @Override
+    @Path("/{id}")
+    @ApiOperation(value="Delete (cancel) a bug by id", response=StatusResponse.class)
+    public JSONObject delete(String path, JSONObject content, Map<String,String> headers)
+    throws ServiceException, JSONException {
+        TaskInstance bugTask = getBugTask(path);
+        try {
+            ServiceLocator.getTaskServices().performAction(bugTask.getTaskInstanceId(), "Cancel",
+                    getAuthUser(headers), null, null, null, true);
+        }
+        catch (DataAccessException ex) {
+            throw new ServiceException(Status.INTERNAL_ERROR.getCode(), "Can't cancel: " + bugTask.getId());
+        }
+        return null;
+    }
+    
+    /**
+     * Return a bug task according to the {id} path param.
+     */
+    private TaskInstance getBugTask(String path) throws ServiceException {
         String id = getSegment(path, 3);
         if (id == null)
             throw new ServiceException(Status.BAD_REQUEST.getCode(), "Missing path parameter: {id}");
         TaskServices taskServices = ServiceLocator.getTaskServices();
         TaskInstance bugTask = taskServices.getInstance(Long.parseLong(id));
-        Bug bug = new Bug(bugTask.getJson());
-        bug.setSeverity(bugTask.getPriority());
-        bug.setDescription(bugTask.getComments());
-        return bug.getJson();
-    }    
+        if (bugTask == null)
+            throw new ServiceException(Status.NOT_FOUND.getCode(), "Bug not found: " + id);
+        return null;
+    }
+    
 }
