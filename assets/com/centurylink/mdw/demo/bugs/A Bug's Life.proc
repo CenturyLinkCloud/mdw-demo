@@ -29,12 +29,13 @@
         "Wait for Task": "true"
       },
       "id": "A3",
-      "implementor": "com.centurylink.mdw.workflow.activity.task.AutoformManualTaskActivity",
+      "implementor": "com.centurylink.mdw.workflow.activity.task.AutoFormManualTaskActivity",
       "name": "Await\r\nResolution",
       "transitions": [{
-        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=229,ly=226,type=Elbow,xs=232&232,ys=196&266"},
+        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=240,ly=222,type=Elbow,xs=232&232,ys=196&266"},
         "event": "FINISH",
         "id": "T2",
+        "resultCode": "Resolve",
         "to": "A4"
       }]
     },
