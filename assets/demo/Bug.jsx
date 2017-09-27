@@ -7,7 +7,7 @@ class Bug extends Component {
     super(...args);
     this.state = {bug: {
       description: '',
-      severity: 4,
+      severity: 0,
       commitId: ''
     }};
     this.handleChange = this.handleChange.bind(this);
@@ -35,7 +35,8 @@ class Bug extends Component {
       newState.bug.description = event.currentTarget.value;
     }
     else if (event.currentTarget.name === 'severity') {
-      newState.bug.severity = event.currentTarget.value;
+      var sev = event.currentTarget.value;
+      newState.bug.severity = sev === '' ? 0 : parseInt(sev);
     }
     else if (event.currentTarget.name === 'commitId') {
       newState.bug.commitId = event.currentTarget.value;
