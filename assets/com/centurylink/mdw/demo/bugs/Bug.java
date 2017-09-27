@@ -44,6 +44,9 @@ public class Bug implements Jsonable {
     public void setCommitId(String commitId) { this.commitId = commitId; }
         
     public String toString() {
-        return getJson().toString(2);
+        JSONObject json = new JSONObject();
+        json.put("_type", getClass().getName());
+        json.put("bug", getJson());
+        return json.toString(2);
     }
 }
