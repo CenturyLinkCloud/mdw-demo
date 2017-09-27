@@ -85,6 +85,8 @@
   "attributes": {
     "ArrowStyle": "ArrowEnd",
     "NodeStyle": "BoxIcon",
+    "PROCESS_START_PAGE": "demo/Bug.jsx",
+    "PROCESS_START_PAGE_assetVersion": "[0.1,1)",
     "PROCESS_VISIBILITY": "SERVICE",
     "WORK_DISPLAY_INFO": "x=45,y=45,w=102,h=27"
   },
