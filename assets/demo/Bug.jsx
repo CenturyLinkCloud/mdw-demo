@@ -1,5 +1,4 @@
 import React, {Component} from '../com/centurylink/mdw/node/node_modules/react';
-import PropTypes from '../com/centurylink/mdw/node/node_modules/prop-types';
 import {Button, Glyphicon} from '../com/centurylink/mdw/node/node_modules/react-bootstrap';
 
 class Bug extends Component {
@@ -45,8 +44,52 @@ class Bug extends Component {
   }
   
   handleClick(event) {
+    var ok = false;
     if (event.currentTarget.name === 'save') {
-      console.log('save...');
+      fetch(new Request('/mdw/services/demo/api/bugs/' + this.state.bug.id, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(this.state.bug)
+      }))
+      .then(response => {
+        ok = response.ok;
+        return response.json();
+      })
+      .then(json => {
+        if (ok) {
+          $mdwUi.showMessage('Bug saved');
+          setTimeout(() => {
+            $mdwUi.clearMessage();
+          }, 1500);
+        }
+        else {
+          $mdwUi.showMessage(json.status.message);
+        }
+      });
+    }
+    else if (event.currentTarget.name === 'resolve') {
+      fetch(new Request('/mdw/services/Tasks/' +  this.state.bug.id + '/Resolve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          action: 'Resolve',
+          user: $mdwUi.authUser.cuid, 
+          taskInstanceId: this.state.bug.id})
+      }))
+      .then(response => {
+        ok = response.ok;
+        return response.json();
+      })
+      .then(json => {
+        if (ok) {
+          $mdwUi.clearMessage();
+          this.loadActions();
+          this.props.refreshTask(this.props.task.id);
+        }
+        else {
+          $mdwUi.showMessage(json.status.message);
+        }
+      });
     }
   }
   
@@ -105,8 +148,4 @@ class Bug extends Component {
   }
 }
 
-Bug.contextTypes = {
-  hubRoot: PropTypes.string,
-  serviceRoot: PropTypes.string
-};
 export default Bug; 

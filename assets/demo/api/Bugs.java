@@ -64,16 +64,21 @@ public class Bugs extends JsonRestService {
         TaskInstance bugTask = getBugTask(path);
         Bug bug = new Bug(content);
         TaskServices taskServices = ServiceLocator.getTaskServices();
+        // self-assign if needed
+        if (bugTask.getAssignee() == null) {
+            String user = getAuthUser(headers);
+            performAction("Assign", bugTask.getTaskInstanceId(), user, user);
+        }
         // update header info
         bugTask.setPriority(bug.getSeverity());
         bugTask.setComments(bug.getDescription());
         taskServices.updateTask(getAuthUser(headers), bugTask);
         // update runtime values
         Map<String,String> values = new HashMap<>();
+        values.put("bug", bug.toString());
         taskServices.applyValues(bugTask.getTaskInstanceId(), values);
         return null;  // sends a standard 200 response
     }
-    
     
     @Override
     @Path("/{id}")
@@ -81,13 +86,7 @@ public class Bugs extends JsonRestService {
     public JSONObject delete(String path, JSONObject content, Map<String,String> headers)
     throws ServiceException, JSONException {
         TaskInstance bugTask = getBugTask(path);
-        try {
-            ServiceLocator.getTaskServices().performAction(bugTask.getTaskInstanceId(), "Cancel",
-                    getAuthUser(headers), null, null, null, true);
-        }
-        catch (DataAccessException ex) {
-            throw new ServiceException(Status.INTERNAL_ERROR.getCode(), "Can't cancel: " + bugTask.getId());
-        }
+        performAction("Cancel", bugTask.getTaskInstanceId(), getAuthUser(headers), null);
         return null;
     }
     
@@ -102,7 +101,16 @@ public class Bugs extends JsonRestService {
         TaskInstance bugTask = taskServices.getInstance(Long.parseLong(id));
         if (bugTask == null)
             throw new ServiceException(Status.NOT_FOUND.getCode(), "Bug not found: " + id);
-        return null;
+        return bugTask;
     }
     
+    private void performAction(String action, Long taskInstanceId, String user, String assignee)
+            throws ServiceException {
+        try {
+            ServiceLocator.getTaskServices().performAction(taskInstanceId, action, user, assignee, null, null, true);
+        }
+        catch (DataAccessException ex) {
+            throw new ServiceException(Status.INTERNAL_ERROR.getCode(), "Can't action: " + taskInstanceId);
+        }
+    }
 }
