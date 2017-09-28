@@ -1,10 +1,20 @@
 [
   {
+    "path": '/issues', 
+    "asset": 'demo/issues.html', 
+    "controller": 'BugsController'
+  },
+  {
     "path": "/issues/new",
     "asset": "demo/Bug.jsx"
   },
   {
     "path": "/issues/:id",
     "asset": "demo/Bug.jsx"
-  }
+  },
+  {
+    "path": "/heldOrders", 
+    "asset": "demo/heldOrdersChart.html", 
+    "controller": "HeldOrdersController"  
+  }  
 ]
