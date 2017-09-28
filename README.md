@@ -1,35 +1,17 @@
-## MDW 6 Demo
-### 1. Setup Eclipse with MDW Plug-In
+## mdw-demo
+### 1. Set up to run mdw-demo 
 
-- Make sure Java Runtime 1.8.x is installed on your computer:
-  http://www.oracle.com/technetwork/java/javase/downloads
-  
-- Set JAVA_HOME to JDK 1.8.X:                                                                                                                                           
-  ![alt text](docs/images/setJavaHome.png "setJavaHome")
-                                                                                                                                                                        
-- Set the path:  %PATH%;%JAVA_HOME%\bin;  
+ - Install Eclipse with the MDW Designer Plugin:
+   <http://centurylinkcloud.github.io/mdw/docs/getting-started/install-designer/>
 
-- Install Eclipse Neon (6.2.x) for JavaEE Developers:  [https://www.eclipse.org/downloads](https://www.eclipse.org/downloads)
+ - Install Apache Tomcat 8
+   <https://tomcat.apache.org/download-80.cgi>  
 
-- Launch Eclipse:
-  Here is an example command line that includes appropriate JVM memory settings for running and debugging:
-  C:\eclipse_6.2\eclipse.exe -vm C:\Java\jdk1.8.0_91\bin\javaw.exe -vmargs -Xms512m -Xmx1024m
-  
-- For installing eclipse plug-ins, please follow [this link](http://centurylinkcloud.github.io/mdw/docs/guides/InstallEclipsePluginsGuide/) and return to this to continue with the next step.   
-  
-- Configure your Eclipse with Java 1.8.x installed JRE available in your workspace (Window > Preferences > Java > Installed JREs > Add):
-  ![alt text](docs/images/installJdk8.png "installJdk8")
-  
-#### Supported Java Container (Apache Tomcat 8)  
-You can perform many cloud development activities using a remote workflow project.  However, there are certain advantages to being able to deploy locally.  To be able to develop locally you need an Apache Tomcat: https://tomcat.apache.org.
-
-## mdw-demo Project
+### Get mdw-demo
 
 #### Add Git Repository:
-- The mdw-demo workflow project is hosted in the MDW AppFog Git Repository.  If you prefer to use command line Git, clone the repository from 
-  https://github.com/CenturyLinkCloud/mdw-demo.git. 
   
-#### Clone mdw-demo project into your workspace:
+#### Clone the mdw-demo project into your workspace:
 - Access the Git Repositories view by selecting Window > Show View > Other > Git > Git Repositories:
 - Copy the repository URL into your clipboard: https://github.com/CenturyLinkCloud/mdw-demo.git
 - Right-click in Git Repositories view and select Paste Repository Path or URI.
