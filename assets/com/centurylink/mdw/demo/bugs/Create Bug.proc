@@ -84,6 +84,7 @@
   ],
   "attributes": {
     "ArrowStyle": "ArrowEnd",
+    "Documentation": "## Create Bug\r\nService process exposed through demo.api/Bugs.java via the post() method. ",
     "NodeStyle": "BoxIcon",
     "PROCESS_START_PAGE": "demo/Bug.jsx",
     "PROCESS_START_PAGE_assetVersion": "[0.1,1)",
