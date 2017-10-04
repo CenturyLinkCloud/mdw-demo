@@ -9,7 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.centurylink.mdw.common.service.ServiceException;
-import com.centurylink.mdw.dataaccess.DataAccessException;
 import com.centurylink.mdw.demo.bugs.Bug;
 import com.centurylink.mdw.model.Status;
 import com.centurylink.mdw.model.StatusResponse;
@@ -106,11 +105,6 @@ public class Bugs extends JsonRestService {
     
     private void performAction(String action, Long taskInstanceId, String user, String assignee)
             throws ServiceException {
-        try {
-            ServiceLocator.getTaskServices().performAction(taskInstanceId, action, user, assignee, null, null, true);
-        }
-        catch (DataAccessException ex) {
-            throw new ServiceException(Status.INTERNAL_ERROR.getCode(), "Can't action: " + taskInstanceId);
-        }
+        ServiceLocator.getTaskServices().performAction(taskInstanceId, action, user, assignee, null, null, true);
     }
 }
