@@ -14,6 +14,9 @@ public class Playlist implements Jsonable {
     public JSONArray getSongs() { return songs; }
     public void setSongs(JSONArray songs) { this.songs = songs; }
     
+    public Playlist() {
+    }
+    
     public Playlist(JSONObject json) {
         bind(json);
     }
