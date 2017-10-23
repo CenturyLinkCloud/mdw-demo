@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.centurylink.mdw.activity.ActivityException;
 import com.centurylink.mdw.app.ApplicationContext;
-import com.centurylink.mdw.common.service.ServiceException;
 import com.centurylink.mdw.dataaccess.DataAccessException;
 import com.centurylink.mdw.model.Status;
 import com.centurylink.mdw.model.asset.AssetVersionSpec;
@@ -57,7 +56,7 @@ public class PersistBugActivity extends DefaultActivityImpl {
 	        setVariableValue("responseHeaders", headers);
 	        return null;
     	}
-    	catch (DataAccessException | ServiceException ex) {
+    	catch (Exception ex) {
     		throw new ActivityException("Error creating task " + taskTemplate, ex);
     	}
     }
