@@ -1,0 +1,8 @@
+{
+  "_type": "com.centurylink.mdw.demo.bugs.Bug",
+  "bug": {
+      "title": "Don's car needs washing",
+      "severity": 1,
+      "description": "This is a sev 1 showstopper"
+  }
+}

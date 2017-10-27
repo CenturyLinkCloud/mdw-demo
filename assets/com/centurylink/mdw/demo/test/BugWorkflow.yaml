@@ -1,0 +1,54 @@
+process: # 10009
+  name: Create Bug
+  instance: 1
+  activity: # 1 "2017-10-27 11:03:30"
+    name: Start
+    status: Completed
+  activity: # 3 "2017-10-27 11:03:30"
+    name: |
+      Validate
+      Request
+    status: Completed
+    result: accepted
+  activity: # 5 "2017-10-27 11:03:30"
+    name: Save Bug
+    status: Completed
+  activity: # 6 "2017-10-27 11:03:30"
+    name: |
+      Invoke Bug
+      Workflow
+    status: Completed
+  activity: # 2 "2017-10-27 11:03:30"
+    name: Created
+    status: Completed
+  variable: # 10021
+    name: request
+    value: |
+      {
+        "description": "This is a sev 1 showstopper",
+        "severity": 1,
+        "title": "Don's car needs washing"
+      }
+  variable: # 10022
+    name: requestHeaders
+    value: |
+      {
+        "content-type": "application/json",
+        "mdw-request-id": "dxoakes-171027-110326738"
+      }
+  variable: # 10023
+    name: response
+    value: |
+      {
+        "description": "This is a sev 1 showstopper",
+        "id": 10003,
+        "severity": 1,
+        "title": "Don's car needs washing"
+      }
+  variable: # 10024
+    name: responseHeaders
+    value: |
+      {
+        "HttpStatusCode": "201",
+        "Location": "http://localhost:8080/mdw/demo/api/bugs/10003"
+      }
