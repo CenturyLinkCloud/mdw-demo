@@ -3,7 +3,7 @@ DELIMITER $$
 CREATE PROCEDURE `mysql_cleanup`(IN inputrnum INT , inputdaydiff INT, inputeldaydiff INT,
 inputprocid INT, inputworkstatusids VARCHAR (100) , inputcommitcnt INT)
 BEGIN
-DECLARE dt                 DATETIME(6);
+DECLARE dt                 DATETIME;
    DECLARE rnum               INT;
    DECLARE daydiff            INT;
    DECLARE eldaydiff          INT;
@@ -84,6 +84,7 @@ SET foreign_key_checks=0;
    -- mdw tables that need to be cleaned up based on date range   
    SET row_count = 0;
    REPEAT
+   	COMMIT;
      DELETE FROM event_log
          WHERE create_dt < DATE_SUB(CURDATE(), INTERVAL eldaydiff DAY)
          LIMIT commitcnt;
@@ -95,6 +96,7 @@ SET foreign_key_checks=0;
 
    SET row_count = 0;
    REPEAT
+   	 COMMIT;
      DELETE FROM event_instance
          WHERE create_dt < DATE_SUB(CURDATE(), INTERVAL eldaydiff DAY) 
          AND  event_name NOT LIKE 'ScheduledJob%'
@@ -108,6 +110,7 @@ SET foreign_key_checks=0;
    -- delete the event wait instance table
    SET row_count = 0;
    REPEAT
+     COMMIT;
      DELETE from   event_wait_instance 
          WHERE event_wait_instance_owner = 'ACTIVITY_INSTANCE'
            AND event_wait_instance_owner_id IN (
@@ -133,6 +136,7 @@ SET foreign_key_checks=0;
    -- delete all the activity instances
    SET row_count = 0;
    REPEAT
+   	 COMMIT;
      DELETE  from  activity_instance 
          WHERE process_instance_id IN (SELECT /*+ index(process_instance PI_STATUS_CD_IDX) */
                                                  process_instance_id
@@ -148,6 +152,7 @@ SET foreign_key_checks=0;
    -- delete all the work transition instances that belong to current process instance and child instanes
    SET row_count = 0;
    REPEAT
+   	 COMMIT;
      DELETE  from    work_transition_instance 
          WHERE process_inst_id IN (SELECT /*+ index(process_instance PI_STATUS_CD_IDX) */
                                               process_instance_id
@@ -163,6 +168,7 @@ SET foreign_key_checks=0;
    -- delete all the variable instances that belong to current process instance and child instanes
    SET row_count = 0;
    REPEAT
+   	 COMMIT;
      DELETE from   variable_instance 
          WHERE process_inst_id IN (SELECT /*+ index(process_instance PI_STATUS_CD_IDX) */
                                              process_instance_id
@@ -183,6 +189,7 @@ SET foreign_key_checks=0;
    -- delete all the instance notes for the task instances
    SET row_count = 0;
    REPEAT
+   	 COMMIT;
      DELETE  from instance_note
          WHERE instance_note_owner_id IN (
                   SELECT task_instance_id
@@ -212,6 +219,7 @@ SET foreign_key_checks=0;
    -- delete all task instance indices
      SET row_count = 0;
 	   REPEAT
+	   	 COMMIT;
 	     DELETE  from    task_inst_index
          WHERE task_instance_id IN (
                   SELECT task_instance_id
@@ -232,6 +240,7 @@ SET foreign_key_checks=0;
    -- delete all task instance group mappings
      SET row_count = 0;
      REPEAT
+       COMMIT;
        DELETE  from    task_inst_grp_mapp
          WHERE task_instance_id IN (
                   SELECT task_instance_id
@@ -253,6 +262,7 @@ SET foreign_key_checks=0;
    -- delete all the taskInstances that belong to current process instance and child instanes
    SET row_count = 0;
    REPEAT
+   	 COMMIT;
      DELETE   from   task_instance 
          WHERE task_instance_owner = 'PROCESS_INSTANCE'
            AND task_instance_owner_id IN (SELECT /*+ index(process_instance PI_STATUS_CD_IDX) */
@@ -276,9 +286,11 @@ SET foreign_key_checks=0;
    -- deleting from document_content to avoid the integrity constraint issue
    SET row_count = 0;
    REPEAT
+   	 COMMIT;
      DELETE from document_content where document_id IN (
       SELECT document_id FROM document doc
-       WHERE   ( doc.owner_id != 0 AND doc.OWNER_TYPE = 'PROCESS_INSTANCE'  
+       -- 1. all documents with process instance ID populated
+       WHERE   ( doc.owner_id != 0 AND doc.OWNER_TYPE IN ('PROCESS_INSTANCE', 'PROCESS_RUN')  
                AND EXISTS (
                        SELECT /*+ index(pi PROCESS_INSTANCE_PK) */
                               process_instance_id
@@ -286,22 +298,22 @@ SET foreign_key_checks=0;
                         WHERE pi.process_instance_id = doc.owner_id
                           AND pi.status_cd = purgestatusid)
                )
-   		 -- 2. all documents with LISTENER_REQUEST/USER as owner type and no process inst ID 
+   		 -- 2. all documents with owner type as *_META 
+            OR ( doc.create_dt < DATE_SUB(CURDATE(), INTERVAL daydiff DAY)  
+                AND doc.owner_type IN ('LISTENER_REQUEST_META', 'LISTENER_RESPONSE_META', 'VARIABLE_INSTANCE')
+               )
+       -- 3. all documents with LISTENER_REQUEST/USER/TASK_INSTANCE as owner type and no process inst ID 
             OR ( doc.create_dt < DATE_SUB(CURDATE(), INTERVAL daydiff DAY)  
                 AND doc.owner_id = 0 
-                AND doc.owner_type IN ('LISTENER_REQUEST', 'USER')
+                AND doc.owner_type IN ('LISTENER_REQUEST', 'USER', 'TASK_INSTANCE')
                )
-   		 -- 3. all documents with TASK_INSTANCE as owner
-            OR ( doc.create_dt < DATE_SUB(CURDATE(), INTERVAL daydiff DAY)        
-               AND doc.owner_id = 0
-                AND doc.owner_type = 'TASK_INSTANCE'
-               )
-   		 -- 4. all documents with LISTENER_RESPONSE/DOCUMENT as owner and owner is deleted
+       -- 4. all documents with LISTENER_RESPONSE/DOCUMENT as owner and owner is deleted
             OR (    doc.owner_type IN ('LISTENER_RESPONSE', 'DOCUMENT')
                 AND NOT EXISTS (SELECT *
                                   FROM document doc2
                                  WHERE doc2.document_id = doc.owner_id)
-               ))
+               )
+             )
       LIMIT commitcnt;
       SET row_count = row_count + ROW_COUNT();
    UNTIL ROW_COUNT() < 1 END REPEAT; 
@@ -319,10 +331,11 @@ SET foreign_key_checks=0;
    -- delete DOCUMENT 
    SET row_count = 0;
    REPEAT
+   	 COMMIT;
      DELETE from document 
    		 -- 1. all documents with process instance ID populated
          WHERE (
-          document.owner_id!= 0 AND document.OWNER_TYPE = 'PROCESS_INSTANCE' 
+          document.owner_id!= 0 AND document.OWNER_TYPE IN ('PROCESS_INSTANCE', 'PROCESS_RUN')
                 AND 
                EXISTS (
                        SELECT /*+ index(pi PROCESS_INSTANCE_PK) */
@@ -333,22 +346,23 @@ SET foreign_key_checks=0;
                           AND 
                           pi.status_cd = purgestatusid)
                )
-   		 -- 2. all documents with LISTENER_REQUEST/USER as owner type and no process inst ID 
+   		 -- 2. all documents with LISTENER_REQUEST/USER/'TASK_INSTANCE' as owner type and no process inst ID 
             OR (    document.create_dt < DATE_SUB(CURDATE(), INTERVAL daydiff DAY)
                AND document.owner_id  = 0
-                AND document.owner_type IN ('LISTENER_REQUEST', 'USER')
+                AND document.owner_type IN ('LISTENER_REQUEST', 'USER', 'TASK_INSTANCE')
                )
-   		 -- 3. all documents with TASK_INSTANCE as owner
-            OR (    document.create_dt < DATE_SUB(CURDATE(), INTERVAL daydiff DAY)
-             AND document.owner_id  = 0
-                AND document.owner_type = 'TASK_INSTANCE' 
-               )
-   		--  4. all documents with LISTENER_RESPONSE/DOCUMENT as owner and owner is deleted
+   		 -- 3. all documents with LISTENER_RESPONSE/DOCUMENT as owner and owner is deleted
             OR (    document.owner_type IN ('LISTENER_RESPONSE', 'DOCUMENT')
                 AND NOT EXISTS (SELECT 1 from(select *
-                                  FROM document) doc2
-                                WHERE doc2.document_id = document.owner_id)
+                      FROM document) doc2
+                      WHERE doc2.document_id = document.owner_id)
               )
+       -- 4. all documents that are not in document_context table
+            AND NOT EXISTS
+               (
+                    SELECT * FROM DOCUMENT_CONTENT doccon
+                        WHERE doccon.document_id = doc.document_id
+               )   
       LIMIT commitcnt;
       SET row_count = row_count + ROW_COUNT();
    UNTIL ROW_COUNT() < 1 END REPEAT;           
@@ -366,6 +380,7 @@ SET foreign_key_checks=0;
    -- delete the process instance
    SET row_count = 0;
    REPEAT
+   	COMMIT;
     DELETE  from    process_instance 
          WHERE status_cd = purgestatusid
       LIMIT commitcnt;

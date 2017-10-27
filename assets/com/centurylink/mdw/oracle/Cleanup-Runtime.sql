@@ -461,7 +461,13 @@ BEGIN
                                   FROM document doc2
                                  WHERE doc2.document_id = doc.owner_id)
                )
-            )
+      -- 5. all documents that are not in document_context table
+            AND NOT EXISTS
+               (
+                    SELECT * FROM DOCUMENT_CONTENT doccon
+                        WHERE doccon.document_id = doc.document_id
+               )   
+            ) 
          AND ROWNUM <= commitcnt;
                
       EXIT WHEN SQL%NOTFOUND;
