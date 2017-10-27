@@ -41,7 +41,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"title\": \"Missing documentation on package-level handlers\",\n  \"description\": \"Someone needs to step up.  I'm not saying who...\",\n  \"severity\": 2,\n  \"commitId\": {{commit-id}}\n}"
+					"raw": "{\n  \"title\": \"Missing documentation on package-level handlers\",\n  \"description\": \"Someone needs to step up.  I'm not saying who...\",\n  \"severity\": 2,\n  \"commitId\": \"{{commit-id}}\"\n}"
 				},
 				"description": ""
 			},
