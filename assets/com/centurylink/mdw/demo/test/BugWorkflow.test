@@ -1,3 +1,5 @@
+package com.centurylink.mdw.demo.test
+
 // directly test Create Bug and A Bug's Life
 start process('com.centurylink.mdw.demo.bugs/Create Bug') {
     variables = [
@@ -15,9 +17,12 @@ def bugTask = action task('${bug.title}') {
 
 sleep 5
 
+id = bugTask.id
+commitId = '84a8b09'
+
 // submit a PUT request emulating commitId entry in custom page
 def resp = submit request('mdw-demo.postman/PUT:bugs/{id}') {
-    values = ['id': bugTask.id, 'commit-id': 'fa7ba6f']
+    values = ['id': id, 'commitId': commitId]
 }
 println("RESP: " + resp.body)
 assert resp.time < 1000 // less than a second
