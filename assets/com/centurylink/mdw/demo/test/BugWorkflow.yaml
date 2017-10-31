@@ -1,27 +1,63 @@
-process: # 10009
+process: # 10060
+  name: A Bug's Life
+  instance: 1
+  activity: # 1 "2017-10-27 14:59:59"
+    name: Create
+    status: Completed
+  activity: # 3 "2017-10-27 14:59:59"
+    name: |
+      Await
+      Resolution
+    status: Completed
+    result: Resolve
+  activity: # 4 "2017-10-27 15:00:10"
+    name: |
+      Retrieve
+      Commit
+    status: Completed
+  activity: # 2 "2017-10-27 15:00:10"
+    name: Close
+    status: Completed
+  variable: # 10161
+    name: bug
+    value: |
+      {
+        "description": "This is a sev 1 showstopper",
+        "id": 10029,
+        "severity": 1,
+        "title": "Don's car needs washing"
+      }
+  variable: # 10162
+    name: commit
+    value: |
+      {
+        "documentation_url": "https://developer.github.com/v3/repos/commits/#get-a-single-commit",
+        "message": "Not Found"
+      }
+process: # 10059
   name: Create Bug
   instance: 1
-  activity: # 1 "2017-10-27 11:03:30"
+  activity: # 1 "2017-10-27 14:59:59"
     name: Start
     status: Completed
-  activity: # 3 "2017-10-27 11:03:30"
+  activity: # 3 "2017-10-27 14:59:59"
     name: |
       Validate
       Request
     status: Completed
     result: accepted
-  activity: # 5 "2017-10-27 11:03:30"
+  activity: # 5 "2017-10-27 14:59:59"
     name: Save Bug
     status: Completed
-  activity: # 6 "2017-10-27 11:03:30"
+  activity: # 6 "2017-10-27 14:59:59"
     name: |
       Invoke Bug
       Workflow
     status: Completed
-  activity: # 2 "2017-10-27 11:03:30"
+  activity: # 2 "2017-10-27 14:59:59"
     name: Created
     status: Completed
-  variable: # 10021
+  variable: # 10157
     name: request
     value: |
       {
@@ -29,26 +65,133 @@ process: # 10009
         "severity": 1,
         "title": "Don's car needs washing"
       }
-  variable: # 10022
+  variable: # 10158
     name: requestHeaders
     value: |
       {
         "content-type": "application/json",
-        "mdw-request-id": "dxoakes-171027-110326738"
+        "mdw-request-id": "dxoakes-171027-145954902"
       }
-  variable: # 10023
+  variable: # 10159
     name: response
     value: |
       {
         "description": "This is a sev 1 showstopper",
-        "id": 10003,
+        "id": 10029,
         "severity": 1,
         "title": "Don's car needs washing"
       }
-  variable: # 10024
+  variable: # 10160
     name: responseHeaders
     value: |
       {
         "HttpStatusCode": "201",
-        "Location": "http://localhost:8080/mdw/demo/api/bugs/10003"
+        "Location": "http://localhost:8080/mdw/demo/api/bugs/10029"
+      }test: BugWorkflow
+request:
+  url: 'http://localhost:8080/mdw/services/demo/api/bugs/${id}'
+  method: PUT
+  headers:
+    Content-Type: application/json
+  body: |-
+    {
+      "title": "Missing documentation on package-level handlers",
+      "description": "Someone needs to step up.  I'm not saying who...",
+      "severity": 2,
+      "commitId": "${commit-id}"
+    }
+response:
+  status:
+    code: 200
+    message: OK
+  headers:
+    content-type: application/json
+    mdw-request-id: '12480'
+  body: |-
+    {
+      "status": {
+        "code": -1,
+        "message": "java.lang.NumberFormatException: For input string: \"${id}\""
       }
+    }
+test: BugWorkflow
+request:
+  url: 'http://localhost:8080/mdw/services/demo/api/bugs/${id}'
+  method: PUT
+  headers:
+    Content-Type: application/json
+  body: |-
+    {
+      "title": "Missing documentation on package-level handlers",
+      "description": "Someone needs to step up.  I'm not saying who...",
+      "severity": 2,
+      "commitId": "${commit-id}"
+    }
+response:
+  status:
+    code: 200
+    message: OK
+  headers:
+    content-type: application/json
+    mdw-request-id: '12539'
+  body: |-
+    {
+      "status": {
+        "code": -1,
+        "message": "java.lang.NumberFormatException: For input string: \"${id}\""
+      }
+    }
+test: BugWorkflow
+request:
+  url: 'http://localhost:8080/mdw/services/demo/api/bugs/${id}'
+  method: PUT
+  headers:
+    Content-Type: application/json
+  body: |-
+    {
+      "title": "Missing documentation on package-level handlers",
+      "description": "Someone needs to step up.  I'm not saying who...",
+      "severity": 2,
+      "commitId": "${commit-id}"
+    }
+response:
+  status:
+    code: 200
+    message: OK
+  headers:
+    content-type: application/json
+    mdw-request-id: '12598'
+  body: |-
+    {
+      "status": {
+        "code": -1,
+        "message": "java.lang.NumberFormatException: For input string: \"${id}\""
+      }
+    }
+test: BugWorkflow
+request:
+  url: 'http://localhost:8080/mdw/services/demo/api/bugs/${id}'
+  method: PUT
+  headers:
+    Content-Type: application/json
+  body: |-
+    {
+      "title": "Missing documentation on package-level handlers",
+      "description": "Someone needs to step up.  I'm not saying who...",
+      "severity": 2,
+      "commitId": "${commit-id}"
+    }
+response:
+  status:
+    code: 200
+    message: OK
+  headers:
+    content-type: application/json
+    mdw-request-id: '12647'
+  body: |-
+    {
+      "status": {
+        "code": -1,
+        "message": "java.lang.NumberFormatException: For input string: \"${id}\""
+      }
+    }
