@@ -1,63 +1,150 @@
-process: # 10060
+process: # 10084
   name: A Bug's Life
   instance: 1
-  activity: # 1 "2017-10-27 14:59:59"
+  activity: # 1 "2017-10-31 10:01:17"
     name: Create
     status: Completed
-  activity: # 3 "2017-10-27 14:59:59"
+  activity: # 3 "2017-10-31 10:01:17"
     name: |
       Await
       Resolution
     status: Completed
     result: Resolve
-  activity: # 4 "2017-10-27 15:00:10"
+  activity: # 4 "2017-10-31 10:01:38"
     name: |
       Retrieve
       Commit
     status: Completed
-  activity: # 2 "2017-10-27 15:00:10"
+  activity: # 2 "2017-10-31 10:01:38"
     name: Close
     status: Completed
-  variable: # 10161
+  variable: # 10225
     name: bug
     value: |
       {
-        "description": "This is a sev 1 showstopper",
-        "id": 10029,
-        "severity": 1,
-        "title": "Don's car needs washing"
+        "commitId": "${commitId}",
+        "description": "Someone needs to step up.  I'm not saying who...",
+        "severity": 2,
+        "title": "Missing documentation on package-level handlers"
       }
-  variable: # 10162
+  variable: # 10226
     name: commit
     value: |
       {
-        "documentation_url": "https://developer.github.com/v3/repos/commits/#get-a-single-commit",
-        "message": "Not Found"
+        "author": {
+          "gists_url": "https://api.github.com/users/donaldoakes/gists{/gist_id}",
+          "repos_url": "https://api.github.com/users/donaldoakes/repos",
+          "following_url": "https://api.github.com/users/donaldoakes/following{/other_user}",
+          "starred_url": "https://api.github.com/users/donaldoakes/starred{/owner}{/repo}",
+          "login": "donaldoakes",
+          "followers_url": "https://api.github.com/users/donaldoakes/followers",
+          "type": "User",
+          "url": "https://api.github.com/users/donaldoakes",
+          "subscriptions_url": "https://api.github.com/users/donaldoakes/subscriptions",
+          "received_events_url": "https://api.github.com/users/donaldoakes/received_events",
+          "avatar_url": "https://avatars1.githubusercontent.com/u/19718743?v=4",
+          "events_url": "https://api.github.com/users/donaldoakes/events{/privacy}",
+          "html_url": "https://github.com/donaldoakes",
+          "site_admin": false,
+          "id": 19718743,
+          "gravatar_id": "",
+          "organizations_url": "https://api.github.com/users/donaldoakes/orgs"
+        },
+        "comments_url": "https://api.github.com/repos/CenturyLinkCloud/mdw-demo/commits/f5db6e0532fbc579a78f36def742b248f0cddfa1/comments",
+        "commit": {
+          "comment_count": 0,
+          "committer": {
+            "date": "2017-10-31T17:43:37Z",
+            "name": "dxoakes",
+            "email": "donald.oakes@centurylink.com"
+          },
+          "author": {
+            "date": "2017-10-31T17:43:37Z",
+            "name": "dxoakes",
+            "email": "donald.oakes@centurylink.com"
+          },
+          "tree": {
+            "sha": "67da321c013a4c727cfebd5c27e0856a9f3c5d58",
+            "url": "https://api.github.com/repos/CenturyLinkCloud/mdw-demo/git/trees/67da321c013a4c727cfebd5c27e0856a9f3c5d58"
+          },
+          "message": "updated test",
+          "url": "https://api.github.com/repos/CenturyLinkCloud/mdw-demo/git/commits/f5db6e0532fbc579a78f36def742b248f0cddfa1",
+          "verification": {
+            "reason": "unsigned",
+            "signature": null,
+            "payload": null,
+            "verified": false
+          }
+        },
+        "committer": {
+          "gists_url": "https://api.github.com/users/donaldoakes/gists{/gist_id}",
+          "repos_url": "https://api.github.com/users/donaldoakes/repos",
+          "following_url": "https://api.github.com/users/donaldoakes/following{/other_user}",
+          "starred_url": "https://api.github.com/users/donaldoakes/starred{/owner}{/repo}",
+          "login": "donaldoakes",
+          "followers_url": "https://api.github.com/users/donaldoakes/followers",
+          "type": "User",
+          "url": "https://api.github.com/users/donaldoakes",
+          "subscriptions_url": "https://api.github.com/users/donaldoakes/subscriptions",
+          "received_events_url": "https://api.github.com/users/donaldoakes/received_events",
+          "avatar_url": "https://avatars1.githubusercontent.com/u/19718743?v=4",
+          "events_url": "https://api.github.com/users/donaldoakes/events{/privacy}",
+          "html_url": "https://github.com/donaldoakes",
+          "site_admin": false,
+          "id": 19718743,
+          "gravatar_id": "",
+          "organizations_url": "https://api.github.com/users/donaldoakes/orgs"
+        },
+        "files": [{
+          "patch": "${~.*}",
+          "filename": "assets/com/centurylink/mdw/demo/test/BugWorkflow.test",
+          "additions": 6,
+          "deletions": 1,
+          "changes": 7,
+          "sha": "08be9657d5f1af64e5a1043aa0d3c676427d400c",
+          "blob_url": "https://github.com/CenturyLinkCloud/mdw-demo/blob/f5db6e0532fbc579a78f36def742b248f0cddfa1/assets/com/centurylink/mdw/demo/test/BugWorkflow.test",
+          "raw_url": "https://github.com/CenturyLinkCloud/mdw-demo/raw/f5db6e0532fbc579a78f36def742b248f0cddfa1/assets/com/centurylink/mdw/demo/test/BugWorkflow.test",
+          "status": "modified",
+          "contents_url": "https://api.github.com/repos/CenturyLinkCloud/mdw-demo/contents/assets/com/centurylink/mdw/demo/test/BugWorkflow.test?ref=f5db6e0532fbc579a78f36def742b248f0cddfa1"
+        }],
+        "html_url": "https://github.com/CenturyLinkCloud/mdw-demo/commit/f5db6e0532fbc579a78f36def742b248f0cddfa1",
+        "parents": [{
+          "html_url": "https://github.com/CenturyLinkCloud/mdw-demo/commit/84a8b096e669b39d14e0dd44c21c4136ac122659",
+          "sha": "84a8b096e669b39d14e0dd44c21c4136ac122659",
+          "url": "https://api.github.com/repos/CenturyLinkCloud/mdw-demo/commits/84a8b096e669b39d14e0dd44c21c4136ac122659"
+        }],
+        "sha": "f5db6e0532fbc579a78f36def742b248f0cddfa1",
+        "stats": {
+          "total": 7,
+          "additions": 6,
+          "deletions": 1
+        },
+        "url": "https://api.github.com/repos/CenturyLinkCloud/mdw-demo/commits/f5db6e0532fbc579a78f36def742b248f0cddfa1"
       }
-process: # 10059
+process: # 10083
   name: Create Bug
   instance: 1
-  activity: # 1 "2017-10-27 14:59:59"
+  activity: # 1 "2017-10-31 10:01:08"
     name: Start
     status: Completed
-  activity: # 3 "2017-10-27 14:59:59"
+  activity: # 3 "2017-10-31 10:01:09"
     name: |
       Validate
       Request
     status: Completed
     result: accepted
-  activity: # 5 "2017-10-27 14:59:59"
+  activity: # 5 "2017-10-31 10:01:17"
     name: Save Bug
     status: Completed
-  activity: # 6 "2017-10-27 14:59:59"
+  activity: # 6 "2017-10-31 10:01:17"
     name: |
       Invoke Bug
       Workflow
     status: Completed
-  activity: # 2 "2017-10-27 14:59:59"
+  activity: # 2 "2017-10-31 10:01:17"
     name: Created
     status: Completed
-  variable: # 10157
+  variable: # 10221
     name: request
     value: |
       {
@@ -65,133 +152,24 @@ process: # 10059
         "severity": 1,
         "title": "Don's car needs washing"
       }
-  variable: # 10158
+  variable: # 10222
     name: requestHeaders
     value: |
-      {
-        "content-type": "application/json",
-        "mdw-request-id": "dxoakes-171027-145954902"
-      }
-  variable: # 10159
+      {"content-type": "application/json", 
+        "mdw-request-id": "${masterRequestId}"}
+  variable: # 10223
     name: response
     value: |
       {
-        "description": "This is a sev 1 showstopper",
-        "id": 10029,
-        "severity": 1,
-        "title": "Don's car needs washing"
+        "commitId": "${commitId}",
+        "description": "Someone needs to step up.  I'm not saying who...",
+        "severity": 2,
+        "title": "Missing documentation on package-level handlers"
       }
-  variable: # 10160
+  variable: # 10224
     name: responseHeaders
     value: |
       {
         "HttpStatusCode": "201",
-        "Location": "http://localhost:8080/mdw/demo/api/bugs/10029"
-      }test: BugWorkflow
-request:
-  url: 'http://localhost:8080/mdw/services/demo/api/bugs/${id}'
-  method: PUT
-  headers:
-    Content-Type: application/json
-  body: |-
-    {
-      "title": "Missing documentation on package-level handlers",
-      "description": "Someone needs to step up.  I'm not saying who...",
-      "severity": 2,
-      "commitId": "${commit-id}"
-    }
-response:
-  status:
-    code: 200
-    message: OK
-  headers:
-    content-type: application/json
-    mdw-request-id: '12480'
-  body: |-
-    {
-      "status": {
-        "code": -1,
-        "message": "java.lang.NumberFormatException: For input string: \"${id}\""
+        "Location": "http://localhost:8080/mdw/demo/api/bugs/${id}"
       }
-    }
-test: BugWorkflow
-request:
-  url: 'http://localhost:8080/mdw/services/demo/api/bugs/${id}'
-  method: PUT
-  headers:
-    Content-Type: application/json
-  body: |-
-    {
-      "title": "Missing documentation on package-level handlers",
-      "description": "Someone needs to step up.  I'm not saying who...",
-      "severity": 2,
-      "commitId": "${commit-id}"
-    }
-response:
-  status:
-    code: 200
-    message: OK
-  headers:
-    content-type: application/json
-    mdw-request-id: '12539'
-  body: |-
-    {
-      "status": {
-        "code": -1,
-        "message": "java.lang.NumberFormatException: For input string: \"${id}\""
-      }
-    }
-test: BugWorkflow
-request:
-  url: 'http://localhost:8080/mdw/services/demo/api/bugs/${id}'
-  method: PUT
-  headers:
-    Content-Type: application/json
-  body: |-
-    {
-      "title": "Missing documentation on package-level handlers",
-      "description": "Someone needs to step up.  I'm not saying who...",
-      "severity": 2,
-      "commitId": "${commit-id}"
-    }
-response:
-  status:
-    code: 200
-    message: OK
-  headers:
-    content-type: application/json
-    mdw-request-id: '12598'
-  body: |-
-    {
-      "status": {
-        "code": -1,
-        "message": "java.lang.NumberFormatException: For input string: \"${id}\""
-      }
-    }
-test: BugWorkflow
-request:
-  url: 'http://localhost:8080/mdw/services/demo/api/bugs/${id}'
-  method: PUT
-  headers:
-    Content-Type: application/json
-  body: |-
-    {
-      "title": "Missing documentation on package-level handlers",
-      "description": "Someone needs to step up.  I'm not saying who...",
-      "severity": 2,
-      "commitId": "${commit-id}"
-    }
-response:
-  status:
-    code: 200
-    message: OK
-  headers:
-    content-type: application/json
-    mdw-request-id: '12647'
-  body: |-
-    {
-      "status": {
-        "code": -1,
-        "message": "java.lang.NumberFormatException: For input string: \"${id}\""
-      }
-    }
