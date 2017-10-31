@@ -84,7 +84,7 @@
   ],
   "attributes": {
     "ArrowStyle": "ArrowEnd",
-    "Documentation": "## Create Bug\r\nService process exposed through demo.api/Bugs.java via the post() method.\r\n\r\nThe [MDW Cookbook](http://centurylinkcloud.github.io/mdw/docs/guides/mdw-cookbook/) \r\nprovides a detailed walk-through describing how this process was built.\r\n\r\nAutomated tests:\r\n  - com.centurylink.mdw.demo.test/BugWorkflow.test",
+    "Documentation": "## Create Bug\r\nService process exposed through demo.api/Bugs.java via the post() method.\r\n\r\nThe [MDW Cookbook](http://centurylinkcloud.github.io/mdw/docs/guides/mdw-cookbook/) \r\nprovides a detailed walk-through describing how this process was built.\r\n\r\nAutomated tests:\r\n  - com.centurylink.mdw.demo.test/BugWorkflow.test\r\n  \r\nCustom UI:\r\n  - demo/Bug.jsx",
     "NodeStyle": "BoxIcon",
     "PROCESS_START_PAGE": "demo/Bug.jsx",
     "PROCESS_START_PAGE_assetVersion": "[0.1,1)",
