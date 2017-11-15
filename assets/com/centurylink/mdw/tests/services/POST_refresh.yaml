@@ -6,7 +6,11 @@ request:
     Content-Type: application/json
   body: |-
     {
-      "distributed": true
+      "distributed": true,
+      "excludeFormats": [
+        "JAVA",
+        "PROPERTIES"
+      ]
     }
 response:
   status:

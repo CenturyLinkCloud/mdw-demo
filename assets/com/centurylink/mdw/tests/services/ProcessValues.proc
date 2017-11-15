@@ -65,11 +65,13 @@
   "variables": {
     "dateVar": {
       "category": "INPUT",
+      "display": "Required",
       "label": "Date Var",
       "type": "java.util.Date"
     },
     "docVar": {
       "category": "INPUT",
+      "display": "ReadOnly",
       "type": "org.w3c.dom.Document"
     },
     "jaxbVar": {
@@ -78,6 +80,7 @@
     },
     "jsonUnassigned": {
       "category": "LOCAL",
+      "display": "ReadOnly",
       "type": "org.json.JSONObject"
     },
     "objectVar": {
@@ -86,6 +89,7 @@
     },
     "stringVar": {
       "category": "INPUT",
+      "display": "Optional",
       "label": "String Var",
       "type": "java.lang.String"
     },
