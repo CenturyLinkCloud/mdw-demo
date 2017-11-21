@@ -30,7 +30,7 @@ eclipse {
     }
     wtp {
         facet {
-            facet type: "fixed", name: "jst.web"
+            facet name: "jst.web", version: "3.0"
             facet name: "mdw.workflow", version: "5.1"
         }
     }
