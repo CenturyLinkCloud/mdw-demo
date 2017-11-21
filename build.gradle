@@ -1,14 +1,15 @@
-apply plugin: "eclipse-wtp"
 apply plugin: 'java'
+apply plugin: 'eclipse-wtp'
 
-configurations.all {
-	resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-	resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds'
-}
+group = 'com.centurylink.mdwdemo'
+version = '1.0.08'
+
+description = "mdw-demo"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 eclipse {
-    project {
-        natures += "org.eclipse.wst.common.project.facet.core.nature"
-    }
     classpath {
         defaultOutputDir = file("build/classes")
         
@@ -29,19 +30,11 @@ eclipse {
     }
     wtp {
         facet {
-            facet type: "fixed", name: "jst.web", version: "3.0"
+            facet type: "fixed", name: "jst.web"
             facet name: "mdw.workflow", version: "5.1"
         }
     }
 }
-
-group = 'com.centurylink.mdwdemo'
-version = '1.0.06'
-
-description = "mdw-demo"
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 sourceSets {
     main {
@@ -54,11 +47,11 @@ sourceSets {
 
 repositories {
     mavenCentral()
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }  // snapshots
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
 
 dependencies {
-    compile group: 'com.centurylink.mdw', name: 'mdw-common', version: mdwVersion , changing: true
+    compile group: 'com.centurylink.mdw', name: 'mdw-common', version: mdwVersion
     compile group: 'com.centurylink.mdw', name: 'mdw-services', version: mdwVersion
     compile group: 'com.centurylink.mdw', name: 'mdw-workflow', version: mdwVersion
     compile group: "org.springframework", name: "spring-beans", version: springVersion
