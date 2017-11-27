@@ -1,2 +1,2 @@
-New issue reported: *${request.title}*
-_severity: ${request.severity}_
+*<${taskInstanceUrl}|${request.title} \#${taskInstanceId}>*
+${request.description}

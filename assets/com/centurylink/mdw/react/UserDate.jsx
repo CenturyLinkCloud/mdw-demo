@@ -145,7 +145,7 @@ class UserDate extends Component {
     
     return (
       <span>
-        {(date || !this.props.notLabel) &&
+        {(date || !this.props.notLabel) && this.props.label &&
           <label title={title}>
             {this.props.label}:
           </label>
