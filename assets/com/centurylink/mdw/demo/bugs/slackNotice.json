@@ -1,5 +1,5 @@
  {
-  "text": "*<${taskInstanceUrl}|${request.title} \#${taskInstanceId}>*\n${request.description}",
+  "text": "*<${taskInstanceUrl}|${request.title} \#${taskInstanceId}>*\\n${request.description}",
   "attachments": [
     {
       "fallback": "Act on this issue",

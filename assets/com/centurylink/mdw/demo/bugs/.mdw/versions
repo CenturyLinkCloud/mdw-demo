@@ -10,5 +10,4 @@ ResolveBugCustom.task=3
 bug.png=1
 bugsContext.spring=1
 slackNotice.json=1
-slackNotice.md=2
 slackNoticeTemplate.md=1
