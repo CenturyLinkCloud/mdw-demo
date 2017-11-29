@@ -2,9 +2,9 @@
   "text": "*<${taskInstanceUrl}|${request.title} \#${taskInstanceId}>*\\n${request.description}",
   "attachments": [
     {
-      "fallback": "Act on this issue",
-      "title": "Act on this issue",
-      "callback_id": "task-${taskInstanceId}-action",
+      "fallback": "Act on this issue:",
+      "title": "Act on this issue:",
+      "callback_id": "task-action_${taskInstanceId}",
       "color": "#3AA3E3",
       "attachment_type": "default",
       "actions": [

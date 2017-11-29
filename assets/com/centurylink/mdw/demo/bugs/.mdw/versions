@@ -9,5 +9,5 @@ ResolveBugAutoform.task=1 Renamed from e:workspacesdonsmdw-demoassetscomcenturyl
 ResolveBugCustom.task=4
 bug.png=1
 bugsContext.spring=1
-slackNotice.json=1
+slackNotice.json=2
 slackNoticeTemplate.md=1
