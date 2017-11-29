@@ -177,4 +177,4 @@ UserDate.contextTypes = {
   hubRoot: PropTypes.string
 };
 
-export default UserDate;  
+export default UserDate;

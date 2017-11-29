@@ -28,7 +28,8 @@ class Bug extends Component {
     else {
       fetch(new Request('/mdw/services/demo/api/bugs/' + bugId, {
         method: 'GET',
-        headers: {Accept: 'application/json'}
+        headers: {Accept: 'application/json'},
+        credentials: 'same-origin'
       }))
       .then(response => {
         return response.json();
@@ -73,7 +74,8 @@ class Bug extends Component {
       fetch(new Request(url, {
         method: method,
         headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(bug)
+        body: JSON.stringify(bug),
+        credentials: 'same-origin'
       }))
       .then(response => {
         ok = response.ok;
@@ -102,7 +104,8 @@ class Bug extends Component {
         body: JSON.stringify({
           action: 'Resolve',
           user: $mdwUi.authUser.cuid, 
-          taskInstanceId: this.state.bug.id})
+          taskInstanceId: this.state.bug.id}),
+        credentials: 'same-origin'
       }))
       .then(response => {
         ok = response.ok;
