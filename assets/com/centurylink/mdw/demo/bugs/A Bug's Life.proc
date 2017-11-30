@@ -13,7 +13,7 @@
       }]
     },
     {
-      "attributes": {"WORK_DISPLAY_INFO": "x=757,y=242,w=60,h=40"},
+      "attributes": {"WORK_DISPLAY_INFO": "x=754,y=250,w=60,h=40"},
       "id": "A2",
       "implementor": "com.centurylink.mdw.workflow.activity.process.ProcessFinishActivity",
       "name": "Close"
@@ -33,7 +33,7 @@
       "name": "Await\r\nResolution",
       "transitions": [
         {
-          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=328,ly=133,type=Elbow,xs=288&414,ys=157&157"},
+          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=328,ly=133,type=Elbow,xs=288&415,ys=157&157"},
           "event": "FINISH",
           "id": "T2",
           "resultCode": "Resolve",
@@ -53,13 +53,13 @@
         "EndpointUri": "https://api.github.com/repos/CenturyLinkCloud/mdw-demo/commits/${bug.commitId}",
         "HttpMethod": "GET",
         "RESPONSE_VARIABLE": "commit",
-        "WORK_DISPLAY_INFO": "x=535,y=224,w=105,h=71"
+        "WORK_DISPLAY_INFO": "x=418,y=251,w=105,h=71"
       },
       "id": "A4",
       "implementor": "com.centurylink.mdw.microservice.MicroserviceRestAdapter",
       "name": "Retrieve\r\nCommit",
       "transitions": [{
-        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=699,ly=261,type=Elbow,xs=644&753,ys=262&262"},
+        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=642,ly=265,type=Elbow,xs=527&750,ys=270&270"},
         "event": "FINISH",
         "id": "T3",
         "to": "A2"
@@ -82,19 +82,29 @@
     },
     {
       "attributes": {
-        "Expression": "commit",
+        "Expression": "bug.commitId == null ? 'No' : 'Yes'",
         "SCRIPT": "Groovy",
-        "WORK_DISPLAY_INFO": "x=418,y=119,w=92,h=77"
+        "WORK_DISPLAY_INFO": "x=419,y=119,w=92,h=77"
       },
       "id": "A6",
       "implementor": "com.centurylink.mdw.workflow.activity.script.ScriptEvaluator",
       "name": "GitHub\r\nCommit?",
-      "transitions": [{
-        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=547,ly=193,type=Elbow,xs=514&587,ys=157&220"},
-        "event": "FINISH",
-        "id": "T6",
-        "to": "A4"
-      }]
+      "transitions": [
+        {
+          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=470,ly=214,type=Elbow,xs=465&465,ys=200&247"},
+          "event": "FINISH",
+          "id": "T6",
+          "resultCode": "Yes",
+          "to": "A4"
+        },
+        {
+          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=538,ly=136,type=Elbow,xs=515&784&784,ys=157&157&250"},
+          "event": "FINISH",
+          "id": "T7",
+          "resultCode": "No",
+          "to": "A2"
+        }
+      ]
     }
   ],
   "attributes": {

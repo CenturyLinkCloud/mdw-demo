@@ -4,21 +4,21 @@
     {
       "fallback": "Act on this issue:",
       "title": "Act on this issue:",
-      "callback_id": "task-action_${taskInstanceId}",
+      "callback_id": "task_${taskInstanceId}",
       "color": "#3AA3E3",
       "attachment_type": "default",
       "actions": [
         {
-          "name": "resolve",
+          "name": "Resolve",
           "text": "Resolve",
           "type": "button",
-          "value": "resolve"
+          "value": "Resolve"
         },
         {
-          "name": "defer",
+          "name": "Defer",
           "text": "Defer",
           "type": "button",
-          "value": "defer"
+          "value": "Defer"
         }
       ]
     }
