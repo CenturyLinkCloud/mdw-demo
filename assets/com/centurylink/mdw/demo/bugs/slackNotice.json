@@ -9,6 +9,12 @@
       "attachment_type": "default",
       "actions": [
         {
+          "name": "Assign",
+          "text": "Assign",
+          "type": "select",
+          "data_source": "external"
+        },      
+        {
           "name": "Resolve",
           "text": "Resolve",
           "type": "button",
