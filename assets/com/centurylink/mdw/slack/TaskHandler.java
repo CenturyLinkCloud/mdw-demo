@@ -15,11 +15,18 @@
  */
 package com.centurylink.mdw.slack;
 
+import java.time.Instant;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.centurylink.mdw.common.service.ServiceException;
+import com.centurylink.mdw.constant.OwnerType;
 import com.centurylink.mdw.dataaccess.DataAccessException;
+import com.centurylink.mdw.model.Note;
 import com.centurylink.mdw.model.task.TaskAction;
 import com.centurylink.mdw.model.user.User;
 import com.centurylink.mdw.model.user.UserList;
@@ -27,9 +34,13 @@ import com.centurylink.mdw.service.data.task.UserGroupCache;
 import com.centurylink.mdw.services.ServiceLocator;
 import com.centurylink.mdw.services.TaskServices;
 import com.centurylink.mdw.services.UserServices;
+import com.centurylink.mdw.util.log.LoggerUtil;
+import com.centurylink.mdw.util.log.StandardLogger;
 
 public class TaskHandler implements Handler {
 
+    private static StandardLogger logger = LoggerUtil.getStandardLogger();
+    
     @Override
     public JSONObject handleRequest(String userId, String id, SlackRequest request)
             throws ServiceException {
@@ -62,15 +73,48 @@ public class TaskHandler implements Handler {
             taskServices.performAction(instanceId, action, userId, assigneeId, comment, null, true);
 
             JSONObject json = new JSONObject();
-            json.put("response_type", "ephemeral");
+            json.put("response_type", "in_channel");
             json.put("replace_original", false);
-            json.put("text", "Okay, action: '" + action + "' performed on task: " + instanceId + ".");
+            if (request.getMessageTs() != null) {
+                json.put("thread_ts", request.getMessageTs());
+                json.put("reply_broadcast", true);
+            }
+            String messageText;
+            if (assigneeId != null)
+                messageText = "Assigned to " + assigneeId + " by " + request.getUser() + ".";
+            else
+                messageText = "Action: " + action + " performed by " + request.getUser() + ".";
+            json.put("text", messageText);
+            
+            new Thread(new Runnable() {
+                public void run() {
+                    Map<String,String> indexes = new HashMap<>();
+                    indexes.put("slack:response_url", request.getResponseUrl());
+                    if (request.getMessageTs() != null)
+                        indexes.put("slack:message_ts", request.getMessageTs());
+                    try {
+                        taskServices.updateIndexes(instanceId, indexes);
+                        Note comment = new Note();
+                        comment.setCreated(Date.from(Instant.now()));
+                        comment.setCreateUser("mdw");
+                        comment.setContent(messageText);
+                        comment.setOwnerType(OwnerType.TASK_INSTANCE);
+                        comment.setOwnerId(instanceId);
+                        comment.setName("slack_message");
+                        ServiceLocator.getCollaborationServices().createNote(comment);
+                    }
+                    catch(Exception ex) {
+                        logger.severeException(ex.getMessage(), ex);
+                    }
+                }
+            }).start();
+
             return json;
         }
         else {
             // options request
             String name = request.getName();
-            if ("task_users".equals(name)) {
+            if ("Assign".equals(name)) {
                 User user = UserGroupCache.getUser(userId);
                 UserServices userServices = ServiceLocator.getUserServices();
                 try {
