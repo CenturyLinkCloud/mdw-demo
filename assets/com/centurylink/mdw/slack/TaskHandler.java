@@ -37,7 +37,7 @@ import com.centurylink.mdw.services.UserServices;
 import com.centurylink.mdw.util.log.LoggerUtil;
 import com.centurylink.mdw.util.log.StandardLogger;
 
-public class TaskHandler implements Handler {
+public class TaskHandler implements ActionHandler, EventHandler {
 
     private static StandardLogger logger = LoggerUtil.getStandardLogger();
     
@@ -136,5 +136,11 @@ public class TaskHandler implements Handler {
             }
             throw new ServiceException(ServiceException.BAD_REQUEST, "Bad options request: " + name);
         }
+    }
+
+    @Override
+    public JSONObject handleEvent(SlackEvent event) throws ServiceException {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
