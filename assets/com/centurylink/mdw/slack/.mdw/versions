@@ -1,12 +1,13 @@
 ActionHandler.java=1
 EventHandler.java=1
-MessageMonitor.java=1
+MessageMonitor.java=2
 SlackActivity.java=1 Renamed from e:workspacesdonsmdw-demoassetscomcenturylinkmdwslackSlackAdapter.java
 SlackAdapter.java=1
 SlackEvent.java=2
 SlackRequest.java=3
-SlackService.java=2
+SlackService.java=3
 SlackTaskNotifier.java=1
-TaskHandler.java=6
+TaskHandler.java=7
 TaskNotifier.java=2
 slack.png=1
+slackNotice.json=1

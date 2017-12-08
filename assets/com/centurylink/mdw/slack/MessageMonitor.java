@@ -51,8 +51,8 @@ public class MessageMonitor implements ServiceMonitor {
                 if (slackResponseUrl != null) {
                     JSONObject json = new JSONObject();
                     json.put("response_type", "in_channel");
-                    if (indexes.containsKey("slack:reply_ts")) {
-                        json.put("thread_ts", indexes.get("slack:reply_ts"));
+                    if (indexes.containsKey("slack:message_ts")) {
+                        json.put("thread_ts", indexes.get("slack:message_ts"));
                         json.put("reply_broadcast", true);
                     }
                     json.put("replace_original", "put".equalsIgnoreCase(headers.get("HttpMethod")));
