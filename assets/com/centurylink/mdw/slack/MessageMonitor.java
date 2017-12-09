@@ -37,7 +37,7 @@ import com.centurylink.mdw.util.HttpHelper;
 public class MessageMonitor implements ServiceMonitor {
 
     private static Pattern PATH_PATTERN = Pattern.compile("Tasks/([0-9]+)/comments(/)?([0-9]+)?.*");
-    
+
     @Override
     public Object onRequest(Object request, Map<String,String> headers) throws ServiceException {
         String path = headers.get("RequestPath");
@@ -55,6 +55,7 @@ public class MessageMonitor implements ServiceMonitor {
                         json.put("thread_ts", indexes.get("slack:message_ts"));
                         json.put("reply_broadcast", true);
                     }
+                    // TODO: this updates the very original message, instead set thread_ts to reply ts (probably)
                     json.put("replace_original", "put".equalsIgnoreCase(headers.get("HttpMethod")));
                     String altText = null;
                     if (note.getContent().length() > 200)
@@ -79,7 +80,7 @@ public class MessageMonitor implements ServiceMonitor {
     public String getWebhookUrl() {
         return "https://hooks.slack.com/services/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";
     }
-    
+
     @Override
     public Object onHandle(Object request, Map<String,String> headers) throws ServiceException {
         return null;

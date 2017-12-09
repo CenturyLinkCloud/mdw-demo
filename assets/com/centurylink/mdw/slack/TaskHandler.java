@@ -45,7 +45,7 @@ import com.centurylink.mdw.util.log.StandardLogger;
 public class TaskHandler implements ActionHandler, EventHandler {
 
     private static StandardLogger logger = LoggerUtil.getStandardLogger();
-    
+
     @Override
     public JSONObject handleRequest(String userId, String id, SlackRequest request)
             throws ServiceException {
@@ -56,13 +56,13 @@ public class TaskHandler implements ActionHandler, EventHandler {
         catch (NumberFormatException ex) {
             throw new ServiceException(ServiceException.BAD_REQUEST, "Invalid id: " + id);
         }
-        
+
         if (request.getActions() != null) {
             // request is direct action
             String action = request.getActions().get(0); // TODO multiples?
             if (action == null)
                 throw new ServiceException(ServiceException.BAD_REQUEST, "Missing action");
-            
+
             String assigneeId = null;
             if (action.equalsIgnoreCase(TaskAction.ASSIGN)) {
                 assigneeId = request.getValue();
@@ -70,14 +70,14 @@ public class TaskHandler implements ActionHandler, EventHandler {
             else if (action.equalsIgnoreCase(TaskAction.CLAIM)) {
                 assigneeId = userId;
             }
-            
+
             // TODO: TaskActionValidator?
             TaskServices taskServices = ServiceLocator.getTaskServices();
-            
+
             // TODO: Retrieve template based on returned task instance.
-            // If template is configured to send slack notices for this action, do not send the default below. 
+            // If template is configured to send slack notices for this action, do not send the default below.
             taskServices.performAction(instanceId, action, userId, assigneeId, null, null, true);
-            
+
             JSONObject json = new JSONObject();
             json.put("response_type", "in_channel");
             json.put("replace_original", false);
@@ -91,7 +91,7 @@ public class TaskHandler implements ActionHandler, EventHandler {
             else
                 messageText = "Action: *" + action + "* performed by " + request.getUser() + ".";
             json.put("text", messageText);
-            
+
             new Thread(() -> {
                 Map<String,String> indexes = new HashMap<>();
                 indexes.put("slack:response_url", request.getResponseUrl());
