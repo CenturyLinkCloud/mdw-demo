@@ -56,7 +56,10 @@ public class MessageMonitor implements ServiceMonitor {
                         json.put("reply_broadcast", true);
                     }
                     json.put("replace_original", "put".equalsIgnoreCase(headers.get("HttpMethod")));
-                    json.put("text", note.getContent());
+                    String altText = null;
+                    if (note.getContent().length() > 200)
+                        altText = note.getContent().substring(0, 197) + "...";
+                    json.put("text", altText == null ? note.getContent() : altText);
                     try {
                         HttpHelper helper = new HttpHelper(new URL(slackResponseUrl));
                         String response = helper.post(json.toString());
