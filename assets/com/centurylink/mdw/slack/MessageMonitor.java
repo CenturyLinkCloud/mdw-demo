@@ -76,11 +76,6 @@ public class MessageMonitor implements ServiceMonitor {
         return null;
     }
 
-    // TODO
-    public String getWebhookUrl() {
-        return "https://hooks.slack.com/services/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";
-    }
-
     @Override
     public Object onHandle(Object request, Map<String,String> headers) throws ServiceException {
         return null;

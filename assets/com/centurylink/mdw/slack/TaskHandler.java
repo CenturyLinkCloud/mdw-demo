@@ -31,10 +31,8 @@ import com.centurylink.mdw.dataaccess.DataAccessException;
 import com.centurylink.mdw.model.Note;
 import com.centurylink.mdw.model.task.TaskAction;
 import com.centurylink.mdw.model.task.TaskInstance;
-import com.centurylink.mdw.model.task.TaskTemplate;
 import com.centurylink.mdw.model.user.User;
 import com.centurylink.mdw.model.user.UserList;
-import com.centurylink.mdw.service.data.task.TaskTemplateCache;
 import com.centurylink.mdw.service.data.task.UserGroupCache;
 import com.centurylink.mdw.services.ServiceLocator;
 import com.centurylink.mdw.services.TaskServices;
@@ -95,8 +93,10 @@ public class TaskHandler implements ActionHandler, EventHandler {
             new Thread(() -> {
                 Map<String,String> indexes = new HashMap<>();
                 indexes.put("slack:response_url", request.getResponseUrl());
-                if (request.getMessageTs() != null)
+                if (request.getMessageTs() != null) {
+                    logger.debug("Saving slack:message_ts=" + request.getMessageTs() + " for task " + instanceId);
                     indexes.put("slack:message_ts", request.getMessageTs());
+                }
                 try {
                     taskServices.updateIndexes(instanceId, indexes);
                     Note comment = new Note();
