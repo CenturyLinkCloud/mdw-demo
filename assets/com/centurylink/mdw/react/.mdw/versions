@@ -1,4 +1,4 @@
-Comment.jsx=5
+Comment.jsx=6
 Inspector.jsx=1
 Run.jsx=8
 Toolbox.jsx=1
@@ -6,8 +6,7 @@ UiRouteCache.java=1
 UserDate.jsx=4
 Value.jsx=6
 Workflow.jsx=3
-emoj-mart.css=1
-emoji-mart.css=1 Renamed from e:\workspaces\dons\mdw-demo\assets\com\centurylink\mdw\react\emoj-mart.css
+emoji-mart.css=1
 implementors.js=2
 process.js=4
 processes.js=1
