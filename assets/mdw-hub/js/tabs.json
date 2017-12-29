@@ -2,6 +2,7 @@
   {
     "id": "workflowTab",
     "label": "Workflow",
+    "icon": "workflow.png",
     "url": "#/workflow/processes",
     "routes": ["/workflow", "/solutions", "/workflow/processes", "/workflow/definitions"],
     "navs": [ 
@@ -47,6 +48,7 @@
   {
     "id": "dashboardTab",
     "label": "Dashboard",
+    "icon": "dashboard.png",
     "url": "#/dashboard/processes",
     "routes": ["/dashboard/processes", "dashboard/requests", "dashboard/tasks", "/dashboard/activities"],
     "navs": [
@@ -73,12 +75,22 @@
             "href": "#/dashboard/activities"
           }
         ]
+      },
+      {
+        "links": [
+          {
+            "label": "Held Orders",
+            "path": "demo/heldOrdersChart",
+            "href": "#/heldOrders"
+          }
+        ]
       }
     ]
   },
   {
     "id": "serviceTab",
     "label": "Services",
+    "icon": "services.png",
     "url": "#/serviceApi",
     "routes": ["/serviceApi", "/serviceRequests", "/httpHelper"],
     "navs": [ 
@@ -109,7 +121,8 @@
   },
   {
     "id": "tasksTab",
-    "label": "Tasks",     
+    "label": "Tasks",
+    "icon": "tasks.png",
     "url": "#/tasks",
     "routes": ["/tasks"],
     "navs": [
@@ -119,6 +132,11 @@
             "label": "Tasks",
             "path": "tasks/tasks",
             "href": "#/tasks"
+          },
+          {
+            "label": "Issues",
+            "path": "demo/issues.html",
+            "href": "#/issues"
           },
           {
             "label": "Fallout",
@@ -136,7 +154,8 @@
   },
   {
     "id": "issuesTab",
-    "label": "Issues",     
+    "label": "Issues",
+    "icon": "tasks.png",
     "url": "#/issues",
     "routes": ["/issues"],
     "navs": [
@@ -169,6 +188,7 @@
   {
     "id": "adminTab",
     "label": "Admin",
+    "icon": "admin.png",
     "url": "#/users",
     "routes": ["/users", "/groups", "/roles", "/assets", "/packages", "/asset", "/tests", "/history"],
     "condition": "user.hasRole('User Admin') || user.hasRole('Process Execution')",
@@ -214,6 +234,7 @@
   {
     "id": "systemTab",
     "label": "System",
+    "icon": "system.png",
     "url": "#/system/sysInfo",
     "routes": ["/system"],
     "condition": "user.hasRole('Site Admin')",
