@@ -1,0 +1,32 @@
+ {
+  "text": "*<${taskInstanceUrl}|${request.title} \#${taskInstanceId}>*\\n${request.description}",
+  "attachments": [
+    {
+      "fallback": "Act on this issue:",
+      "title": "Act on this issue:",
+      "callback_id": "task_${taskInstanceId}",
+      "color": "#3AA3E3",
+      "attachment_type": "default",
+      "actions": [
+        {
+          "name": "Assign",
+          "text": "Assign",
+          "type": "select",
+          "data_source": "external"
+        },      
+        {
+          "name": "Resolve",
+          "text": "Resolve",
+          "type": "button",
+          "value": "Resolve"
+        },
+        {
+          "name": "Defer",
+          "text": "Defer",
+          "type": "button",
+          "value": "Defer"
+        }
+      ]
+    }
+  ]
+}
