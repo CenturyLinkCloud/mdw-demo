@@ -17,7 +17,6 @@ package com.centurylink.mdw.slack;
 
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,7 +56,6 @@ public class MessageMonitor implements ServiceMonitor {
                     json.put("text", text);
                     json.put("channel", "C85DLE1U7"); // TODO
                     json.put("as_user", false);
-                    json.put("mdwAppToken", System.getenv("MDW_APP_TOKEN"));
                     try {
                         HttpHelper helper = new HttpHelper(new URL(EnvironmentVariables.MDW_CLOUD_ROUTER_URL + "/slack"));
                         Map<String,String> hdrs = new HashMap<>();
