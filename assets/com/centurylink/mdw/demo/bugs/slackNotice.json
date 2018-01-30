@@ -4,7 +4,7 @@
     {
       "fallback": "Act on this issue:",
       "title": "Act on this issue:",
-      "callback_id": "${taskInstanceUrl}",
+      "callback_id": "task_${taskInstanceUrl}",
       "color": "#3AA3E3",
       "attachment_type": "default",
       "actions": [

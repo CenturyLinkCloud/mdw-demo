@@ -283,7 +283,8 @@
           {
             "label": "FilePanel",
             "path": "system/filepanel",
-            "href": "#/system/filepanel"
+            "href": "{{filepanelUrl}}",
+            "target": "_blank"
           }
         ]
       }
