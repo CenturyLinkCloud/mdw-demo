@@ -8,7 +8,7 @@
   <version>1.0.08</version>
   <name>mdw-demo</name>
   <properties>
-    <mdw.version>6.0.09-SNAPSHOT</mdw.version>
+    <mdw.version>6.0.13-SNAPSHOT</mdw.version>
     <spring.version>4.3.9.RELEASE</spring.version>
     <asset.loc>assets</asset.loc>
   </properties>
