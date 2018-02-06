@@ -6,50 +6,95 @@ applications:
   timeout: 180
 
 env:
-  JAVA_OPTS: -Dmdw.runtime.env=appFogDev -Dmdw.property.manager=com.centurylink.mdw.config.PaaSPropertyManager 
+  JAVA_OPTS: -Dmdw.runtime.env=appFogDev -Dmdw.property.manager=com.centurylink.mdw.config.YamlPropertyManager
   
   JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: "[enabled: false]"
   
-  MDW_VERSION: "6.0.07-SNAPSHOT"
-  MDW_OAUTH_TOKEN_LOCATION: "http://clc-login.useast.appfog.ctl.io/oauth/token"  
+  MDW_VERSION: "6.0.13-SNAPSHOT"
   MDW_ASSET_LOCATION: "assets"
   
-  mdw_properties: '{
-    "mdw.container.datasource_provider": "Tomcat",
-    "mdw.container.jms_provider": "ActiveMQ",
-    "mdw.activemq.connector.url": "tcp://localhost:62626",
-    "mdw.activemq.connection.factory": "mdw-activemq",
-    "mdw.activemq.local.connector.url": "vm://mdw-activemq",
-    "mdw.container.threadpool_provider": "MDW",
-    "mdw.container.messenger": "jms",
+  mdw_settings: |
+    application:
+      name: mdw-demo
     
-    "mdw.database.driver": "org.mariadb.jdbc.Driver",
-    "mdw.database.url": "jdbc:mariadb://localhost:3308/mdw",
-    "mdw.database.username": "mdw",
-    "mdw.database.password": "mdw",
-    "mdw.database.poolsize": "10",
-    "mdw.database.poolMaxIdle": "5",
-    "mdw.database.validationQuery": "select 1",
+    servers:
+      mdw-demo.useast.appfog.ctl.io:
+        ports:
+        - 80
     
-    "mdw.server.list": "mdw-demo.useast.appfog.ctl.io:80",
-    
-    "mdw.logging.level": "DEBUG",
-  
-    "mdw.temp.dir": "../mdw/.temp",
-    
-    "mdw.git.local.path": ".",
-    "mdw.git.remote.url": "https://github.com/CenturyLinkCloud/mdw-demo.git",
-    "mdw.git.branch": "master",
-    "mdw.git.user": "anonymous",
-  
-    "mdw.hub.url": "https://mdw-demo.useast.appfog.ctl.io/mdw",
-    "mdw.services.url": "http://mdw-demo.useast.appfog.ctl.io:80/mdw",
+    container:
+      datasource.provider: Tomcat
+      messenger: jms
+      jms.provider: ActiveMQ
+      threadpool.provider: MDW
       
-    "mdw.application.name": "mdw",
+    database:
+      driver: org.mariadb.jdbc.Driver
+      url: jdbc:mariadb://localhost:3308/mdw
+      username: mdw
+      password: mdw
+      poolsize: 5
+      poolMaxIdle: 3
+      
+    git:
+      local.path: .
+      remote.url: https://github.com/CenturyLinkCloud/mdw-demo.git
+      branch: master
+      user: anonymous
+      
+    temp.dir: ../mdw/.temp
     
-    "mdw.script.executor.groovy": "com.centurylink.mdw.script.GroovyExecutor",
-    "mdw.script.executor.javascript": "com.centurylink.mdw.script.JavaScriptExecutor"
-  }'
+    hub.url: https://mdw-demo.useast.appfog.ctl.io/mdw
+    services.url: http://mdw-demo.useast.appfog.ctl.io:80/mdw
+    
+    logging:
+      level: DEBUG
+      
+    script:
+      executors:
+        groovy: com.centurylink.mdw.script.GroovyExecutor
+        javascript: com.centurylink.mdw.script.JavaScriptExecutor
+        
+  mdw_access: |
+    upstreamHosts:
+      - 127.0.0.1
+      - 0:0:0:0:0:0:0:1
+      - 172.26.131.144
+      - 151.117.164.97
+      - 151.117.164.49
+      - 151.117.164.50
+      - 151.117.164.51
+        
+    authMethod: ct 
+    authUserHeader: ct-remote-user
+    forwardingHeader: x-forwarded-for 
+    serviceUser: mdwapp
+    
+    responseHeaders:
+      X-UA-Compatible: IE=Edge
+      
+    sessionTimeout: 3600
+    
+    authExclusions:
+      - '/login'
+      - '/error'
+      - '/offline'
+      - '/sysInfo'
+      - '/images/*'
+      - '/css/*'
+      - '/doc/*'
+      - '/javadoc/*'
+      - '/filepanel/*'
+      - '/services/*'
+      - '/Services/*'
+      - '/api/*'
+      - '/asset/*'
+      - '/attach/*'
+    
+    loggingOptions:
+      logResponseTimes: false  
+      logHeaders: false
+      logParameters: false      
   
   mdw_seed_users: '{
     "users":  [
@@ -72,34 +117,3 @@ env:
       }
     ]
   }'
-  
-  mdw_access: |
-    authMethod: af 
-    authTokenLoc: http://clc-login.useast.appfog.ctl.io/oauth/token
-    
-    devUser: mdwapp
-    
-    responseHeaders:  
-      X-UA-Compatible: IE=Edge
-      
-    sessionTimeout: 3600
-    
-    authExclusions:
-      - '/login'
-      - '/error'
-      - '/offline'
-      - '/sysInfo'
-      - '/images/*'
-      - '/css/*'
-      - '/doc/*'
-      - '/javadoc/*'
-      - '/filepanel/*'
-      - '/services/*'
-      - '/Services/*'
-      - '/api/*'
-      - '/asset/*'
-    
-    loggingOptions:
-      logResponseTimes: false  
-      logHeaders: false
-      logParameters: false

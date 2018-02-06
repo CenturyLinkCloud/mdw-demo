@@ -20,8 +20,6 @@ database:
   poolsize: 5
   poolMaxIdle: 3
   
-db.embedded.server: localhost:8080
-
 asset:
   location: c:/workspaces/mdw-demo/assets
   
