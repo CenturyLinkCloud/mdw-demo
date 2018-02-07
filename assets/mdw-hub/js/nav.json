@@ -273,7 +273,7 @@
           {
             "label": "MDW Docs",
             "path": "system/docs",
-            "href": "http://centurylinkcloud.github.io/mdw/",
+            "href": "https://centurylinkcloud.github.io/mdw/",
             "target": "_blank"
           }
         ]
@@ -283,8 +283,7 @@
           {
             "label": "FilePanel",
             "path": "system/filepanel",
-            "href": "{{filepanelUrl}}",
-            "target": "_blank"
+            "href": "#/system/filepanel"
           }
         ]
       }
