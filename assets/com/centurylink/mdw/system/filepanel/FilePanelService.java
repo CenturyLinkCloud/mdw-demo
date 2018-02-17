@@ -16,9 +16,12 @@
 package com.centurylink.mdw.system.filepanel;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.FileSystems;
 import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
@@ -45,6 +48,8 @@ import com.centurylink.mdw.model.system.FileInfo;
 import com.centurylink.mdw.model.system.Server;
 import com.centurylink.mdw.services.rest.JsonRestService;
 import com.centurylink.mdw.util.HttpHelper;
+import com.centurylink.mdw.util.file.Grep;
+import com.centurylink.mdw.util.file.Grep.LineMatches;
 import com.centurylink.mdw.util.log.LoggerUtil;
 import com.centurylink.mdw.util.log.StandardLogger;
 
@@ -58,7 +63,7 @@ public class FilePanelService extends JsonRestService {
     @Override
     @Path("/{filePath}")
     public JSONObject get(String path, Map<String,String> headers)
-            throws ServiceException, JSONException {
+    throws ServiceException, JSONException {
 
         String[] segments = getSegments(path);
         if (segments.length == 5) {
@@ -73,9 +78,34 @@ public class FilePanelService extends JsonRestService {
             if (query.getFilter("path") != null) {
                 try {
                     if (!forwarded && hostParam != null && !hostParam.equals(requestHost) && !hostParam.equals(serverHost)) {
-                        // forward to appropriate server
-                        HttpHelper helper = new HttpHelper(getForwardUrl(requestUrl, hostParam));
-                        return new JSONObject(helper.get());
+                        URL url = getForwardUrl(requestUrl, hostParam);
+                        // not for this server
+                        if (query.getBooleanFilter("download")) {
+                            // special handling for remote download (#321)
+                            String tempPath =  query.getFilter("path").replace(':', '_').replace('\\', '/');
+                            File tempFile = new File(ApplicationContext.getTempDirectory() + "/" + hostParam + "/" + tempPath);
+                            if (!tempFile.getParentFile().exists() && !tempFile.getParentFile().mkdirs())
+                                throw new IOException("Unable to create temp directory: " + tempFile.getParentFile().getAbsolutePath());
+                            URLConnection urlConn = url.openConnection();
+                            try (
+                                InputStream in = urlConn.getInputStream();
+                                FileOutputStream out = new FileOutputStream(tempFile);
+                            ) {
+                                byte[] buffer = new byte[1024];
+                                int len;
+                                while ((len = in.read(buffer)) != -1) {
+                                    out.write(buffer, 0, len);
+                                }
+                            }
+                            headers.put(Listener.METAINFO_DOWNLOAD_FORMAT, Listener.DOWNLOAD_FORMAT_FILE);
+                            headers.put(Listener.METAINFO_DOWNLOAD_FILE, tempFile.getPath());
+                            return null;
+                        }
+                        else {
+                            // forward to appropriate server
+                            HttpHelper helper = new HttpHelper(url);
+                            return new JSONObject(helper.get());
+                        }
                     }
                     else {
                         java.nio.file.Path p = Paths.get(query.getFilter("path"));
@@ -90,8 +120,29 @@ public class FilePanelService extends JsonRestService {
                             return null;
                         }
                         else if (query.getFilter("grep") != null) {
-                            // TODO grep
-                            return new JSONObject();
+                            Grep grep = new Grep(p, query.getFilter("glob"));
+                            int limit = query.getIntFilter("limit");
+                            grep.setLimit(limit < 0 ? 250 : limit);
+                            Map<java.nio.file.Path,List<LineMatches>> matches = grep.find(query.getFilter("grep"));
+                            JSONObject json = new JSONObject();
+                            json.put("limit", grep.getLimit());
+                            json.put("root", p.toAbsolutePath().toString().replace('\\', '/'));
+                            JSONArray results = new JSONArray();
+                            json.put("results", results);
+                            int lines = 0;
+                            for (java.nio.file.Path resPath : matches.keySet()) {
+                                JSONObject fileObj = new JSONObject();
+                                results.put(fileObj);
+                                fileObj.put("file", resPath.toString().replace('\\', '/'));
+                                JSONArray matchesArr = new JSONArray();
+                                fileObj.put("lineMatches", matchesArr);
+                                for (LineMatches lineMatches : matches.get(resPath)) {
+                                    matchesArr.put(lineMatches.getJson());
+                                    lines++;
+                                }
+                            }
+                            json.put("count", lines);
+                            return json;
                         }
                         else {
                             if (file.isFile()) {

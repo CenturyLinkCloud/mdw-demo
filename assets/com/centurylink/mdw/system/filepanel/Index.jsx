@@ -5,6 +5,8 @@ import TreeView from '../../node/node_modules/react-treeview';
 import '../../node/node_modules/style-loader!../../react/react-treeview.css';
 import DirTree from './DirTree.jsx';
 import FileView from './FileView.jsx';
+import Grep from './Grep.jsx';
+import GrepResults from './GrepResults.jsx';
 import '../../node/node_modules/style-loader!./filepanel.css';
 
 // adjust mdw-main layout
@@ -18,9 +20,11 @@ document.body.style.overflowY = 'hidden';
 class Index extends Component {
   constructor(...args) {
     super(...args);
-    this.state = { hosts: [], rootDirs: [], selected: {}};
+    this.state = { hosts: [], rootDirs: [], selected: {}, grep: {}};
     this.handleSelect = this.handleSelect.bind(this);
     this.handleInfo = this.handleInfo.bind(this);
+    this.handleGrep = this.handleGrep.bind(this);
+    this.handleResultClick = this.handleResultClick.bind(this);
   }
   
   componentDidMount() {
@@ -74,10 +78,13 @@ class Index extends Component {
   }
   
   handleSelect(selection) {
+    $mdwUi.clearMessage();
     this.handleInfo(selection);
     this.setState({
       rootDirs: this.state.rootDirs,
-      selected: selection
+      selected: selection,
+      grep: {},
+      lineMatch: {}
     });
   }
   
@@ -110,6 +117,65 @@ class Index extends Component {
         info += new Date(item.modified).toLocaleString();
       }
       document.getElementById('fp-info').innerHTML = info;
+  }
+  
+  handleGrep(find, glob) {
+    $mdwUi.clearMessage();
+    var ok = false;
+    var path = this.state.selected.path;
+    if (this.state.selected.isFile) {
+      path = path.substring(0, path.length - this.state.selected.name.length - 1)
+    }
+    var url = this.getChildContext().serviceRoot + '/com/centurylink/mdw/system/filepanel';
+    url += '?path=' + encodeURIComponent(path) + '&grep=' + find + '&glob=' + glob;
+    if (this.state.selected.host) {
+      url += '&host=' + this.state.selected.host
+    }
+    fetch(new Request(url, {
+      method: 'GET',
+      headers: { Accept: 'application/json'},
+      credentials: 'same-origin'
+    }))
+    .then(response => {
+      ok = response.ok;
+      return response.json();
+    })
+    .then(json => {
+      if (ok) {
+        if (json.count && json.count >= json.limit) {
+          $mdwUi.showMessage('Displaying first ' + json.count + ' results');
+        }
+        this.setState({
+          hosts: this.state.hosts,
+          rootDirs: this.state.rootDirs,
+          selected: this.state.selected,
+          grep: { results: json.results }
+        });
+      }
+      else {
+        $mdwUi.showMessage(json.status.message);
+      }
+    });
+  }
+  
+  handleResultClick(file, lineMatch) {
+    $mdwUi.clearMessage();
+    var name = file;
+    const lastSlash = file.lastIndexOf('/');
+    if (lastSlash > 0) {
+      name = file.substring(lastSlash + 1);
+    }
+    this.setState({
+      rootDirs: this.state.rootDirs,
+      selected: {
+        path: file, 
+        isFile: true, 
+        name: name, 
+        host: this.state.selected.host
+      },
+      grep: {},
+      lineMatch: lineMatch
+    });
   }
   
   render() {
@@ -168,19 +234,20 @@ class Index extends Component {
                 <div id="fp-info"></div>
               }
             </div>
-            <div className="fp-grep">
-              <div>
-                <input type="text" placeholder="Pattern" />
-              </div>
-              <div>
-                <input type="text" placeholder="Files" />
-                <button value="grep" onClick={event => alert('Grep is coming in mdw 6.0.12')}>Grep</button>
-              </div>
-            </div>
+            <Grep onGrep={this.handleGrep} item={this.state.selected} />
           </div>
         </div>
         <div className="fp-right">
-          <FileView item={this.state.selected} onInfo={this.handleInfo} />
+          {this.state.grep.results &&
+            <GrepResults item={this.state.selected}
+              results={this.state.grep.results} 
+              onResultClick={this.handleResultClick} />
+          }
+          {!this.state.grep.results &&
+            <FileView item={this.state.selected} 
+              onInfo={this.handleInfo} 
+              lineMatch={this.state.lineMatch} />
+          }
         </div>
       </div>
     );
