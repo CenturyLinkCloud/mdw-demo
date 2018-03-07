@@ -2,4 +2,4 @@
 *
 !assets/
 assets/com/centurylink/mdw/node/node_modules
-!.git/
+.git/
