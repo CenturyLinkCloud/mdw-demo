@@ -36,7 +36,7 @@ public class Bugs extends JsonRestService {
     public JSONObject post(String path, JSONObject content, Map<String,String> headers)
             throws ServiceException, JSONException {
         String requestId = Long.toHexString(System.nanoTime());
-        return invokeServiceProcess("Create Bug", new Bug(content), requestId, null, headers);
+        return invokeServiceProcess("com.centurylink.mdw.demo.bugs/Create Bug", new Bug(content), requestId, null, headers);
     }
     
     @Override
