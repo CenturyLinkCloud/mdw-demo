@@ -26,16 +26,14 @@ devUser: mdwapp
 authExclusions:
   - '/login'
   - '/error'
-  - '/offline'
-  - '/sysInfo'
+  - '/noIe.html'
   - '/images/*'
   - '/css/*'
   - '/doc/*'
   - '/javadoc/*'
-  - '/filepanel/*'
-  - '/services/*'
-  - '/Services/*'
   - '/api/*'
+  - '/services/AppSummary'
+  - '/demo/api/*'
   
 # Headers appended to all HTTP servlet responses.
 responseHeaders:

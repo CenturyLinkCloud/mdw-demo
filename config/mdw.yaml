@@ -41,15 +41,3 @@ script:
   executors:
     groovy: com.centurylink.mdw.script.GroovyExecutor
     javascript: com.centurylink.mdw.script.JavaScriptExecutor
-    
-mail:
-  smtp.host: mymailhost
-  smtp.port: 25
-  connection.timeout: 10000
-  smtp.timeout: 10000
-  
-ldap:
-  host: ldap.example.com
-  port: 1636
-  base.dn: dc=ad,dc=intra,dc=com
-
