@@ -4,7 +4,7 @@ applications:
   host: mdw-demo
   buildpack: https://github.com/cloudfoundry/java-buildpack.git
   timeout: 180
-  path: mdw-boot-6.0.13-SNAPSHOT.jar
+  path: mdw-boot-6.1.01-SNAPSHOT.jar
 
 env:
   JAVA_OPTS: -Dmdw.runtime.env=appFogDev -Dmdw.property.manager=com.centurylink.mdw.config.YamlPropertyManager -Dmdw.server.port=$PORT

@@ -5,10 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.centurylink.mdwdemo</groupId>
   <artifactId>mdw-demo</artifactId>
-  <version>1.0.08</version>
+  <version>1.1.01</version>
   <name>mdw-demo</name>
   <properties>
-    <mdw.version>6.0.13-SNAPSHOT</mdw.version>
+    <mdw.version>6.1.01-SNAPSHOT</mdw.version>
     <spring.version>4.3.9.RELEASE</spring.version>
     <asset.loc>assets</asset.loc>
   </properties>

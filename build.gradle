@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse-wtp'
 
 group = 'com.centurylink.mdwdemo'
-version = '1.0.08'
+version = '1.1.01'
 
 description = "mdw-demo"
 
