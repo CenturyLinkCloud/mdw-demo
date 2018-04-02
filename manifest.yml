@@ -50,11 +50,6 @@ env:
     logging:
       level: DEBUG
       
-    script:
-      executors:
-        groovy: com.centurylink.mdw.script.GroovyExecutor
-        javascript: com.centurylink.mdw.script.JavaScriptExecutor
-        
   mdw_access: |
     upstreamHosts:
       - 127.0.0.1

@@ -22,10 +22,10 @@ public class MyTaskModel implements java.io.Serializable {
     private String taskmaster;
     public String getTaskmaster() { return taskmaster; }
     public void setTaskmaster(String tm) { this.taskmaster = tm; }
-    
+
     @Override
     public boolean equals(Object other) {
-        return other instanceof MyTaskModel && 
+        return other instanceof MyTaskModel &&
                 ((MyTaskModel)other).taskmaster.equals(taskmaster);
     }
 

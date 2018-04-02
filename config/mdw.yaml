@@ -36,8 +36,3 @@ services.url: http://localhost:8080/mdw
 
 logging:
   level: DEBUG
-  
-script:
-  executors:
-    groovy: com.centurylink.mdw.script.GroovyExecutor
-    javascript: com.centurylink.mdw.script.JavaScriptExecutor

@@ -20,7 +20,7 @@ process: # 13586
   variable: # 20463
     name: actionRequest
     value: |
-      <ActionRequest xmlns:ns2="http://mdw.centurylink.com/services">
+      <ActionRequest>
           <Action Name="updatedAction">
               <Parameter name="appName">MDW</Parameter>
               <Parameter name="insertedParam">insertedValue</Parameter>
@@ -29,14 +29,14 @@ process: # 13586
   variable: # 20462
     name: assetDefinedJaxb
     value: |
-      <JaxbAsset optionalAttribute="updatedOptionalAttr" requiredAttribute="x" xmlns:ns2="http://mdw.centurylink.com/services">
+      <JaxbAsset optionalAttribute="updatedOptionalAttr" requiredAttribute="x">
           <RequiredElement>inputDocRequiredElement</RequiredElement>
           <OptionalElement>updatedOptionalElem</OptionalElement>
       </JaxbAsset>
   variable: # 20464
     name: locallyCreatedJaxb
     value: |
-      <JaxbAsset optionalAttribute="mdw" requiredAttribute="from" xmlns:ns2="http://mdw.centurylink.com/services">
+      <JaxbAsset optionalAttribute="mdw" requiredAttribute="from">
           <RequiredElement>hello</RequiredElement>
           <OptionalElement>jaxb</OptionalElement>
       </JaxbAsset>
@@ -71,7 +71,7 @@ process: # 13585
   variable: # 20460
     name: actionRequest
     value: |
-      <ActionRequest xmlns:ns2="http://mdw.centurylink.com/services">
+      <ActionRequest>
           <Action Name="updatedAction">
               <Parameter name="appName">MDW</Parameter>
               <Parameter name="insertedParam">insertedValue</Parameter>
@@ -80,7 +80,7 @@ process: # 13585
   variable: # 20461
     name: assetDefinedJaxbIn
     value: |
-      <JaxbAsset optionalAttribute="updatedOptionalAttr" requiredAttribute="x" xmlns:ns2="http://mdw.centurylink.com/services">
+      <JaxbAsset optionalAttribute="updatedOptionalAttr" requiredAttribute="x">
           <RequiredElement>inputDocRequiredElement</RequiredElement>
           <OptionalElement>updatedOptionalElem</OptionalElement>
       </JaxbAsset>
