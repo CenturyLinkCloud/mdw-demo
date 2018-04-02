@@ -59,7 +59,6 @@ dependencies {
     compile group: "org.springframework", name: "spring-core", version: springVersion
 
     // asset package dependencies
-    compile fileTree(dir: "assets/com/centurylink/mdw/camel", includes: ["*.jar"])
     compile fileTree(dir: "assets/com/centurylink/mdw/drools", includes: ["*.jar"])
     compile fileTree(dir: "assets/com/centurylink/mdw/kotlin", includes: ["*.jar"])
     compile fileTree(dir: "assets/com/centurylink/mdw/node", includes: ["*.jar"])
