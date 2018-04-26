@@ -4,7 +4,8 @@ target
 data
 .apt_src
 .gradle/
-.temp
+.temp/
+temp/
 release
 *.launch
 testResults
