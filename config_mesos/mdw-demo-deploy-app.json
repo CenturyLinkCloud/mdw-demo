@@ -1,0 +1,76 @@
+{
+  "id": "/mdw/mdw-demo",
+  "cmd": null,
+  "cpus": 1,
+  "mem": 768,
+  "disk": 1000,
+  "instances": 1,
+  "fetch": [
+    {
+        "uri": "https://raw.githubusercontent.com/CenturyLinkCloud/mdw-demo/master/config_mesos/mdw.yaml"
+    },
+    {
+        "uri": "https://raw.githubusercontent.com/CenturyLinkCloud/mdw-demo/master/config_mesos/access.yaml"
+    },
+    {
+        "uri": "https://raw.githubusercontent.com/CenturyLinkCloud/mdw-demo/master/config_mesos/seed_users.json"
+    }
+  ],
+  "container": {
+    "docker": {
+      "image": "mdwcore/mdw:6.1.05",
+      "parameters": []
+    },
+    "type": "DOCKER",
+    "volumes": [
+      {
+        "hostPath": "$MESOS_SANDBOX",
+        "containerPath": "/usr/local/tomcat/config",
+        "mode": "RW"
+      }
+    ],
+    "portMappings": [
+      {
+        "containerPort": 8080,
+        "servicePort": 32100,
+        "protocol": "tcp",
+        "name": null,
+        "labels": null
+      },
+      {
+        "containerPort": 8009,
+        "protocol": "tcp",
+        "name": null,
+        "labels": null
+      },
+      {
+        "containerPort": 3308,
+        "servicePort": 32101,
+        "protocol": "tcp",
+        "name": null,
+        "labels": null
+      }
+    ]
+  },
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "env": {
+    "JAVA_OPTS": "-Duser.home=/usr/local/tomcat/temp -Dmdw.runtime.env=dev -Dmdw.config.location=/usr/local/tomcat/config -Xmx1g"
+  },
+  "labels": {},
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "path": "/mdw/Services/AppSummary",
+      "portIndex": 0,
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3
+    }
+  ]
+}
+  
