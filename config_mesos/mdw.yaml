@@ -31,8 +31,8 @@ git:
   
 temp.dir: ../.temp
 
-hub.url: http://mdw-demo.mesosmasteridc01-test.idc1.level3.com:32100/mdw
-services.url: http://mdw-demo.mesosmasteridc01-test.idc1.level3.com:32100/mdw
+hub.url: http://mesosagentidc05-test.idc1.level3.com:32100/mdw
+services.url: http://mesosagentidc05-test.idc1.level3.com:32100/mdw
 
 logging:
   level: DEBUG
