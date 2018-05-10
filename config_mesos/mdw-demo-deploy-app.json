@@ -1,9 +1,8 @@
 {
   "id": "/mdw/mdw-demo",
-  "cmd": null,
-  "cpus": 1,
-  "mem": 768,
-  "disk": 1000,
+  "cpus": 1.0,
+  "mem": 2000.0,
+  "disk": 2000.0,
   "instances": 1,
   "fetch": [
     {
@@ -22,13 +21,7 @@
       "parameters": []
     },
     "type": "DOCKER",
-    "volumes": [
-      {
-        "hostPath": "$MESOS_SANDBOX",
-        "containerPath": "/usr/local/tomcat/config",
-        "mode": "RW"
-      }
-    ],
+    "volumes": [],
     "portMappings": [
       {
         "containerPort": 8080,
@@ -58,7 +51,7 @@
     }
   ],
   "env": {
-    "JAVA_OPTS": "-Duser.home=/usr/local/tomcat/temp -Dmdw.runtime.env=dev -Dmdw.config.location=/usr/local/tomcat/config -Xmx1g"
+    "JAVA_OPTS": "-Duser.home=/usr/local/tomcat/temp -Dmdw.runtime.env=dev -Dmdw.config.location=$MESOS_SANDBOX -Xmx1g"
   },
   "labels": {},
   "healthChecks": [
@@ -71,6 +64,6 @@
       "timeoutSeconds": 20,
       "maxConsecutiveFailures": 3
     }
-  ]
+  ],
+  "constraints": [["hostname", "LIKE", "mesosagentidc05-test.idc1.level3.com"]]
 }
-  
