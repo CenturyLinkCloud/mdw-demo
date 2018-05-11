@@ -17,7 +17,7 @@ database:
   url: jdbc:mariadb://localhost:3308/mdw
   username: mdw
   password: mdw
-  poolsize: 5
+  poolsize: 20
   poolMaxIdle: 3
   
 asset:
@@ -31,11 +31,12 @@ git:
   
 temp.dir: ../.temp
 
-hub.url: http://mesosagentidc05-test.idc1.level3.com:32100/mdw
-services.url: http://mesosagentidc05-test.idc1.level3.com:32100/mdw
+hub.url: http://mesosagentidc02-test.idc1.level3.com:31200/mdw
+services.url: http://mesosagentidc02-test.idc1.level3.com:31200/mdw
 
 logging:
   level: DEBUG
+  file: ../logs/mdw.log
   
 filepanel:
   root.dirs:
