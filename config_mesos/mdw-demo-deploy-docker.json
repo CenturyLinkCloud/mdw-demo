@@ -2,7 +2,6 @@
   "id": "/mdw/mdw-demo-docker",
   "cpus": 1.0,
   "mem": 1000.0,
-  "disk": 1000.0,
   "instances": 1,
   "fetch": [
     {
@@ -51,7 +50,7 @@
     }
   ],
   "env": {
-    "JAVA_OPTS": "-Duser.home=/usr/local/tomcat/temp -Dmdw.runtime.env=dev -Dmdw.config.location=$MESOS_SANDBOX -Xmx512m"
+    "JAVA_OPTS": "-Dmdw.runtime.env=dev -Dmdw.config.location=$MESOS_SANDBOX -Xmx512m"
   },
   "labels": {},
   "healthChecks": [
@@ -65,5 +64,5 @@
       "maxConsecutiveFailures": 3
     }
   ],
-  "constraints": [["hostname", "LIKE", "mesosagentidc05-test.idc1.level3.com"]]
+  "constraints": [["hostname", "LIKE", "mesosagentidc02-test.idc1.level3.com"]]
 }

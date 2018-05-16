@@ -1,8 +1,7 @@
-{
+{   NOT USED....Use the -dcoker.json file instead
   "id": "/mdw/mdw-demo-mesos",
   "cpus": 1.0,
   "mem": 1000.0,
-  "disk": 1000.0,
   "instances": 1,
   "fetch": [
     {
@@ -43,7 +42,7 @@
     }
   ],
   "env": {
-    "JAVA_OPTS": "-Duser.home=/usr/local/tomcat/temp -Dmdw.runtime.env=dev -Dmdw.config.location=$MESOS_SANDBOX -Xmx512m"
+    "JAVA_OPTS": "-Dmdw.runtime.env=dev -Dmdw.config.location=$MESOS_SANDBOX -Xmx512m"
   },
   "labels": {},
   "healthChecks": [

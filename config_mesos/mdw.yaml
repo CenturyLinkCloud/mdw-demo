@@ -1,5 +1,5 @@
 application:
-  name: mdw-demo
+  id: mdw-demo
 
 servers:
   localhost:
@@ -36,7 +36,6 @@ services.url: http://mesosagentidc02-test.idc1.level3.com:31200/mdw
 
 logging:
   level: DEBUG
-  file: ../logs/mdw.log
   
 filepanel:
   root.dirs:
