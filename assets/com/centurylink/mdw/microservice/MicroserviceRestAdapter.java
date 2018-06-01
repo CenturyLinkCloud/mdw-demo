@@ -1,41 +1,17 @@
-/*
- * Copyright (C) 2017 CenturyLink, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.centurylink.mdw.microservice;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.centurylink.mdw.activity.ActivityException;
-import com.centurylink.mdw.common.service.ServiceException;
-import com.centurylink.mdw.connector.adapter.AdapterException;
-import com.centurylink.mdw.dataaccess.DataAccessException;
 import com.centurylink.mdw.model.Jsonable;
 import com.centurylink.mdw.model.Response;
 import com.centurylink.mdw.model.Status;
-import com.centurylink.mdw.model.StatusResponse;
 import com.centurylink.mdw.model.request.Request;
+import com.centurylink.mdw.model.variable.DocumentReference;
 import com.centurylink.mdw.model.variable.Variable;
-import com.centurylink.mdw.translator.JsonTranslator;
-import com.centurylink.mdw.translator.VariableTranslator;
 import com.centurylink.mdw.workflow.adapter.rest.RestServiceAdapter;
 
 /**
@@ -43,8 +19,6 @@ import com.centurylink.mdw.workflow.adapter.rest.RestServiceAdapter;
  * populate headers, response and serviceSummary (if it exists)
  */
 public class MicroserviceRestAdapter extends RestServiceAdapter {
-
-    public static final String JSON_RESPONSE_VARIABLE = "JSON Response Variable";
 
     /**
      * Overridden to append JSON headers.
@@ -68,79 +42,27 @@ public class MicroserviceRestAdapter extends RestServiceAdapter {
         return requestHeaders;
     }
 
-    protected void populateResponseVariable(StatusResponse response)
-            throws ActivityException, JSONException {
-        Variable responseVariable = null;
-        String responseVarName = getAttributeValue(JSON_RESPONSE_VARIABLE);
-        if (responseVarName != null) {
-            responseVariable = getProcessDefinition().getVariable(responseVarName);
-            if (responseVariable == null)
-                throw new ActivityException("No variable defined: " + responseVarName);
-        }
-        else {
-            // default response variable name
-            responseVariable = getProcessDefinition().getVariable("response");
-        }
-
-        if (responseVariable != null && VariableTranslator.getTranslator(getPackage(),
-                responseVariable.getType()) instanceof JsonTranslator) {
-            if (Jsonable.class.getName().equals(responseVariable.getType()))
-                setVariableValue(responseVariable.getName(), response);
-            else if (JSONObject.class.getName().equals(responseVariable.getType()))
-                setVariableValue(responseVariable.getName(), response.getJson());
-            else
-                throw new JSONException(
-                        "Unrecognized JSON variable type: " + responseVariable.getType());
-        }
-    }
-
     /**
-     * Add request-id header
-     *
-     * @throws ActivityException
-     */
-    protected void populateResponseHeaders() throws AdapterException, ActivityException {
-        Variable responseHeadersVar = getProcessDefinition().getVariable("responseHeaders");
-        if (responseHeadersVar != null) {
-            try {
-                Map<String, String> responseHeaders = super.getResponseHeaders();
-                if (responseHeaders == null)
-                    responseHeaders = new HashMap<String, String>();
-                responseHeaders.put(Request.REQUEST_ID, getMasterRequestId());
-                setVariableValue("responseHeaders", responseHeaders);
-            }
-            catch (ActivityException ex) {
-                throw new AdapterException(ex.getMessage(), ex);
-            }
-        }
-    }
-
-    /**
-     * Populate response variable and serviceSummary
-     * @return response Id
+     * Populates serviceSummary
+     * @return responseId
      */
     @Override
     protected Long logResponse(Response response) {
         Long responseId = super.logResponse(response);
         int code = response.getStatusCode() == null ? 0 : response.getStatusCode();
         Status status = new Status(code, response.getStatusMessage());
-        // Ensure that we get the most up-to-date serviceSummary
-        String[] outDocs = new String[1];
-        outDocs[0] = ServiceSummary.SERVICE_SUMMARY;
-        setOutputDocuments(outDocs);
-        //
         try {
-            populateResponseVariable(new StatusResponse(status));
-            populateResponseHeaders();
             updateServiceSummary(status, responseId);
         }
-        catch (Exception ex) {
+        catch (ActivityException ex) {
             logexception(ex.getMessage(), ex);
         }
-
         return responseId;
     }
 
+    /**
+     * TODO: Do we really have to save requestId var?  Or can we get it from db?
+     */
     @Override
     protected Long logRequest(String message) {
         Long requestId = super.logRequest(message);
@@ -156,17 +78,14 @@ public class MicroserviceRestAdapter extends RestServiceAdapter {
     }
 
     public void updateServiceSummary(Status status, Long responseId)
-            throws ActivityException, ServiceException, DataAccessException {
+            throws ActivityException {
 
-        ServiceSummary serviceSummary = getServiceSummary();
+        ServiceSummary serviceSummary = getServiceSummary(true);
         if (serviceSummary != null) {
             String microservice = getMicroservice();
-            List<Invocation> invocations = serviceSummary.getInvocations(microservice);
+            List<Invocation> invocations = serviceSummary.getInvocations(microservice, getProcessInstanceId());
             if (invocations == null)
                 throw new ActivityException("No invocations for: " + microservice);
-
-            // Default to now, update real time from the request
-            Date sentTime = Calendar.getInstance().getTime();
 
             // if last invocation does not have a response, add it there
             if (invocations.size() > 0
@@ -174,69 +93,64 @@ public class MicroserviceRestAdapter extends RestServiceAdapter {
                 invocations.get(invocations.size() - 1).setStatus(status);
             }
             else {
-                Invocation invocation = new Invocation(getRequestId(), status, sentTime,
-                        responseId);
-                serviceSummary.addInvocation(microservice, invocation);
+                Invocation invocation = new Invocation(getRequestId(), status, Instant.now(), responseId);
+                serviceSummary.addInvocation(microservice, getProcessInstanceId(), invocation);
             }
 
-            setVariableValue(ServiceSummary.SERVICE_SUMMARY, serviceSummary);
-            // Do any notifications
+            setVariableValue(getServiceSummaryVariableName(), serviceSummary);
             notifyServiceSummaryUpdate(serviceSummary);
         }
     }
 
     /**
-     * <p>
-     * This is left to the implementor if any kind of notification
-     * needs to be sent out whenever the service summary is updated
-     * </p>
-     * @param serviceSummary
-     * @throws ServiceException
-     * @throws DataAccessException
+     * TODO: default behavior
      */
     public void notifyServiceSummaryUpdate(ServiceSummary serviceSummary) {
     }
 
     /**
-     * This returns the microservice that is to be updated in the serviceSummary
-     * It defaults to the value of "packageName/processName".
-     * In the case where this won't work (i.e we are in a deep subprocess)
-     * it can be overridden by defining the value in the activity for "Microservice name"
-     * @return the microservice to be updated in the serviceSummary
+     * Standard behavior is to read from a String variable (defaultName='microservice').
+     * If no variable is defined, fallback is the 'microservice' design attribute.
      */
-    public String getMicroservice() {
-        String microservice = getAttributeValue(ServiceSummary.MICROSERVICE);
+    protected String getMicroservice() throws ActivityException {
+        String microservice = null;
+        String microserviceVarName = getAttribute("microserviceVariable", "microservice");
+        if (getMainProcessDefinition().getVariable(microserviceVarName) == null) {
+            // configured through attribute
+            microservice = getAttributeValueSmart("microservice");
+        }
+        else {
+            microservice = getParameterStringValue(microserviceVarName);
+        }
         if (microservice == null)
-            microservice = getPackage().getName() + "/" + getProcessDefinition().getName();
+            throw new ActivityException("Cannot discern microservice");
         return microservice;
     }
 
-    /**
-     * Looks up and returns the ServiceSummary variable value
-     * @return ServiceSummary object
-     * @throws ActivityException
-     */
-    public ServiceSummary getServiceSummary() throws ActivityException {
-        ServiceSummary serviceSummary = (ServiceSummary) getVariableValue(
-                ServiceSummary.SERVICE_SUMMARY);
-        if (serviceSummary == null) {
+    protected ServiceSummary getServiceSummary(boolean forUpdate) throws ActivityException {
+        DocumentReference docRef = (DocumentReference)getParameterValue(getServiceSummaryVariableName());
+        if (docRef == null)
             return null;
-        }
-        else {
-            return serviceSummary;
-        }
+        if (forUpdate)
+            return (ServiceSummary) getDocumentForUpdate(docRef, Jsonable.class.getName());
+        else
+            return (ServiceSummary) getDocument(docRef, Jsonable.class.getName());
+    }
+
+    /**
+     * You'd need a custom .impl asset to set this through designer
+     */
+    protected String getServiceSummaryVariableName() {
+        return getAttribute("serviceSummaryVariable", "serviceSummary");
     }
 
     /**
      * Returns the requestId that we will use to populate the serviceSummary
      * @return requestId used to populate the serviceSummary
-     * @throws ActivityException
      */
     public Long getRequestId() throws ActivityException {
 
-        String requestIdVarName = getAttributeValue(ServiceSummary.REQUEST_ID_VAR);
-        if (requestIdVarName == null)
-            requestIdVarName = ServiceSummary.DEFAULT_REQUEST_ID_VAR;
+        String requestIdVarName = getAttribute("requestIdVariable", "requestId");
 
         Variable requestIdVar = getProcessDefinition().getVariable(requestIdVarName);
         if (requestIdVar == null && !"GET".equals(getHttpMethod()))
