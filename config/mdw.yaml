@@ -29,10 +29,12 @@ git:
   branch: master
   user: anonymous
   
-temp.dir: ../mdw/.temp
+temp.dir: c:/workspaces/mdw-demo/temp
 
 hub.url: http://localhost:8080/mdw
 services.url: http://localhost:8080/mdw
+central.url: https://mdw-central.com
+discovery.url: http://repo.maven.apache.org/maven2
 
 logging:
   level: DEBUG
