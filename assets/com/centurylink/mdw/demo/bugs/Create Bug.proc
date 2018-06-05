@@ -21,7 +21,7 @@
     {
       "attributes": {
         "Output Documents": "[\"response\"]",
-        "Rule": "import com.centurylink.mdw.model.StatusResponse\r\nimport static com.centurylink.mdw.model.Status.ACCEPTED\r\nimport static com.centurylink.mdw.model.Status.BAD_REQUEST\r\nimport com.centurylink.mdw.service.api.validator.*\r\n\r\ndef validator = new SwaggerModelValidator('POST', '/demo/api/bugs')\r\n\r\ntry {\r\n\tvalidator.validateRequestBody(request.json, true)\r\n\tresponse = new StatusResponse(ACCEPTED)\r\n\treturn 'accepted'\r\n}\r\ncatch (ValidationException ex) {\r\n\tresponse = new StatusResponse(BAD_REQUEST, ex.message)\r\n\treturn 'invalid'\r\n}\r\n",
+        "Rule": "println 'Temporarily disabled pending https://github.com/CenturyLinkCloud/mdw-demo/issues/5'\r\nreturn 'accepted'\r\n",
         "SCRIPT": "Groovy",
         "WORK_DISPLAY_INFO": "x=221,y=118,w=98,h=74"
       },
@@ -37,7 +37,7 @@
           "to": "A5"
         },
         {
-          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=226,ly=233,type=Elbow,xs=270&270&118,ys=192&307&307"},
+          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=226,ly=236,type=Elbow,xs=270&270&118,ys=196&307&307"},
           "event": "FINISH",
           "id": "T3",
           "resultCode": "invalid",
@@ -89,7 +89,7 @@
     "PROCESS_START_PAGE": "demo/Bug.jsx",
     "PROCESS_START_PAGE_assetVersion": "[0.1,1)",
     "PROCESS_VISIBILITY": "SERVICE",
-    "WORK_DISPLAY_INFO": "x=45,y=45,w=102,h=27"
+    "WORK_DISPLAY_INFO": "x=45,y=45,w=106,h=26"
   },
   "variables": {
     "request": {
