@@ -1,0 +1,7 @@
+{
+  "category": "com.centurylink.mdw.activity.types.GeneralActivity",
+  "icon": "swagger.png",
+  "implementorClass": "com.centurylink.mdw.workflow.activity.validate.SwaggerValidatorActivity",
+  "label": "Swagger Validator",
+  "pagelet": "<PAGELET>\r\n  <TEXT NAME='disabled' Label='Disabled' />\r\n <TEXT NAME='Path' Label='Path' />\r\n  <LIST NAME='Validate'>\r\n    <OPTION>Path<\/OPTION>\r\n    <OPTION>Query<\/OPTION>\r\n    <OPTION>Body<\/OPTION>\r\n    <OPTION>Headers<\/OPTION>\r\n  <\/LIST>\r\n  <BOOLEAN NAME='Strict' />\r\n  <HYPERLINK URL='/MDWWeb/doc/SwaggerValidator.html'>Swagger Validator Help<\/HYPERLINK>\r\n<\/PAGELET>"
+}
