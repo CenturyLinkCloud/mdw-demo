@@ -1,0 +1,49 @@
+package com.centurylink.mdw.demo.test
+
+import groovy.json.JsonSlurper
+
+// TODO update this
+
+// directly test Create Bug and A Bug's Life
+start process('com.centurylink.mdw.demo.bugs/Create Bug') {
+    variables = [
+        request: asset('createBugRequest.json').text,
+        requestHeaders: """{\"content-type\": \"application/json\", 
+  \"mdw-request-id\": \"$masterRequestId\"}"""        
+    ]
+}
+
+sleep 5
+
+bug = new JsonSlurper().parseText(asset('createBugRequest.json').text)
+
+def bugTask = action task('${bug.title}') {
+    outcome = 'Claim'
+}
+
+sleep 5
+
+bug.id = bugTask.id
+id = bugTask.id
+commitId = 'f5db6e0'
+
+// submit a PUT request emulating commitId entry in custom page
+def resp = submit request('mdw-demo.postman/PUT:bugs/{id}') {
+    values = ['id': id, 'commitId': commitId]
+}
+println("RESP: " + resp.body)
+assert resp.time < 1000 // less than a second
+assert resp.status.code == 200
+assert resp.headers['content-type'] == 'application/json'
+
+// resolve the bug by completing its task
+action task('${bug.title}') {
+    outcome = 'Resolve'
+}
+
+// wait for the subflow to complete
+wait process('com.centurylink.mdw.demo.bugs/A Bug\'s Life')
+
+// validate the runtime results of both processes
+verify processes('com.centurylink.mdw.demo.bugs/Create Bug',
+    'com.centurylink.mdw.demo.bugs/A Bug\'s Life')

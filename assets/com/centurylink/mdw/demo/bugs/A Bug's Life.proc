@@ -1,0 +1,128 @@
+{
+  "activities": [
+    {
+      "attributes": {"WORK_DISPLAY_INFO": "x=52,y=130,w=60,h=40"},
+      "id": "A1",
+      "implementor": "com.centurylink.mdw.workflow.activity.process.ProcessStartActivity",
+      "name": "Create",
+      "transitions": [{
+        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=148,ly=169,type=Elbow,xs=116&172,ys=150&150"},
+        "event": "FINISH",
+        "id": "T1",
+        "to": "A3"
+      }]
+    },
+    {
+      "attributes": {"WORK_DISPLAY_INFO": "x=754,y=250,w=60,h=40"},
+      "id": "A2",
+      "implementor": "com.centurylink.mdw.workflow.activity.process.ProcessFinishActivity",
+      "name": "Close"
+    },
+    {
+      "attributes": {
+        "INSTANCE_ID_VAR": "${bug.id}",
+        "STATUS_AFTER_EVENT": "Cancelled",
+        "TASK_PAGELET": "com.centurylink.mdw.base/CustomManualTask.pagelet",
+        "TASK_TEMPLATE": "com.centurylink.mdw.demo.bugs/ResolveBugCustom.task",
+        "TASK_TEMPLATE_assetVersion": "[0.1,1)",
+        "WORK_DISPLAY_INFO": "x=176,y=122,w=108,h=70",
+        "Wait for Task": "true"
+      },
+      "id": "A3",
+      "implementor": "com.centurylink.mdw.workflow.activity.task.CustomManualTaskActivity",
+      "name": "Await\r\nResolution",
+      "transitions": [
+        {
+          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=328,ly=133,type=Elbow,xs=288&415,ys=157&157"},
+          "event": "FINISH",
+          "id": "T2",
+          "resultCode": "Resolve",
+          "to": "A6"
+        },
+        {
+          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=193,ly=252,type=Elbow,xs=230&230,ys=196&331"},
+          "event": "FINISH",
+          "id": "T4",
+          "resultCode": "Defer",
+          "to": "A5"
+        }
+      ]
+    },
+    {
+      "attributes": {
+        "EndpointUri": "https://api.github.com/repos/CenturyLinkCloud/mdw-demo/commits/${bug.commitId}",
+        "HttpMethod": "GET",
+        "RESPONSE_VARIABLE": "commit",
+        "WORK_DISPLAY_INFO": "x=418,y=251,w=105,h=71"
+      },
+      "id": "A4",
+      "implementor": "com.centurylink.mdw.microservice.MicroserviceRestAdapter",
+      "name": "Retrieve\r\nCommit",
+      "transitions": [{
+        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=642,ly=265,type=Elbow,xs=527&750,ys=270&270"},
+        "event": "FINISH",
+        "id": "T3",
+        "to": "A2"
+      }]
+    },
+    {
+      "attributes": {
+        "STATUS_AFTER_TIMEOUT": "Cancelled",
+        "WORK_DISPLAY_INFO": "x=177,y=335,w=111,h=71"
+      },
+      "id": "A5",
+      "implementor": "com.centurylink.mdw.workflow.activity.event.EventWaitActivity",
+      "name": "Await\r\nDispensation",
+      "transitions": [{
+        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=193,ly=169,type=ElbowH,xs=292&328&328&286,ys=370&370&177&177"},
+        "event": "FINISH",
+        "id": "T5",
+        "to": "A3"
+      }]
+    },
+    {
+      "attributes": {
+        "Expression": "bug.commitId == null ? 'No' : 'Yes'",
+        "SCRIPT": "Groovy",
+        "WORK_DISPLAY_INFO": "x=419,y=119,w=92,h=77"
+      },
+      "id": "A6",
+      "implementor": "com.centurylink.mdw.workflow.activity.script.ScriptEvaluator",
+      "name": "GitHub\r\nCommit?",
+      "transitions": [
+        {
+          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=470,ly=214,type=Elbow,xs=465&465,ys=200&247"},
+          "event": "FINISH",
+          "id": "T6",
+          "resultCode": "Yes",
+          "to": "A4"
+        },
+        {
+          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=538,ly=136,type=Elbow,xs=515&784&784,ys=157&157&250"},
+          "event": "FINISH",
+          "id": "T7",
+          "resultCode": "No",
+          "to": "A2"
+        }
+      ]
+    }
+  ],
+  "attributes": {
+    "ArrowStyle": "ArrowEnd",
+    "NodeStyle": "BoxIcon",
+    "PROCESS_START_PAGE": "bug.jsx",
+    "PROCESS_START_PAGE_assetVersion": "0",
+    "PROCESS_VISIBILITY": "PUBLIC",
+    "WORK_DISPLAY_INFO": "x=40,y=39,w=109,h=27"
+  },
+  "variables": {
+    "bug": {
+      "category": "INPUT",
+      "type": "com.centurylink.mdw.model.Jsonable"
+    },
+    "commit": {
+      "category": "LOCAL",
+      "type": "org.json.JSONObject"
+    }
+  }
+}

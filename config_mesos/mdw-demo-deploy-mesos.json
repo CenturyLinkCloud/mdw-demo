@@ -1,0 +1,60 @@
+{   NOT USED....Use the -dcoker.json file instead
+  "id": "/mdw/mdw-demo-mesos",
+  "cpus": 1.0,
+  "mem": 1000.0,
+  "instances": 1,
+  "fetch": [
+    {
+        "uri": "https://raw.githubusercontent.com/CenturyLinkCloud/mdw-demo/master/config_mesos/mdw.yaml"
+    },
+    {
+        "uri": "https://raw.githubusercontent.com/CenturyLinkCloud/mdw-demo/master/config_mesos/access.yaml"
+    },
+    {
+        "uri": "https://raw.githubusercontent.com/CenturyLinkCloud/mdw-demo/master/config_mesos/seed_users.json"
+    }
+  ],
+  "container": {
+    "docker": {
+      "image": "mdwcore/mdw:6.1.05"
+    },
+    "type": "MESOS",
+    "portMappings": [
+      {
+        "containerPort": 8080,
+        "hostPort": 31200,
+        "protocol": "tcp"
+      },
+      {
+        "containerPort": 8009,
+        "protocol": "tcp"
+      },
+      {
+        "containerPort": 3308,
+        "hostPort": 31201,
+        "protocol": "tcp"
+      }
+    ]
+  },
+  "networks": [
+    {
+      "mode": "container/bridge"
+    }
+  ],
+  "env": {
+    "JAVA_OPTS": "-Dmdw.runtime.env=dev -Dmdw.config.location=$MESOS_SANDBOX -Xmx512m"
+  },
+  "labels": {},
+  "healthChecks": [
+    {
+      "protocol": "HTTP",
+      "path": "/mdw/Services/AppSummary",
+      "portIndex": 0,
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3
+    }
+  ],
+  "constraints": [["env", "LIKE", "test"],["hostname", "LIKE", "mesosagentidc02-test.idc1.level3.com"]]
+}

@@ -1,0 +1,25 @@
+<!doctype html>
+<!-- Since this is standalone, you must install the hub-ui npm package.
+     (see mdw-hub.js/myApp.js for details).  -->
+<html lang="en" ng-app="myApp">
+<head>
+  <title>My Hub-UI</title>
+  <link rel="stylesheet" href="node_modules/bootstrap-css-only/css/bootstrap.css">
+  <link rel="stylesheet" href="node_modules/highlightjs/styles/default.css">  
+  <link rel="stylesheet" href="node_modules/hub-ui/hub-ui.css">
+  <script src="node_modules/angular/angular.js"></script>
+  <script src="node_modules/angular-resource/angular-resource.js"></script>  
+  <script src="node_modules/marked/lib/marked.js"></script>  
+  <script src="node_modules/highlightjs/highlight.pack.js"></script>
+  <script src="node_modules/hub-ui/hub-ui.js"></script>
+  <script src="js/myApp.js"></script>
+</head>
+<body ng-controller="myController">
+  <div>
+    <mdw-workflow process="process" 
+      render-state="true"
+      service-base="{{mdwServiceBase}}">
+    </mdw-workflow>
+  </div>
+</body>
+</html>

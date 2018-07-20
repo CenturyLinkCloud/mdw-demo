@@ -1,0 +1,82 @@
+{
+	"variables": [],
+	"info": {
+		"name": "mdw-demo",
+		"_postman_id": "14050b74-5b83-34a6-06ac-710716e67e94",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "bugs",
+			"request": {
+				"url": "{{base-url}}/demo/api/bugs",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Missing documentation on package-level handlers\",\r\n  \"description\": \"Someone needs to step up.  I'm not saying who...\",\r\n  \"severity\": 2\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "bugs/{id}",
+			"request": {
+				"url": "{{base-url}}/demo/api/bugs/{{id}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Missing documentation on package-level handlers\",\n  \"description\": \"Someone needs to step up.  I'm not saying who...\",\n  \"severity\": 2,\n  \"commitId\": \"{{commitId}}\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "bugs/{id}",
+			"request": {
+				"url": "{{base-url}}/demo/api/bugs/{{id}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "rules",
+			"request": {
+				"url": "{{base-url}}/Rules/demo.api/Playlist",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Don Oakes\",\r\n  \"yearOfBirth\": 1962,\r\n  \"genre\": \"punk\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

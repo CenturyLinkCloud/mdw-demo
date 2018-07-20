@@ -1,0 +1,13 @@
+{
+  "attributes": {
+    "CustomPage": "demo/Bug.jsx",
+    "CustomPage_assetVersion": "[0.1,1)",
+    "Groups": "[\"Developers\"]",
+    "Notices": "Open,com.centurylink.mdw.demo.bugs/slackNotice.json,[0.1\\,1),com.centurylink.mdw.slack.TaskNotifier,,,,;Assigned,,,,,,,;Completed,,,,,,,;Cancelled,,,,,,,;In Progress,,,,,,,;Alert,,,,,,,;Jeopardy,,,,,,,;Forward,,,,,,,",
+    "PriorityStrategy": "com.centurylink.mdw.demo.bugs.Prioritization"
+  },
+  "category": "ISSUE",
+  "logicalId": "ResolveBug",
+  "name": "${bug.title}",
+  "version": "0.4"
+}

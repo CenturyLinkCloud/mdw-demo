@@ -1,0 +1,112 @@
+{
+  "activities": [
+    {
+      "attributes": {"WORK_DISPLAY_INFO": "x=56,y=130,w=60,h=40"},
+      "id": "A1",
+      "implementor": "com.centurylink.mdw.workflow.activity.process.ProcessStartActivity",
+      "name": "Start",
+      "transitions": [{
+        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=157,ly=150,type=Elbow,xs=120&193,ys=150&150"},
+        "event": "FINISH",
+        "id": "T6",
+        "to": "A7"
+      }]
+    },
+    {
+      "attributes": {"WORK_DISPLAY_INFO": "x=623,y=268,w=60,h=40"},
+      "id": "A2",
+      "implementor": "com.centurylink.mdw.workflow.activity.process.ProcessFinishActivity",
+      "name": "Created"
+    },
+    {
+      "attributes": {"WORK_DISPLAY_INFO": "x=109,y=283,w=60,h=40"},
+      "id": "A4",
+      "implementor": "com.centurylink.mdw.workflow.activity.process.ProcessFinishActivity",
+      "name": "Rejected"
+    },
+    {
+      "attributes": {"WORK_DISPLAY_INFO": "x=435,y=124,w=100,h=60"},
+      "id": "A5",
+      "implementor": "com.centurylink.mdw.demo.bugs.PersistBugActivity",
+      "name": "Save Bug",
+      "transitions": [{
+        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=468,ly=202,type=Elbow,xs=485&485,ys=188&250"},
+        "event": "FINISH",
+        "id": "T4",
+        "to": "A6"
+      }]
+    },
+    {
+      "attributes": {
+        "WORK_DISPLAY_INFO": "x=436,y=254,w=100,h=71",
+        "processname": "com.centurylink.mdw.demo.bugs/A Bug's Life",
+        "processversion": "[0.4,1)",
+        "synchronous": "false",
+        "variables": "{\"bug2\":\"$response\",\"bug\":\"${response}\"}"
+      },
+      "id": "A6",
+      "implementor": "com.centurylink.mdw.workflow.activity.process.InvokeSubProcessActivity",
+      "name": "Invoke Bug\r\nWorkflow",
+      "transitions": [{
+        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=579,ly=288,type=Elbow,xs=540&619,ys=288&288"},
+        "event": "FINISH",
+        "id": "T5",
+        "to": "A2"
+      }]
+    },
+    {
+      "attributes": {
+        "Path": "/demo/api/bugs",
+        "Strict": "true",
+        "Validate": "[\"Body\",\"Path\"]",
+        "WORK_DISPLAY_INFO": "x=197,y=127,w=100,h=60"
+      },
+      "id": "A7",
+      "implementor": "com.centurylink.mdw.workflow.activity.validate.SwaggerValidatorActivity",
+      "name": "Bug Validator",
+      "transitions": [
+        {
+          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=369,ly=155,type=Elbow,xs=301&431,ys=155&155"},
+          "event": "FINISH",
+          "id": "T7",
+          "resultCode": "true",
+          "to": "A5"
+        },
+        {
+          "attributes": {"TRANSITION_DISPLAY_INFO": "lx=179,ly=241,type=Elbow,xs=247&139,ys=191&279"},
+          "event": "FINISH",
+          "id": "T8",
+          "resultCode": "false",
+          "to": "A4"
+        }
+      ]
+    }
+  ],
+  "attributes": {
+    "ArrowStyle": "ArrowEnd",
+    "Documentation": "## Create Bug\r\nService process exposed through demo.api/Bugs.java via the post() method.\r\n\r\nThe [MDW Cookbook](http://centurylinkcloud.github.io/mdw/docs/guides/mdw-cookbook/) \r\nprovides a detailed walk-through describing how this process was built.\r\n\r\nAutomated tests:\r\n  - com.centurylink.mdw.demo.test/BugWorkflow.test\r\n  \r\nCustom UI:\r\n  - demo/Bug.jsx",
+    "NodeStyle": "BoxIcon",
+    "PROCESS_START_PAGE": "demo/Bug.jsx",
+    "PROCESS_START_PAGE_assetVersion": "[0.1,1)",
+    "PROCESS_VISIBILITY": "SERVICE",
+    "WORK_DISPLAY_INFO": "x=45,y=45,w=106,h=26"
+  },
+  "variables": {
+    "request": {
+      "category": "INPUT",
+      "type": "com.centurylink.mdw.model.Jsonable"
+    },
+    "requestHeaders": {
+      "category": "INPUT",
+      "type": "java.util.Map<String,String>"
+    },
+    "response": {
+      "category": "OUTPUT",
+      "type": "com.centurylink.mdw.model.Jsonable"
+    },
+    "responseHeaders": {
+      "category": "OUTPUT",
+      "type": "java.util.Map<String,String>"
+    }
+  }
+}

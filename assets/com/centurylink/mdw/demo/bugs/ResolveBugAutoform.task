@@ -1,0 +1,15 @@
+{
+  "attributes": {
+    "FormName": "Autoform",
+    "Groups": "[\"Developers\"]",
+    "Notices": "Open,,,,;Assigned,,,,;Completed,,,,;Cancelled,,,,;In Progress,,,,;Alert,,,,;Jeopardy,,,,;Forward,,,,;",
+    "PriorityStrategy": "com.centurylink.mdw.demo.bugs.Prioritization",
+    "SubTask Rules": "",
+    "SubTaskStrategy": "",
+    "Variables": "[[\"${bug.id}\",\"ID\",\"Read Only\",\"1\",\"\",\"\"],[\"${bug.title}\",\"Title\",\"Required\",\"2\",\"\",\"\"],[\"${bug.description}\",\"Description\",\"Optional\",\"3\",\"\",\"\"],[\"${bug.commitId}\",\"Commit\",\"Optional\",\"4\",\"\",\"\"]]"
+  },
+  "category": "ISSUE",
+  "logicalId": "ResolveBugAutoform",
+  "name": "${bug.title}",
+  "version": "0.1"
+}
