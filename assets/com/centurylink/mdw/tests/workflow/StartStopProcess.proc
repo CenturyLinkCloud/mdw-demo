@@ -6,10 +6,10 @@
       "implementor": "com.centurylink.mdw.workflow.activity.process.ProcessStartActivity",
       "name": "Start",
       "transitions": [{
-        "attributes": {"TRANSITION_DISPLAY_INFO": "type=Elbow,lx=157,ly=117,xs=120&195,ys=117&117"},
+        "attributes": {"TRANSITION_DISPLAY_INFO": "lx=261,ly=117,type=Elbow,xs=120&402,ys=117&117"},
         "event": "FINISH",
         "id": "T1",
-        "to": "A3"
+        "to": "A2"
       }]
     },
     {
@@ -20,21 +20,6 @@
       "id": "A2",
       "implementor": "com.centurylink.mdw.workflow.activity.process.ProcessFinishActivity",
       "name": "Stop"
-    },
-    {
-      "attributes": {
-        "Rule": "runtimeContext.logDebug(\"Executing \" + runtimeContext.activity.name)",
-        "WORK_DISPLAY_INFO": "x=199,y=91,w=100,h=60"
-      },
-      "id": "A3",
-      "implementor": "com.centurylink.mdw.kotlin.ScriptActivity",
-      "name": "New Kotlin Script",
-      "transitions": [{
-        "attributes": {"TRANSITION_DISPLAY_INFO": "type=Elbow,lx=352,ly=117,xs=303&402,ys=117&117"},
-        "event": "FINISH",
-        "id": "T2",
-        "to": "A2"
-      }]
     }
   ],
   "attributes": {

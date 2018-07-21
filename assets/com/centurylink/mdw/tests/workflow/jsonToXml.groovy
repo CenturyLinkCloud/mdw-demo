@@ -1,5 +1,3 @@
-package com.centurylink.mdw.tests.workflow
-
 // maps jsonInput to new DOM Document jsonToXmlOutput
 
 jsonToXmlOutput {

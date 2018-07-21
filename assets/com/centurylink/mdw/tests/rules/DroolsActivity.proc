@@ -60,30 +60,6 @@
       "id": "A2",
       "implementor": "com.centurylink.mdw.workflow.activity.process.ProcessFinishActivity",
       "name": "Stop"
-    },
-    {
-      "attributes": {"WORK_DISPLAY_INFO": "x=197,y=293,w=100,h=60"},
-      "id": "A5",
-      "implementor": "com.centurylink.mdw.drools.DroolsActivity",
-      "name": "New Drools Activity"
-    },
-    {
-      "attributes": {"WORK_DISPLAY_INFO": "x=500,y=250,w=100,h=60"},
-      "id": "A6",
-      "implementor": "com.centurylink.mdw.workflow.activity.transform.CrossmapActivity",
-      "name": "New Crossmap Activity"
-    },
-    {
-      "attributes": {"WORK_DISPLAY_INFO": "x=425,y=379,w=100,h=60"},
-      "id": "A7",
-      "implementor": "com.centurylink.mdw.drools.DroolsDecisionTableActivity",
-      "name": "New Drools Decision Table"
-    },
-    {
-      "attributes": {"WORK_DISPLAY_INFO": "x=122,y=390,w=100,h=60"},
-      "id": "A8",
-      "implementor": "com.centurylink.mdw.workflow.activity.notification.EmailNotificationActivity",
-      "name": "New Email Notification"
     }
   ],
   "attributes": {

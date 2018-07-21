@@ -1,4 +1,3 @@
-## comment b
 process: # 13586
   name: JaxbDocument
   instance: 1
