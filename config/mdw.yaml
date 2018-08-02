@@ -22,15 +22,15 @@ database:
   validationQuery: select 1 from dual
   
 asset:
-  location: c:/workspaces/mdw-demo/assets
+  location: ./assets
   
 git:
-  local.path: c:/workspaces/mdw-demo
+  local.path: .
   remote.url: https://github.com/CenturyLinkCloud/mdw-demo.git
   branch: master
   user: anonymous
   
-temp.dir: c:/workspaces/mdw-demo/temp
+temp.dir: ./temp
 
 hub.url: http://localhost:8080/mdw
 services.url: http://localhost:8080/mdw
@@ -42,4 +42,4 @@ logging:
   
 filepanel:
   root.dirs:
-    - c:/workspaces/mdw-demo/deploy/logs
+    - ./deploy/logs
