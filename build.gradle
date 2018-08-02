@@ -1,42 +1,46 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
 apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
 
 group = 'com.centurylink.mdwdemo'
-version = '1.1.01'
+version = '2.0.1'
 
 description = "mdw-demo"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-sourceSets {
-    main {
-        java {
-            srcDir 'src/main/java'
-            srcDir 'assets'
-        }
-    }
-}
-
 repositories {
+    mavenLocal() // TEMP
     mavenCentral()
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
 
 dependencies {
-    compile group: 'com.centurylink.mdw', name: 'mdw-common', version: mdwVersion
-    compile group: 'com.centurylink.mdw', name: 'mdw-services', version: mdwVersion
-    compile group: 'com.centurylink.mdw', name: 'mdw-workflow', version: mdwVersion
-    compile group: "org.springframework", name: "spring-beans", version: springVersion
-    compile group: "org.springframework", name: "spring-context", version: springVersion
-    compile group: "org.springframework", name: "spring-core", version: springVersion
-
+    compile group: 'com.centurylink.mdw', name: 'mdw-spring-boot', version: mdwVersion
+    
+    // TODO: which of these are needed once mdw-spring-boot published to snapshots?
+    compile group: "commons-io", name: "commons-io", version: "2.5"
+    compile group: "javax.validation", name: "validation-api", version: "2.0.1.Final"
+    compile group: "org.hibernate.validator", name: "hibernate-validator", version: "6.0.11.Final"
+    compile group: "org.json", name: "json", version: "20180130"
+    
     // asset package dependencies (kt self-sourced jars excluded)
-    compile fileTree(dir: "assets/com/centurylink/mdw/drools", includes: ["*.jar"])
-    compile fileTree(dir: "assets/com/centurylink/mdw/kotlin", includes: ["*.jar"])
-    compile fileTree(dir: "assets/com/centurylink/mdw/microservice", includes: ["*.jar"])
-    compile fileTree(dir: "assets/com/centurylink/mdw/node", includes: ["*.jar"])
-	compile fileTree(dir: "assets/com/centurylink/mdw/system/filepanel", includes: ["*.jar"])
-    compile group: "ch.vorburger.mariaDB4j", name: "mariaDB4j-core", version: "2.2.3"
+    compileOnly fileTree(dir: "assets/com/centurylink/mdw/db", includes: ["*.jar"])
+    compileOnly fileTree(dir: "assets/com/centurylink/mdw/drools", includes: ["*.jar"])
+    compileOnly fileTree(dir: "assets/com/centurylink/mdw/kotlin", includes: ["*.jar"])
+    compileOnly fileTree(dir: "assets/com/centurylink/mdw/microservice", includes: ["*.jar"])
+    compileOnly fileTree(dir: "assets/com/centurylink/mdw/node", includes: ["*.jar"])
+    compileOnly fileTree(dir: "assets/com/centurylink/mdw/system/filepanel", includes: ["*.jar"])
+    
     compile group: 'junit', name: 'junit', version:'4.8.1'
 }
 
@@ -48,9 +52,10 @@ task copy(type: Copy) {
     rename (jarName, 'mdw-demo.jar')
 }
 
-jar {
-    include 'com/centurylink/mdwdemo/**/*.*'    
+bootJar {
+    mainClassName = 'com.centurylink.mdwdemo.DemoApplication'
 }
+
 
 build  {
     dependsOn(copy)
