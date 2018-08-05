@@ -27,6 +27,8 @@ repositories {
 dependencies {
     compile group: 'com.centurylink.mdw', name: 'mdw-spring-boot', version: mdwVersion
     
+    // compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
+    
     // TODO: which of these are needed once mdw-spring-boot published to snapshots?
     compile group: "commons-io", name: "commons-io", version: "2.5"
     compile group: "javax.validation", name: "validation-api", version: "2.0.1.Final"
