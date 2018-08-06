@@ -1,17 +1,6 @@
 app:
   id: mdw-demo
 
-servers:
-  localhost:
-    ports:
-    - 8080
-
-container:
-  datasource.provider: Tomcat
-  messenger: jms
-  jms.provider: ActiveMQ
-  threadpool.provider: MDW
-  
 database:
   driver: org.mariadb.jdbc.Driver
   url: jdbc:mariadb://localhost:3308/mdw

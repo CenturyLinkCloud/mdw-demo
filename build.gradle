@@ -27,31 +27,8 @@ dependencies {
     compile group: 'com.centurylink.mdw', name: 'mdw-spring-boot', version: mdwVersion
     
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
-    
-    // asset package dependencies (kt self-sourced jars excluded)
-    compileOnly fileTree(dir: "assets/com/centurylink/mdw/db", includes: ["*.jar"])
-    compileOnly fileTree(dir: "assets/com/centurylink/mdw/drools", includes: ["*.jar"])
-    compileOnly fileTree(dir: "assets/com/centurylink/mdw/kotlin", includes: ["*.jar"])
-    compileOnly fileTree(dir: "assets/com/centurylink/mdw/microservice", includes: ["*.jar"])
-    compileOnly fileTree(dir: "assets/com/centurylink/mdw/node", includes: ["*.jar"])
-    compileOnly fileTree(dir: "assets/com/centurylink/mdw/system/filepanel", includes: ["*.jar"])
-    
+
+    // asset package dependencies
+    compileOnly fileTree(dir: "${assetLoc}", includes: ["**/*.jar"])
     compile group: 'junit', name: 'junit', version:'4.8.1'
-}
-
-task copy(type: Copy) {
-    def jarName = 'mdw-demo-' + version + '.jar'
-    from "$buildDir/libs"
-    into "${assetLoc}/com/centurylink/mdw/demo/cool"
-    include jarName
-    rename (jarName, 'mdw-demo.jar')
-}
-
-bootJar {
-    mainClassName = 'com.centurylink.mdwdemo.DemoApplication'
-}
-
-
-build  {
-    dependsOn(copy)
 }
