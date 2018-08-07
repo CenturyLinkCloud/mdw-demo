@@ -23,6 +23,15 @@ repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs "src/main/java"
+            srcDirs "assets"
+        }
+    }
+}
+
 dependencies {
     compile group: 'com.centurylink.mdw', name: 'mdw-spring-boot', version: mdwVersion
     
@@ -31,4 +40,10 @@ dependencies {
     // asset package dependencies
     compileOnly fileTree(dir: "${assetLoc}", includes: ["**/*.jar"])
     compile group: 'junit', name: 'junit', version:'4.8.1'
+}
+
+bootJar {
+    // exclude assets
+    exclude "com/centurylink/mdw/"
+    exclude "demo/"
 }
