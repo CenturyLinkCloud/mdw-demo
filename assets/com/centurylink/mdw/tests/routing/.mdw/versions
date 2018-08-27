@@ -1,6 +1,5 @@
-#Thu Mar 23 17:47:28 MDT 2017
-TaskResumeService.proc=4
-TaskResumeService.test=2
-TaskResumeService.yaml=1
-autoform\ task\ for\ service\ resume.task=1
-custom\ task\ for\ service\ resume.task=1
+TaskResumeService.proc=5
+TaskResumeService.test=3
+TaskResumeService.yaml=2
+autoform\ task\ for\ service\ resume.task=2
+custom\ task\ for\ service\ resume.task=2
