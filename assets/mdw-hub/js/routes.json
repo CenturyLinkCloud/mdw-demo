@@ -1,8 +1,8 @@
 [
   {
-    "path": '/issues', 
-    "asset": 'demo/issues.html', 
-    "controller": 'BugsController'
+    "path": "/issues",
+    "asset": "demo/issues.html",
+    "controller": "BugsController"
   },
   {
     "path": "/issues/new",
@@ -16,5 +16,5 @@
     "path": "/heldOrders", 
     "asset": "demo/heldOrdersChart.html", 
     "controller": "HeldOrdersController"  
-  }  
+  }
 ]
