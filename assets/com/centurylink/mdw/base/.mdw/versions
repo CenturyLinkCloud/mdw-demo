@@ -1,6 +1,8 @@
+ActivityTimingMonitor.java=3
 AutoFormManualTask.pagelet=8
 CustomManualTask.pagelet=8
 MdwRpcWebService.wsdl=2
+ProcessDueDateMonitor.java=3
 activity.png=1
 adapter.png=1
 calendar.gif=2
@@ -19,6 +21,7 @@ logout.gif=1
 mdw.png=1
 mdw.wsdl=1
 milestone.gif=2
+misc.png=1
 multisub.png=1
 note.png=1
 notice.gif=1

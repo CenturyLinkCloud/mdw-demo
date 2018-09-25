@@ -1,6 +1,6 @@
 test: AdminApisWorkgroups
 request:
-  url: 'http://localhost:8080/mdw/Services/Workgroups'
+  url: '${base-url}/Workgroups'
   method: POST
   headers:
     Content-Type: application/json
@@ -19,13 +19,13 @@ response:
   body: |-
     {
       "status": {
-        "code": 0,
-        "message": "Success"
+        "code": 201,
+        "message": "Created"
       }
     }
 test: AdminApisWorkgroups
 request:
-  url: 'http://localhost:8080/mdw/Services/Workgroups'
+  url: '${base-url}/Workgroups'
   method: POST
   headers:
     Content-Type: application/json
@@ -50,7 +50,7 @@ response:
     }
 test: AdminApisWorkgroups
 request:
-  url: 'http://localhost:8080/mdw/Services/Workgroups/${group-name}'
+  url: '${base-url}/Workgroups/${group-name}'
   method: PUT
   headers:
     Content-Type: application/json
@@ -69,13 +69,13 @@ response:
   body: |-
     {
       "status": {
-        "code": 0,
-        "message": "Success"
+        "code": 200,
+        "message": "OK"
       }
     }
 test: AdminApisWorkgroups
 request:
-  url: 'http://localhost:8080/mdw/Services/Workgroups/${group-name}'
+  url: '${base-url}/Workgroups/${group-name}'
   method: GET
   headers:
     header-a: header-a-value
