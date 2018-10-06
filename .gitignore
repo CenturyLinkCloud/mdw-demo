@@ -19,3 +19,4 @@ exportedAssets
 mdw-boot-*.jar
 **/.idea/workspace.xml
 **/.idea/tasks.xml
+mdw.log

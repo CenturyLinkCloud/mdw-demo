@@ -13,7 +13,7 @@ apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 
 group = 'com.centurylink.mdwdemo'
-version = '2.0.1'
+version = appVersion
 
 description = "mdw-demo"
 
@@ -50,4 +50,11 @@ bootJar {
     exclude {
         packages.isAssetOutput(it.relativePath.toString())
     }
+}
+
+task mdwTests(type: GradleBuild) {
+    dependsOn build
+    buildFile = "test.gradle"
+    tasks = ["test"]
+    startParameter.projectProperties = [include: 'com/centurylink/mdw/tests/workflow/StartStop.test']
 }

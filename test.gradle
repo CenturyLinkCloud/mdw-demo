@@ -1,0 +1,59 @@
+def getMdwCmd() {
+    if (System.properties['os.name'].startsWith('Windows')) {
+        return 'mdw\\cli\\bin\\mdw.bat'
+    }
+    else {
+        return 'mdw/cli/bin/mdw'
+    }
+}
+
+task env {
+    tasks.withType(Exec) {
+        if (System.properties['os.name'].startsWith('Windows')) {
+            environment << [MDW_HOME: 'mdw\\cli']
+        }
+        else {
+            environment << [MDW_HOME: 'mdw/cli']
+        }
+    }
+}
+
+// overwrite the mdw-boot jar with our own
+task install(type: Copy) {
+    from "build/libs/mdw-demo-ctl-${appVersion}.jar"
+    into  "."
+    rename {
+        it.replace("mdw-demo-ctl-${appVersion}", "mdw-boot-${mdwVersion}")
+    }
+}
+
+task start(type: Exec) {
+    dependsOn install
+    commandLine getMdwCmd(), 'run', '--daemon', '--wait=90', '--retries=3'
+}
+
+def testSuccess = true
+
+task stop(type: Exec) {
+    commandLine getMdwCmd(), 'stop'
+    doLast {
+        if (!testSuccess)
+            ant.fail('TEST FAILURE(S)')
+    }
+}
+
+task runTests(type: Exec) {
+    def cmds = [getMdwCmd(), 'test', '--stubbing', '--threads=10']
+    cmds.add('--include=com/centurylink/mdw/tests/workflow/StartStop.test')
+    commandLine cmds
+    ignoreExitValue true
+    doLast {
+        testSuccess = (execResult.exitValue == 0)
+    }
+}
+
+task test(dependsOn: [start, runTests, stop]) {
+}
+
+runTests.mustRunAfter start
+stop.mustRunAfter runTests
