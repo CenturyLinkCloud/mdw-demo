@@ -8,8 +8,10 @@ import groovy.json.JsonSlurper
 start process('com.centurylink.mdw.demo.bugs/Create Bug') {
     variables = [
         request: asset('createBugRequest.json').text,
-        requestHeaders: """{\"content-type\": \"application/json\", 
-  \"mdw-request-id\": \"$masterRequestId\"}"""        
+        requestHeaders: """{
+  content-type: 'application/json', 
+  HttpMethod: 'POST',
+  mdw-request-id: \"$masterRequestId\"}"""
     ]
 }
 
