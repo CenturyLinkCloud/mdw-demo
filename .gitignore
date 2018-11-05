@@ -17,6 +17,7 @@ exportedAssets
 /out/
 .DS_Store
 mdw-boot-*.jar
+.idea/**/*.iml
 **/.idea/workspace.xml
 **/.idea/tasks.xml
 mdw.log
