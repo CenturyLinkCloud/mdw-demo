@@ -17,7 +17,7 @@ git:
   local.path: .
   remote.url: https://github.com/CenturyLinkCloud/mdw-demo.git
   branch: master
-  user: anonymous
+#  user: anonymous
   
 temp.dir: ./temp
 
@@ -27,7 +27,7 @@ central.url: https://mdw-central.com
 discovery.url: http://repo.maven.apache.org/maven2
 
 logging:
-  level: DEBUG
+  level: INFO
   
 filepanel:
   root.dirs:

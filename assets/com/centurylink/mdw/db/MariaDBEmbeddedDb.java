@@ -65,7 +65,7 @@ public class MariaDBEmbeddedDb implements EmbeddedDb {
         dbJar = new File(assetLocation + "/" + DB_ASSET_PACKAGE.replace('.', '/') + "/mariaDB4j-db-" + os + "-" + dbVer.substring(8) + ".jar");
         binariesSubLoc = DBConfigurationBuilder.class.getPackage().getName().replace('.', '/') + "/" + dbVer + "/" + os;
         configBuilder.setUnpackingFromClasspath(false); // we'll unpack it ourselves
-        configBuilder.addArg("--lower-case-table-names=1");
+        //configBuilder.addArg("--lower-case-table-names=1");
         List<String> addlParams = PropertyManager.getInstance().getListProperty(PropertyNames.MDW_EMBEDDED_DB_STARTUP);
         if (addlParams != null) {
             for (String param : addlParams) {
@@ -158,7 +158,7 @@ public class MariaDBEmbeddedDb implements EmbeddedDb {
             Class.forName(getDriverClass());
             connection = DriverManager.getConnection(url, user, password);
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("check table process_instance");
+            resultSet = statement.executeQuery("check table PROCESS_INSTANCE");
             resultSet.next();
             String checkResult = resultSet.getString(4);
             return checkResult.equals("OK");
