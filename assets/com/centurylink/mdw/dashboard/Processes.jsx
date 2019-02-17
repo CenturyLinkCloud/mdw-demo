@@ -39,7 +39,7 @@ class Processes extends Component {
   }
 
   render() {
-
+    
     const breakdownConfig = {
       breakdowns: [
         {
@@ -56,7 +56,8 @@ class Processes extends Component {
           selectLabel: 'Statuses',
           tops: '/Processes/tops?by=status',
           data: '/Processes/breakdown?by=status',
-          instancesParam: 'statuses'
+          instancesParam: 'statuses',
+          colors: selected => selected.map(sel => statuses.process[sel.name].color)
         },
         {
           name: 'Completion Time',
@@ -79,7 +80,7 @@ class Processes extends Component {
         Master: false
       },
       filterOptions: {
-        Status: statuses.process
+        Status: Object.keys(statuses.process)
       }
     };
 

@@ -180,5 +180,5 @@ process: # 6
     value: |
       {
         "HttpStatusCode": "201",
-        "Location": "http://localhost:8080/mdw/demo/api/bugs/${id}"
+        "Location": "http://localhost:8080/mdw/demo/bugs/${id}"
       }

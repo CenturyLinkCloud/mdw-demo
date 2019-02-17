@@ -10,7 +10,7 @@
 		{
 			"name": "bugs",
 			"request": {
-				"url": "{{base-url}}/demo/api/bugs",
+				"url": "{{base-url}}/demo/bugs",
 				"method": "POST",
 				"header": [
 					{
@@ -30,7 +30,7 @@
 		{
 			"name": "bugs/{id}",
 			"request": {
-				"url": "{{base-url}}/demo/api/bugs/{{id}}",
+				"url": "{{base-url}}/demo/bugs/{{id}}",
 				"method": "PUT",
 				"header": [
 					{
@@ -50,7 +50,7 @@
 		{
 			"name": "bugs/{id}",
 			"request": {
-				"url": "{{base-url}}/demo/api/bugs/{{id}}",
+				"url": "{{base-url}}/demo/bugs/{{id}}",
 				"method": "GET",
 				"header": [],
 				"body": {},

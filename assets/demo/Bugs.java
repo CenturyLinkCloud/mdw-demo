@@ -1,4 +1,4 @@
-package demo.api;
+package demo;
     
 import java.util.HashMap;
 import java.util.Map;

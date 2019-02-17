@@ -7,7 +7,28 @@ class Tasks extends Component {
 
   constructor(...args) {
     super(...args);
+    this.handleOverviewDataClick = this.handleOverviewDataClick.bind(this);
   }
+
+  handleOverviewDataClick(breakdown, selection, filters) {
+    var taskFilter = sessionStorage.getItem('taskFilter');
+    taskFilter = taskFilter ? JSON.parse(taskFilter) : {};
+    if (breakdown === 'Throughput' || breakdown == 'Completion Time') {
+      taskFilter.taskId = selection.id;
+      var taskSpec = selection.name;
+      sessionStorage.setItem('taskSpec', taskSpec);
+      taskFilter.status = filters.Status ? filters.Status : '[Active]';
+    }
+    else {
+      sessionStorage.removeItem('taskSpec');
+      if (breakdown === 'Status') {
+        taskFilter.status = selection.name;
+      }
+    }
+    sessionStorage.setItem('taskFilter', JSON.stringify(taskFilter));
+    location = this.context.hubRoot + '/#/tasks';
+  }
+
 
   render() {
 
@@ -27,7 +48,8 @@ class Tasks extends Component {
            selectLabel: 'Statuses',
            tops: '/Tasks/tops?by=status',
            data: '/Tasks/breakdown?by=status',
-           instancesParam: 'statuses'
+           instancesParam: 'statuses',
+           colors: selected => selected.map(sel => statuses.task[sel.name].color)
          },
          {
           name: 'Workgroup',
@@ -66,13 +88,14 @@ class Tasks extends Component {
          Master: false
        },
        filterOptions: {
-         Status: statuses.task
+         Status: Object.keys(statuses.task)
        }
      };
  
      return (
        <DashboardChart title="Tasks"
          breakdownConfig={breakdownConfig}
+         onOverviewDataClick={this.handleOverviewDataClick}
          list="#/tasks" />
      );
    }

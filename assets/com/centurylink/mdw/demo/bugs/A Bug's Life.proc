@@ -24,7 +24,7 @@
         "STATUS_AFTER_EVENT": "Cancelled",
         "TASK_PAGELET": "com.centurylink.mdw.base/CustomManualTask.pagelet",
         "TASK_TEMPLATE": "com.centurylink.mdw.demo.bugs/ResolveBugCustom.task",
-        "TASK_TEMPLATE_assetVersion": "[0.1,1)",
+        "TASK_TEMPLATE_assetVersion": "[0.5,1)",
         "WORK_DISPLAY_INFO": "x=176,y=122,w=108,h=70",
         "Wait for Task": "true"
       },

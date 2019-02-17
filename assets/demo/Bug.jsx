@@ -26,7 +26,7 @@ class Bug extends Component {
       }});
     }
     else {
-      fetch(new Request('/mdw/services/demo/api/bugs/' + bugId, {
+      fetch(new Request('/mdw/api/demo/bugs/' + bugId, {
         method: 'GET',
         headers: {Accept: 'application/json'},
         credentials: 'same-origin'
@@ -62,7 +62,7 @@ class Bug extends Component {
   handleClick(event) {
     var ok = false;
     var method = this.state.bug.id === 0 ? 'POST' : 'PUT';
-    var url = '/mdw/services/demo/api/bugs';
+    var url = '/mdw/api/demo/bugs';
     if (this.state.bug.id !== 0)
       url += '/' + this.state.bug.id;
     var bug = this.state.bug;
@@ -98,7 +98,7 @@ class Bug extends Component {
       });
     }
     else if (event.currentTarget.name === 'resolve') {
-      fetch(new Request('/mdw/services/Tasks/' +  this.state.bug.id + '/Resolve', {
+      fetch(new Request('/mdw/api/Tasks/' +  this.state.bug.id + '/Resolve', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify({

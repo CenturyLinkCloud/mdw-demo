@@ -1,12 +1,12 @@
-A\ Bug's\ Life.proc=5
+A\ Bug's\ Life.proc=6
 Bug.java=1
 Categories.java=1
-Create\ Bug.proc=6
-PersistBugActivity.java=1
+Create\ Bug.proc=7
+PersistBugActivity.java=2
 Prioritization.java=1
 ResolveBug.task=1 Renamed from e:workspacesdonsmdw-demoassetscomcenturylinkmdwdemobugsResolveBugAutoform.task
 ResolveBugAutoform.task=1 Renamed from e:workspacesdonsmdw-demoassetscomcenturylinkmdwdemobugsResolveBug.task
-ResolveBugCustom.task=4
+ResolveBugCustom.task=5
 bug.png=1
 bugsContext.spring=1
 slackNotice.json=2

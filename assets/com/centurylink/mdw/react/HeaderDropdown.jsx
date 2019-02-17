@@ -16,7 +16,33 @@ class HeaderDropdown extends Component {
   }
 
   render() {
-    const width = this.props.width ? this.props.width + 'px' : '140px';
+
+    var selName;
+    if (this.props.placeholder) {
+      selName = this.props.placeholder;
+    }
+    if (this.props.selected) {
+      selName = this.props.selected;
+    }
+
+    var width;
+    if (this.props.width) {
+      width = this.props.width;
+    }
+    else {
+      width = 140;
+      if (selName) {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        context.font = '14px "Helvetica Neue", Helvetica, Arial, sans-serif';
+        const metrics = context.measureText(selName);
+        const selWidth = metrics.width + 35;
+        if (selWidth > width) {
+          width = selWidth;
+        }
+      }
+    }
+
     return (
       <div className="mdw-heading-input">
         <Dropdown id="{this.props.id}" className="mdw-dropdown"
@@ -34,7 +60,9 @@ class HeaderDropdown extends Component {
             }
           </Dropdown.Menu>
           <Dropdown.Toggle noCaret={true} style={{padding:'5px',width:width,textAlign:'left'}}>
-            <span style={{position:'relative',top:'-3px'}}>{this.props.selected}</span>
+            <span style={{position:'relative',top:'-3px',color:this.props.selected?'':'#9e9e9e'}}>
+              {selName}
+            </span>
             <Glyphicon glyph="chevron-down" style={{color:'#9e9e9e',float:'right'}} />
           </Dropdown.Toggle>
         </Dropdown>

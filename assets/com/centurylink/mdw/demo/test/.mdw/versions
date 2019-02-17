@@ -1,6 +1,6 @@
 BugWorkflow.test=4
-BugWorkflow.yaml=10
+BugWorkflow.yaml=11
 createBugRequest.json=1
-localhost.env=1 Renamed from e:workspacesdonsmdw-demoassetscomcenturylinkmdwdemo	estlocalhost.values
+localhost.env=2
 localhost.values=1
-mdw-demo.postman=1
+mdw-demo.postman=2

@@ -1,7 +1,0 @@
-{
-  "category": "com.centurylink.mdw.activity.types.GeneralActivity",
-  "icon": "bug.png",
-  "implementorClass": "com.centurylink.mdw.demo.bugs.PersistBugActivity",
-  "label": "Persist Bug",
-  "pagelet": "<PAGELET/>"
-}

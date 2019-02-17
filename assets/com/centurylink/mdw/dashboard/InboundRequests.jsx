@@ -7,6 +7,22 @@ class InboundRequests extends Component {
 
   constructor(...args) {
     super(...args);
+    this.handleOverviewDataClick = this.handleOverviewDataClick.bind(this);
+  }
+
+  handleOverviewDataClick(breakdown, selection, filters) {
+    var reqFilter = sessionStorage.getItem('workflow_requestFilter');
+    reqFilter = reqFilter ? JSON.parse(reqFilter) : {};
+    reqFilter.type = 'inboundRequests';
+    if (breakdown === 'Throughput' || breakdown == 'Completion Time') {
+      reqFilter.path = selection.id;
+      reqFilter.status = filters.Status ? filters.Status : '[Active]';
+      sessionStorage.setItem('workflow_requestFilter', JSON.stringify(reqFilter));
+      location = this.context.hubRoot + '/#/workflow/requests';
+      }
+    else {
+      // TODO request list status filter
+    }
   }
 
   render() {
@@ -26,7 +42,8 @@ class InboundRequests extends Component {
           selectLabel: 'Statuses',
           tops: '/Requests/tops?direction=in&by=status',
           data: '/Requests/breakdown?direction=in&by=status',
-          instancesParam: 'statusCodes'
+          instancesParam: 'statusCodes',
+          colors: selected => selected.map(sel => statuses.request[sel.id].color)
         },
         {
           name: 'Completion Time',
@@ -46,17 +63,17 @@ class InboundRequests extends Component {
       filters: {
         Ending: new Date(),
         Status: '',
-        Master: false,
-        HealthCheck: false
+        'Health Check': false
       },
       filterOptions: {
-        Status: statuses.request
+        Status: Object.keys(statuses.request).map(status => status + ' - ' + statuses.request[status].message)
       }
     };
 
     return (
       <DashboardChart title="Inbound Requests"
         breakdownConfig={breakdownConfig}
+        onOverviewDataClick={this.handleOverviewDataClick}
         list="#/workflow/requests" />
     );
   }

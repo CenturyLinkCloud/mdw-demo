@@ -44,6 +44,7 @@ class DashboardChart extends Component {
     this.updateChart = this.updateChart.bind(this);
     this.retrieveTops = this.retrieveTops.bind(this);
     this.retrieveData = this.retrieveData.bind(this);
+    this.getChartColors = this.getChartColors.bind(this);
     this.handleOverviewDataClick = this.handleOverviewDataClick.bind(this);
     this.handleMainDataClick = this.handleMainDataClick.bind(this);
   }
@@ -301,14 +302,28 @@ class DashboardChart extends Component {
     });
   }
 
+  getChartColors() {
+    const breakdown = this.getBreakdown();
+    if (Array.isArray(breakdown.colors)) {
+      return breakdown.colors;
+    }
+    else if (typeof breakdown.colors === 'function') {
+      return breakdown.colors(this.state.selected);
+    }
+    else {
+      return this.chartColors;
+    }
+  }
+
   getOverviewData() {
     const breakdown = this.getBreakdown();
+    const chartColors = this.getChartColors();
     const overallData = {labels: [], datasets: [{label: 'Overall', data: [], backgroundColor: []}]};
     this.state.selected.forEach((sel, i) => {
       let label = breakdown.summaryChart === 'bar' ? '' : sel.name;
       overallData.labels.push(label);
       overallData.datasets[0].data.push(sel.value);
-      overallData.datasets[0].backgroundColor.push(this.chartColors[i]);
+      overallData.datasets[0].backgroundColor.push(chartColors[i]);
     }, this);
     return overallData;
   }
@@ -316,14 +331,16 @@ class DashboardChart extends Component {
   getMainData() {
     const lineData = {labels: [], datasets: []};
     var datasets = {}; // id to dataset
+    const chartColors = this.getChartColors();
+    let year = new Date().getFullYear();
     if (this.state.selected.length > 0) {
       this.state.selected.forEach((sel, i) => {
-        let dataset = {label: sel.name, borderColor: this.chartColors[i], data: [], fill: false};
+        let dataset = {label: sel.name, borderColor: chartColors[i], data: [], fill: false};
         datasets[sel.id] = dataset;
         lineData.datasets.push(dataset);
         Object.keys(this.state.data).forEach(key => {
           if (i === 0) {
-            lineData.labels.push(key);
+            lineData.labels.push(key.startsWith(year + '-') ? key.substr(5) : key);
           }
           const aggs = this.state.data[key];
           const selAgg = aggs.find(agg => agg.id === sel.id);
@@ -332,10 +349,10 @@ class DashboardChart extends Component {
       }, this);
     }
     else { // eg: total
-      let dataset = {borderColor: this.chartColors[0], data: [], fill: false};
+      let dataset = {borderColor: chartColors[0], data: [], fill: false};
       lineData.datasets.push(dataset);
       Object.keys(this.state.data).forEach(key => {
-        lineData.labels.push(key);
+        lineData.labels.push(key.startsWith(year + '-') ? key.substr(5) : key);
         let point = this.state.data[key][0];
         if (point) {
           dataset.data.push(point.value);
@@ -393,11 +410,10 @@ class DashboardChart extends Component {
         <div className="mdw-section" style={{display:'flex'}}>
           {topsLoading &&
             <div className="mdw-chart-title" style={{minWidth:'250px'}}>
-              Loading...
             </div>
           }
           {breakdown.tops && !topsLoading &&
-            <div style={{maxWidth:'303px',maxHeight:'303px'}}>
+            <div style={{maxWidth:'282px',maxHeight:'282px'}}>
               {(!breakdown.summaryChart || breakdown.summaryChart === 'donut') &&
                 <Doughnut
                   data={overviewData}
@@ -413,13 +429,12 @@ class DashboardChart extends Component {
                   getElementAtEvent={this.handleOverviewDataClick} />
               }
               <ChartLegend
-                colors={this.chartColors}
-                tops={this.state.tops}
-                selected={this.state.selected} />
+                colors={this.getChartColors()}
+                items={this.state.selected} />
             </div>
           }
           {!breakdown.tops && !topsLoading &&
-            <div className="mdw-chart-title" style={{width:'320px'}}>
+            <div className="mdw-chart-title" style={{width:'250px'}}>
               {breakdown.name}
             </div>
           }
