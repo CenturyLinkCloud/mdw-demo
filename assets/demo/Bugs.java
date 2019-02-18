@@ -1,5 +1,5 @@
 package demo;
-    
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,24 +21,24 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-    
+
 @Path("/bugs")
 @Api("Bugs API")
 public class Bugs extends JsonRestService {
-    
+
     @Override
     @ApiOperation(value="Report a bug",
-    notes="We expect this service never to be used :)", response=StatusResponse.class)
+        notes="We expect this service never to be used :)", response=StatusResponse.class)
     @ApiImplicitParams({
-        @ApiImplicitParam(name="bug", paramType="body", required=true, 
-                dataType="com.centurylink.mdw.demo.bugs.Bug")
+        @ApiImplicitParam(name="bug", paramType="body", required=true, dataType="com.centurylink.mdw.demo.bugs.Bug")
     })
     public JSONObject post(String path, JSONObject content, Map<String,String> headers)
-            throws ServiceException, JSONException {
+    throws ServiceException, JSONException {
         String requestId = Long.toHexString(System.nanoTime());
-        return invokeServiceProcess("com.centurylink.mdw.demo.bugs/Create Bug", new Bug(content), requestId, null, headers);
+        return invokeServiceProcess("com.centurylink.mdw.demo.bugs/Create Bug", new Bug(content), requestId,
+                null, headers);
     }
-    
+
     @Override
     @Path("/{id}")
     @ApiOperation(value="Retrieve a bug by id", response=Bug.class)
@@ -50,16 +50,15 @@ public class Bugs extends JsonRestService {
         bug.setDescription(bugTask.getComments());
         return bug.getJson();
     }
-    
+
     @Override
     @Path("/{id}")
     @ApiOperation(value="Update a bug", response=StatusResponse.class)
     @ApiImplicitParams({
-        @ApiImplicitParam(name="bug", paramType="body", required=true, 
-                dataType="com.centurylink.mdw.demo.bugs.Bug")
+        @ApiImplicitParam(name="bug", paramType="body", required=true, dataType="com.centurylink.mdw.demo.bugs.Bug")
     })
     public JSONObject put(String path, JSONObject content, Map<String,String> headers)
-            throws ServiceException, JSONException {
+    throws ServiceException, JSONException {
         TaskInstance bugTask = getBugTask(path);
         Bug bug = new Bug(content);
         TaskServices taskServices = ServiceLocator.getTaskServices();
@@ -78,7 +77,7 @@ public class Bugs extends JsonRestService {
         taskServices.applyValues(bugTask.getTaskInstanceId(), values);
         return null;  // sends a standard 200 response
     }
-    
+
     @Override
     @Path("/{id}")
     @ApiOperation(value="Delete (cancel) a bug by id", response=StatusResponse.class)
@@ -88,12 +87,12 @@ public class Bugs extends JsonRestService {
         performAction("Cancel", bugTask.getTaskInstanceId(), getAuthUser(headers), null);
         return null;
     }
-    
+
     /**
      * Return a bug task according to the {id} path param.
      */
     private TaskInstance getBugTask(String path) throws ServiceException {
-        String id = getSegment(path, 3);
+        String id = getSegment(path, 2);
         if (id == null)
             throw new ServiceException(Status.BAD_REQUEST.getCode(), "Missing path parameter: {id}");
         TaskServices taskServices = ServiceLocator.getTaskServices();
@@ -102,9 +101,9 @@ public class Bugs extends JsonRestService {
             throw new ServiceException(Status.NOT_FOUND.getCode(), "Bug not found: " + id);
         return bugTask;
     }
-    
+
     private void performAction(String action, Long taskInstanceId, String user, String assignee)
-            throws ServiceException {
+    throws ServiceException {
         ServiceLocator.getTaskServices().performAction(taskInstanceId, action, user, assignee, null, null, true);
     }
 }

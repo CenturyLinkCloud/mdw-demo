@@ -1,9 +1,24 @@
 # paths are relative to the location of this file
 mdw:
-  version: 6.1.14-SNAPSHOT
+  version: 6.1.15-SNAPSHOT
 
 asset:
   location: assets
 
 config:
   location: config
+
+data:
+  workgroups:
+    - Developers
+    - MDW Support
+  task:
+    categories:
+      Bug: ISSUE
+      Documentation: DOCS
+      General: GEN
+      Comments: COM
+      Test: TST
+      Inventory: INV
+      Planning: PLN
+      Ordering: ORD
