@@ -5,7 +5,7 @@
     "icon": "workflow.png",
     "url": "#/workflow/processes",
     "routes": ["/workflow", "/solutions", "/workflow/processes", "/workflow/definitions"],
-    "navs": [ 
+    "navs": [
       {
         "links": [
           {
@@ -112,6 +112,17 @@
             "priority": 1
           }
         ]
+      },
+      {
+        "links": [
+          {
+            "label": "System",
+            "path": "dashboard/system",
+            "href": "/dashboard/system",
+            "priority": 1,
+            "condition": "user.hasRole('Site Admin')"
+          }
+        ]
       }
     ]
   },
@@ -121,7 +132,7 @@
     "icon": "services.png",
     "url": "#/serviceApi",
     "routes": ["/serviceApi", "/serviceRequests"],
-    "navs": [ 
+    "navs": [
       {
         "links": [
           {
@@ -177,7 +188,7 @@
           },
           {
             "label": "Templates",
-            "path": "tasks/templates/*",
+            "path": "tasks/templates",
             "href": "#/tasks/templates",
             "priority": 1
           }
@@ -204,7 +215,7 @@
             "label": "Issues",
             "path": "demo/issues.html",
             "href": "#/issues",
-             "priority": 1
+            "priority": 1
           },
           {
             "label": "Fallout",
@@ -283,20 +294,25 @@
       {
         "links": [
           {
-            "label": "System Info",
+            "label": "System",
             "path": "system/sysInfo",
             "href": "#/system/sysInfo/System",
             "priority": 1
           },
           {
-            "label": "Thread Info",
+            "label": "Threads",
             "path": "system/threadInfo",
             "href": "#/system/threadInfo/Thread"
           },
           {
-            "label": "Memory Info",
+            "label": "Memory",
             "path": "system/memory",
             "href": "#/system/memory/Memory"
+          },
+          {
+            "label": "MBeans",
+            "path": "system/mbeans",
+            "href": "#/system/mbeans/MBeans"
           },
           {
             "label": "Messaging",
