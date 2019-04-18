@@ -2,7 +2,7 @@ package com.centurylink.mdw.demo.test
 
 import groovy.json.JsonSlurper
 
-// TODO update this
+// TODO needs to be updated
 
 // directly test Create Bug and A Bug's Life
 start process('com.centurylink.mdw.demo.bugs/Create Bug') {
