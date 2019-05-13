@@ -37,12 +37,12 @@ sourceSets {
 }
 
 dependencies {
-    compile group: 'com.centurylink.mdw', name: 'mdw-spring-boot', version: mdwVersion
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
+    compile "com.centurylink.mdw:mdw-spring-boot:${mdwVersion}"
+    compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    compile "junit:junit:4.8.1"
 
     // asset package dependencies
     compileOnly fileTree(dir: "${assetLoc}", includes: ["**/*.jar"])
-    compile group: 'junit', name: 'junit', version:'4.8.1'
 }
 
 bootJar {
