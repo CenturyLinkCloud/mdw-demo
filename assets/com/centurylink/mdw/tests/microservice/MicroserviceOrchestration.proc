@@ -6,10 +6,10 @@
       "implementor": "com.centurylink.mdw.workflow.activity.process.ProcessStartActivity",
       "name": "Receive",
       "transitions": [{
-        "attributes": {"TRANSITION_DISPLAY_INFO": "type=Elbow,lx=107,ly=68,xs=108&308&308,ys=72&72&237"},
+        "attributes": {"TRANSITION_DISPLAY_INFO": "type=Elbow,lx=105,ly=68,xs=108&284&284,ys=72&72&95"},
         "event": "FINISH",
         "id": "T1",
-        "to": "A6"
+        "to": "A11"
       }]
     },
     {
@@ -130,6 +130,18 @@
           "to": "A9"
         }
       ]
+    },
+    {
+      "attributes": {"WORK_DISPLAY_INFO": "x=248,y=99,w=100,h=60"},
+      "id": "A11",
+      "implementor": "com.centurylink.mdw.demo.cool.CoolActivity",
+      "name": "Cool Activity",
+      "transitions": [{
+        "attributes": {"TRANSITION_DISPLAY_INFO": "type=Elbow,lx=299,ly=200,xs=299&299,ys=163&238"},
+        "event": "FINISH",
+        "id": "T10",
+        "to": "A6"
+      }]
     }
   ],
   "attributes": {
@@ -137,7 +149,7 @@
     "NodeStyle": "BoxIcon",
     "PROCESS_VISIBILITY": "SERVICE",
     "PerformanceLevel": "0",
-    "WORK_DISPLAY_INFO": "x=379,y=59,w=250,h=26",
+    "WORK_DISPLAY_INFO": "x=602,y=61,w=250,h=26",
     "requestMethod": "POST",
     "requestParameters": "[[\"User\",\"Body\",\"true\",\"User with optional groups\",\"com.centurylink.mdw.tests.microservice/User.java\",\"[0.2,1)\"]]",
     "requestPath": "/user",
