@@ -71,6 +71,26 @@ var StepFactory = function(DC, Shape) {
     if (this.implementor.icon && this.implementor.icon.startsWith('shape:'))
       shape = this.implementor.icon.substring(6);
 
+    // TODO Milestones may not have been populated in sessionStorage (unless Milestones link visited).
+    var title, fill;
+    var milestoneGroups = sessionStorage.getItem('mdw-milestoneGroups');
+    if (milestoneGroups) {
+      milestoneGroups = JSON.parse(milestoneGroups);
+      var milestone = this.getMilestone();
+      if (milestone) {
+        fill = '#d2e5ff';
+        title = milestone.label; // TODO use this
+        if (milestone.group) {
+          var foundGroup = milestoneGroups.find(function(mg) {
+            return mg.name === milestone.group;
+          });
+          if (foundGroup && foundGroup.props && foundGroup.props.color) {
+            fill = foundGroup.props.color;
+          }
+        }
+      }
+    }
+
     // runtime state first
     if (this.instances) {
       var adj = 0;
@@ -79,7 +99,8 @@ var StepFactory = function(DC, Shape) {
       var color = null;
       if (shape == 'pause')
         color = '#ffea00';
-      this.diagram.drawState(this.display, this.instances, !this.diagram.drawBoxes, adj, animationTimeSlice, color);
+      this.diagram.drawState(this.display, this.instances, !this.diagram.drawBoxes, adj, animationTimeSlice, color, fill);
+      fill = null; // otherwise runtime info lost below
     }
     else if (this.data) {
       this.diagram.drawData(this.display, 10 * this.data.heat, this.data.color, 0.8);
@@ -102,13 +123,13 @@ var StepFactory = function(DC, Shape) {
           yAdjust = this.title.lines.length == 1 ? -2 : -8;
         }
         else if ('activity' == shape) {
-          this.diagram.roundedRect(this.display.x, this.display.y, this.display.w, this.display.h, DC.BOX_OUTLINE_COLOR);
+          this.diagram.roundedRect(this.display.x, this.display.y, this.display.w, this.display.h, DC.BOX_OUTLINE_COLOR, fill);
           yAdjust = -8;
         }
       }
       else {
         if (this.diagram.drawBoxes)
-          this.diagram.roundedRect(this.display.x, this.display.y, this.display.w, this.display.h, DC.BOX_OUTLINE_COLOR);
+          this.diagram.roundedRect(this.display.x, this.display.y, this.display.w, this.display.h, DC.BOX_OUTLINE_COLOR, fill);
         var iconSrc = 'asset/' + this.implementor.icon;
         var iconX = this.display.x + this.display.w / 2 - 12;
         var iconY = this.display.y + 5;
@@ -117,7 +138,7 @@ var StepFactory = function(DC, Shape) {
       }
     }
     else {
-      this.diagram.roundedRect(this.display.x, this.display.y, this.display.w, this.display.h, DC.BOX_OUTLINE_COLOR);
+      this.diagram.roundedRect(this.display.x, this.display.y, this.display.w, this.display.h, DC.BOX_OUTLINE_COLOR, fill);
     }
 
     // title
@@ -134,6 +155,37 @@ var StepFactory = function(DC, Shape) {
       showText += ' (' + this.data.message + ')';
     this.diagram.context.fillText(showText, this.display.x + 2, this.display.y - 2);
     this.diagram.context.fillStyle = DC.DEFAULT_COLOR;
+  };
+
+  Step.prototype.getMilestone = function() {
+    if (this.activity.attributes && this.activity.attributes.Monitors) {
+      var monitors = JSON.parse(this.activity.attributes.Monitors);
+      if (monitors.length > 0) {
+        var activity = this;
+        for (var i = 0; i < monitors.length; i++) {
+          var mon = monitors[i];
+          if (mon.length >= 3 && mon[0] === 'true' && mon[2] === 'com.centurylink.mdw.milestones/ActivityMilestone.java') {
+            var milestone = { label: activity.name };
+            if (mon.length >= 4 && mon[3]) {
+              var text = mon[3];
+              var bracket = text.indexOf('[');
+              if (bracket > 0) {
+                  text = text.substring(0, bracket);
+              }
+              milestone.label = text.trim().replace(/\\n/g, '\n');
+              if (bracket >= 0) {
+                  var g = mon[3].substring(bracket + 1);
+                  bracket = g.indexOf(']');
+                  if (bracket > 0)
+                      g = g.substring(0, bracket);
+                  milestone.group = g.trim();
+              }
+            }
+            return milestone;
+          }
+        }
+      }
+    }
   };
 
   Step.prototype.isWaiting = function() {

@@ -15,28 +15,29 @@
  */
 package com.centurylink.mdw.slack;
 
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.json.JSONObject;
-
 import com.centurylink.mdw.annotations.RegisteredService;
-import com.centurylink.mdw.app.ApplicationContext;
 import com.centurylink.mdw.cache.impl.AssetCache;
-import com.centurylink.mdw.common.service.ServiceException;
-import com.centurylink.mdw.config.PropertyException;
 import com.centurylink.mdw.config.PropertyManager;
+import com.centurylink.mdw.model.JsonObject;
 import com.centurylink.mdw.model.asset.Asset;
-import com.centurylink.mdw.model.listener.Listener;
 import com.centurylink.mdw.model.task.TaskAction;
 import com.centurylink.mdw.model.task.TaskRuntimeContext;
 import com.centurylink.mdw.observer.ObserverException;
 import com.centurylink.mdw.observer.task.TemplatedNotifier;
 import com.centurylink.mdw.util.HttpHelper;
+import com.centurylink.mdw.util.log.LoggerUtil;
+import com.centurylink.mdw.util.log.StandardLogger;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 @RegisteredService(com.centurylink.mdw.observer.task.TaskNotifier.class)
 public class TaskNotifier extends TemplatedNotifier {
+
+    private static StandardLogger logger = LoggerUtil.getStandardLogger();
 
     private TaskRuntimeContext context;
 
@@ -51,51 +52,66 @@ public class TaskNotifier extends TemplatedNotifier {
         this.context = context;
 
         try {
-            Map<String,String> hdrs = new HashMap<>();
-            hdrs.put(Listener.METAINFO_CLOUD_ROUTING, "SlackWebHook");
-            hdrs.put(Listener.METAINFO_MDW_APP_ID, ApplicationContext.getAppId());
-            hdrs.put(Listener.METAINFO_MDW_APP_TOKEN, System.getenv("MDW_APP_TOKEN"));   // Add the application specific MDW provided token
-            HttpHelper helper = new HttpHelper(new URL(ApplicationContext.getMdwCloudRoutingUrl() + "/slack"));
-            helper.setHeaders(hdrs);
-            String response = helper.post(getMessage().toString(2));
-            if (helper.getResponseCode() != 200)
-                throw new ServiceException(helper.getResponseCode(), "Slack notification failed with response:" + response);
+            String webhookUrl = getWebhookUrl();
+            HttpHelper httpHelper = HttpHelper.getHttpHelper("POST", new URL(webhookUrl));
+            httpHelper.setHeaders(getRequestHeaders());
+            String response = httpHelper.post(getMessage().toString(2));
+            if (httpHelper.getResponseCode() != 200) {
+                String msg = httpHelper.getResponseCode() + " response from " + webhookUrl;
+                logger.error(msg + ":\n" + response);
+                throw new ObserverException(msg);
+            }
         }
-        catch (Exception ex) {
+        catch (IOException ex) {
             throw new ObserverException(ex.getMessage(), ex);
         }
+    }
+
+    protected Map<String,String> getRequestHeaders() {
+        Map<String,String> headers = new HashMap<>();
+        // TODO re-enable two way slack interactions
+        // hdrs.put(Listener.METAINFO_CLOUD_ROUTING, "SlackWebHook");
+        // hdrs.put(Listener.METAINFO_MDW_APP_ID, ApplicationContext.getAppId());
+        // hdrs.put(Listener.METAINFO_MDW_APP_TOKEN, System.getenv("MDW_APP_TOKEN"));
+        headers.put("Content-Type", "application/json");
+        return headers;
     }
 
     /**
      * TODO: no need if the mdw slack app is installed
      */
-    public String getWebhookUrl() throws PropertyException {
+    public String getWebhookUrl() throws IOException {
         String url = PropertyManager.getProperty("mdw.slack.webhook.url");
         if (url == null)
-            throw new PropertyException("Missing configuration: mdw.slack.webhook.url");
+            throw new IOException("Missing configuration: mdw.slack.webhook.url");
         return url;
     }
 
-    public JSONObject getMessage() {
+    public JSONObject getMessage() throws IOException {
         Asset template = AssetCache.getAsset(getTemplateSpec());
+        if (template == null)
+            throw new IOException("Missing template: " + getTemplateSpec());
         String message = context.evaluateToString(template.getStringContent());
-        JSONObject json;
-        if (template.getLanguage().equals(Asset.JSON)) {
-            json = new JSONObject(message);
-        }
-        else {
-            json = new JSONObject();
-            json.put("text", message);
-        }
-        String altText = null;
-        if (json.has("text")) {
-            String text = json.getString("text");
-            if (text.length() > 200)
-                altText = text.substring(0, 197) + "...";
-        }
-        if (altText != null)
-            json.put("text", altText);
-        return json;
+        return new JsonObject(message);
+
+        // TODO: re-enable two-way slack interaction
+        // JSONObject json;
+        //  if (template.getLanguage().equals(Asset.JSON)) {
+        //    json = new JSONObject(message);
+        // }
+        // else {
+        //     json = new JSONObject();
+        //     json.put("text", message);
+        // }
+        // String altText = null;
+        // if (json.has("text")) {
+        //     String text = json.getString("text");
+        //     if (text.length() > 200)
+        //         altText = text.substring(0, 197) + "...";
+        // }
+        // if (altText != null)
+        //     json.put("text", altText);
+        // return json;
     }
 
 }

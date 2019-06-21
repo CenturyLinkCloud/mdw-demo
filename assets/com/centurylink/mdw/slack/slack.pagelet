@@ -1,0 +1,27 @@
+{
+  "widgets": [
+    {
+      "name": "webhookUrl",
+      "label": "Webhook URL",
+      "type": "text",
+      "default": "${props['mdw.slack.webhook.url']}",
+      "vw": 350
+    },
+    {
+      "name": "message",
+      "label": "Message",
+      "type": "asset",
+      "source": "json"
+    },
+    {
+      "name": "continueDespiteMessagingException",
+      "label": "Continue Despite Messaging Exception",
+      "type": "checkbox"
+    },
+    {
+      "name": "Slack Activity Help",
+      "type": "link",
+      "url": "help/SlackActivity.html"
+    }
+  ]
+}

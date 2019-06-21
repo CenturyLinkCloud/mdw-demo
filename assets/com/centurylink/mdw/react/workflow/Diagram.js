@@ -92,7 +92,7 @@ var DiagramFactory = function(DC, Shape, Label, Step, Link, Subflow, Note, Marqu
         subflow.draw();
       });
       if (highlighted) {
-        this.scrollIntoView(highlighted, 500);
+        this.scrollIntoView(highlighted, diagram.activityId ? 0 : 500);
       }
     }
 
@@ -364,7 +364,7 @@ var DiagramFactory = function(DC, Shape, Label, Step, Link, Subflow, Note, Marqu
       else {
         sequence.forEach(update);
         if (highlighted) {
-          this.scrollIntoView(highlighted, 500);
+          this.scrollIntoView(highlighted, diagram.activityInstanceId ? 0 : 500);
         }
         callback();
       }
@@ -395,7 +395,7 @@ var DiagramFactory = function(DC, Shape, Label, Step, Link, Subflow, Note, Marqu
             }
           });
         });
-      }  
+      }
     }
   };
 
@@ -826,7 +826,7 @@ var DiagramFactory = function(DC, Shape, Label, Step, Link, Subflow, Note, Marqu
     }
   };
 
-  Diagram.prototype.drawState = function(display, instances, ext, adj, animationSlice /* not used */, color) {
+  Diagram.prototype.drawState = function(display, instances, ext, adj, animationSlice /* not used */, color, fill) {
     if (instances) {
       var count = instances.length > Step.MAX_INSTS ? Step.MAX_INSTS : instances.length;
       for (var i = 0; i < count; i++) {
@@ -888,8 +888,14 @@ var DiagramFactory = function(DC, Shape, Label, Step, Link, Subflow, Note, Marqu
             y1 += Step.OLD_INST_W - 1;
             w1 -= 2 * Step.OLD_INST_W - 2;
             h1 -= 2 * Step.OLD_INST_W - 2;
-            if (w1 > 0 && h1 > 0)
-              this.context.clearRect(x1, y1, w1, h1);
+            if (w1 > 0 && h1 > 0) {
+              if (fill) {
+                this.rect(x1, y1, w1, h1, statusColor, fill);
+              }
+              else {
+                this.context.clearRect(x1, y1, w1, h1);
+              }
+            }
           }
         }
       }
@@ -1115,6 +1121,11 @@ var DiagramFactory = function(DC, Shape, Label, Step, Link, Subflow, Note, Marqu
       if (centeringVScroll > 0) {
         var vScroll = centeringVScroll > maxVScroll ? maxVScroll : centeringVScroll;
         var vDelta = vScroll - container.scrollTop;
+        // not sure about other logic, but force scroll for these conditions
+        if (timeSlice === 0 && container === document.body) {
+          window.scroll(0, vDelta);
+          return;
+        }
         var winDelta = 0;
         var bottomY = canvasTopY + shape.display.y + shape.display.h - vDelta + DC.HIGHLIGHT_MARGIN*2;
         if (document.documentElement.clientHeight < bottomY) {

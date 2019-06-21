@@ -1,20 +1,23 @@
 import React, {Component} from '../node/node_modules/react';
 import PropTypes from '../node/node_modules/prop-types';
 import {Doughnut, Bar, Line} from '../node/node_modules/react-chartjs-2';
+import constants from '../react/constants';
+import {shade} from '../react/statuses';
 import ChartHeader from './ChartHeader.jsx';
 import ChartLegend from './ChartLegend.jsx';
-import {shade} from '../react/statuses';
 
 class DashboardChart extends Component {
 
   constructor(...args) {
     super(...args);
-    // constants (TODO: parameterize)
     this.initialSelect = 5;
     this.maxTops = 50;
     this.defaultTimespan = 'Week';
     this.chartColors = ['#3366CC','#FF9900','#DC3912','#109618','#990099','#3B3EAC','#0099C6','#DD4477','#66AA00','#B82E2E','#316395','#994499','#22AA99','#AAAA11','#6633CC','#E67300','#8B0707','#329262','#5574A6','#3B3EAC'];
     this.chartOptions = {legend: {display: false, position: 'bottom'}};
+    this.minute_ms = 60 * 1000;
+    this.hour_ms = 60 * this.minute_ms;
+    this.day_ms = 24 * this.hour_ms;
 
     this.state = {
       timespan: this.defaultTimespan,
@@ -25,7 +28,7 @@ class DashboardChart extends Component {
       data: {}
     };
     if (this.state.filters.Ending) {
-      this.state.filters.Ending = this.getDefaultEnd();
+      this.state.filters.Ending = this.getDefaultEnd(this.defaultTimespan);
     }
     this.getBreakdown = this.getBreakdown.bind(this);
     this.getDefaultEnd = this.getDefaultEnd.bind(this);
@@ -55,16 +58,15 @@ class DashboardChart extends Component {
     return this.props.breakdownConfig.breakdowns.find(bd => bd.name === this.state.breakdown);
   }
 
-  getDefaultEnd() {
-    var timespan = this.defaultTimespan;
-    if (this.state && this.state.timespan) {
-      timespan = this.state.timespan;
-    }
+  getDefaultEnd(timespan) {
     var end = new Date();
-    end.setMinutes(0);
     end.setSeconds(0);
     end.setMilliseconds(0);
+    if (timespan === 'Day') {
+      end.setMinutes(0);
+    }
     if (timespan === 'Week' || timespan === 'Month') {
+      end.setMinutes(0);
       end.setHours(0);
     }
     return end;
@@ -72,12 +74,18 @@ class DashboardChart extends Component {
 
   getStart() {
     if (this.state.filters.Ending) {
-      var spanMs = 24 * 3600 * 1000; // one day
-      if (this.state.timespan === 'Week') {
-        spanMs = spanMs * 6;
+      var spanMs;
+      if (this.state.timespan === 'Hour') {
+        spanMs = this.minute_ms * 59;
+      }
+      else if (this.state.timespan === 'Day') {
+        spanMs = this.hour_ms * 23;
+      }
+      else if (this.state.timespan === 'Week') {
+        spanMs = this.day_ms * 6;
       }
       else if (this.state.timespan === 'Month') {
-        spanMs = spanMs * 29;
+        spanMs = this.day_ms * 29;
       }
       return new Date(this.state.filters.Ending.getTime() - spanMs);
     }
@@ -117,12 +125,15 @@ class DashboardChart extends Component {
   }
 
   handleTimespanChange(timespan) {
+    const filters = Object.assign({}, this.state.filters, { 
+      Ending: this.getDefaultEnd(timespan), 
+    });
     this.setState({
       timespan: timespan,
       breakdown: this.state.breakdown,
       tops: [],
       selected: [],
-      filters: this.state.filters,
+      filters: filters,
       data: {}
     }, this.update);
   }
@@ -162,12 +173,13 @@ class DashboardChart extends Component {
 
   handleFilterChange(filters) {
     if (!filters.Ending) {
-      filters.Ending = this.getDefaultEnd();
+      filters.Ending = this.getDefaultEnd(this.state.timespan);
     }
-    if (this.state.timespan === 'Hours') {
+    if (this.state.timespan === 'Hour' || this.state.timespan === 'Day') {
       filters.Ending.setHours(new Date().getHours());
     }
     else {
+      // midnight of the next day
       filters.Ending.setHours(0);
     }
     this.setState({
@@ -183,7 +195,7 @@ class DashboardChart extends Component {
   handleFilterReset() {
     var filters = this.props.breakdownConfig.filters || {};
     if (filters.Ending) {
-      filters.Ending = this.getDefaultEnd();
+      filters.Ending = this.getDefaultEnd(this.state.timespan);
     }
     this.handleFilterChange(filters);
   }
@@ -214,10 +226,28 @@ class DashboardChart extends Component {
     if (start) {
       url += 'Starting=' + start.toISOString();
     }
+    if (this.state.timespan === 'Hour') {
+      url += '&Increment=minute';
+    }
+    else if (this.state.timespan === 'Day') {
+      url += '&Increment=hour';
+    }
     Object.keys(this.state.filters).forEach(key => {
       let val = this.state.filters[key];
       if (val) {
         if (val instanceof Date) {
+          if (key == 'Ending') {
+            if (this.state.timespan === 'Hour') {
+              val = new Date(val.getTime() + this.minute_ms);
+            }
+            else if (this.state.timespan === 'Day') {
+              val = new Date(val.getTime() + this.hour_ms);
+            }
+            else {
+              // midnight of the day after the selected date
+              val = new Date(val.getTime() + this.day_ms);
+            }
+          }
           url += '&' + key + '=' + val.toISOString();
         }
         else {
@@ -428,12 +458,26 @@ class DashboardChart extends Component {
     return overallData;
   }
 
+  getLabel(date) {
+    const now = new Date();
+    let lab = date.getFullYear() === now.getFullYear() ? '' : date.getFullYear() + ' ';
+    if (this.state.timespan === 'Hour' || this.state.timespan === 'Day') {
+      if (date.getMonth() !== now.getMonth() || date.getDate() !== now.getDate()) {
+        lab += constants.months[date.getMonth()] + ' ' + date.getDate() + ' ';
+      }
+      lab += date.getHours() + ':' + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+    }
+    else {
+      lab += constants.months[date.getMonth()] + ' ' + date.getDate();
+    }
+    return lab;
+  }
+
   getMainData() {
     const breakdown = this.getBreakdown();
     const lineData = {labels: [], datasets: []};
     var datasets = {}; // id to dataset
     const chartColors = this.getChartColors();
-    let year = new Date().getFullYear();
     if (this.state.selected.length > 0) {
       this.state.selected.forEach((sel, i) => {
         let fill = breakdown.fill && (!Array.isArray(breakdown.fill) || breakdown.fill[i]);
@@ -445,7 +489,7 @@ class DashboardChart extends Component {
         lineData.datasets.push(dataset);
         Object.keys(this.state.data).forEach((key, j) => {
           if (i === 0) {
-            lineData.labels.push(key.startsWith(year + '-') ? key.substr(5) : key);
+            lineData.labels.push(key.endsWith('00Z') ? this.getLabel(new Date(key)) : key);
           }
           const aggs = this.state.data[key];
           const selAgg = aggs.find(agg => agg.id === sel.id);
@@ -462,7 +506,7 @@ class DashboardChart extends Component {
       let dataset = {borderColor: chartColors[0], data: [], fill: breakdown.fill ? breakdown.fill : false};
       lineData.datasets.push(dataset);
       Object.keys(this.state.data).forEach(key => {
-        lineData.labels.push(key.startsWith(year + '-') ? key.substr(5) : key);
+        lineData.labels.push(key.endsWith('00Z') ? this.getLabel(new Date(key)) : key);
         let point = this.state.data[key][0];
         if (point) {
           dataset.data.push(point.value);
@@ -499,7 +543,7 @@ class DashboardChart extends Component {
     const topsLoading = breakdown.tops && !this.state.tops.length;
 
     return (
-      <div>
+      <div className="panel panel-default mdw-panel" style={{border:'none'}}>
         <ChartHeader title={this.props.title}
           breakdownConfig={this.props.breakdownConfig}
           breakdown={this.state.breakdown}

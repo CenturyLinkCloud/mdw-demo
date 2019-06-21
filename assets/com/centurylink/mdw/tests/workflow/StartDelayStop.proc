@@ -7,7 +7,7 @@
       "name": "Start",
       "transitions": [{
         "attributes": {
-          "TRANSITION_DELAY": "5s",
+          "TRANSITION_DELAY": "360s",
           "TRANSITION_DISPLAY_INFO": "lx=257,ly=122,type=Elbow,xs=128&386,ys=122&122"
         },
         "event": "FINISH",
