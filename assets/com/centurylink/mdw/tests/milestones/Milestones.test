@@ -1,0 +1,25 @@
+package com.centurylink.mdw.tests.milestones
+
+start process("MilestonesMain") {
+    variables = [
+        subOneInput: "hello",
+        subTwoInput: "two"
+    ]
+}
+notify event("milestoneWait-${masterRequestId}") {
+    message = "ignored"
+}
+wait process
+verify processes(
+    "MilestonesMain",
+    "SubOne",
+    "SubTwo",
+    "SubTwoSub",
+    "SubThree")
+
+response = get http("api/com/centurylink/mdw/milestones/${masterRequestId}")
+assert response.code == 200
+verify response {
+    expected = asset("milestones.json").text
+}
+

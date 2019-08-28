@@ -4,7 +4,7 @@
     "label": "Workflow",
     "icon": "workflow.png",
     "url": "#/workflow/processes",
-    "routes": ["/workflow", "/solutions", "/workflow/processes", "/workflow/definitions"],
+    "routes": ["/workflow", "/workflow/processes", "/workflow/definitions", "/solutions", "/milestones"],
     "navs": [
       {
         "links": [
@@ -39,6 +39,12 @@
       },
       {
         "links": [
+          {
+            "label": "Milestones",
+            "path": "workflow/milestones",
+            "href": "#/milestones",
+            "priority": 1
+          },
           {
             "label": "Solutions",
             "path": "solutions/*",
@@ -237,8 +243,8 @@
     "label": "Admin",
     "icon": "admin.png",
     "url": "#/users",
-    "routes": ["/users", "/groups", "/roles", "/assets", "/packages", "/asset", "/tests", "/history"],
-    "condition": "user.hasRole('User Admin') || user.hasRole('Process Execution')",
+    "routes": ["/users", "/groups", "/roles", "/assets", "/packages", "/asset", "/tests", "/history", "/staging"],
+    "condition": "user.hasRole('User Admin') || user.hasRole('Process Execution') || user.hasRole('Asset Design')",
     "navs": [
       {
         "id": "admin-nav",
@@ -261,7 +267,8 @@
             "href": "#/roles",
             "priority": 1
           }
-        ]
+        ],
+        "condition": "user.hasRole('User Admin')"
       },
       {
         "id": "asset-nav",
@@ -274,10 +281,19 @@
             "priority": 2
           },
           {
+            "label": "Staging",
+            "path": "/staging/*",
+            "href": "#/staging",
+            "priority": 2,
+            "condition": "user.hasRole('Asset Design')",
+            "note": "beta"
+          },
+          {
             "label": "Testing",
             "path": "testing/*",
             "href": "#/tests",
-            "priority": 2
+            "priority": 2,
+            "condition": "user.hasRole('Process Execution')"
           }
         ]
       }
