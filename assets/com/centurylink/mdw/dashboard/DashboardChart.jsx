@@ -211,7 +211,7 @@ class DashboardChart extends Component {
         }).join() + '%5D';
       }
       sep = downloadUrl.indexOf('?') >= 0 ? '&' : '?';
-      location = downloadUrl + sep + 'DownloadFormat=xlsx';
+      location = downloadUrl + sep + 'DownloadFormat=xlsx&NoPersistence=true';
     }
   }
 
@@ -340,7 +340,7 @@ class DashboardChart extends Component {
         var topsUrl = this.buildUrl(this.context.serviceRoot + breakdown.tops);
         fetch(new Request(topsUrl, {
           method: 'GET',
-          headers: { Accept: 'application/json'},
+          headers: { Accept: 'application/json', 'mdw-app-id': 'mdw-hub' },
           credentials: 'same-origin'
         }))
         .then(response => {
@@ -370,7 +370,7 @@ class DashboardChart extends Component {
         }
         fetch(new Request(dataUrl, {
           method: 'GET',
-          headers: { Accept: 'application/json'},
+          headers: { Accept: 'application/json', 'mdw-app-id': 'mdw-hub' },
           credentials: 'same-origin'
         }))
         .then(response => {

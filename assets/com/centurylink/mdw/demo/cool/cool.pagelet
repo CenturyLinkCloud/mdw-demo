@@ -1,0 +1,20 @@
+{"widgets": [
+  {
+    "label": "How Cool",
+    "name": "coolLevel",
+    "options": [
+      "Somewhat Cool",
+      "Very Cool",
+      "Extremely Cool"
+    ],
+    "type": "dropdown",
+    "vw": "160",
+    "vx": "180"
+  },
+  {
+    "default": "true",
+    "label": "Important",
+    "name": "important",
+    "type": "checkbox"
+  }
+]}

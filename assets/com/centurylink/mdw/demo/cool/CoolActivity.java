@@ -1,13 +1,13 @@
 package com.centurylink.mdw.demo.cool;
 
 import com.centurylink.mdw.activity.ActivityException;
+import com.centurylink.mdw.annotations.Activity;
 import com.centurylink.mdw.model.workflow.ActivityRuntimeContext;
-import com.centurylink.mdw.util.log.StandardLogger.LogLevel;
-import com.centurylink.mdw.util.timer.Tracked;
 import com.centurylink.mdw.workflow.activity.DefaultActivityImpl;
 import com.centurylink.mdwdemo.DemoHelper;
 
-@Tracked(LogLevel.TRACE)
+@Activity(value="Cool Activity", icon="com.centurylink.mdw.demo.cool/cool.png",
+        pagelet="com.centurylink.mdw.demo.cool/cool.pagelet")
 public class CoolActivity extends DefaultActivityImpl {
 
     @Override

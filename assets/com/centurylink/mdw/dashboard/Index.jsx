@@ -19,7 +19,7 @@ class Index extends Component {
     $mdwUi.clearMessage();
     fetch(new Request(this.getChildContext().serviceRoot + '/AuthenticatedUser', {
       method: 'GET',
-      headers: { Accept: 'application/json'},
+      headers: { Accept: 'application/json', 'mdw-app-id': 'mdw-hub' },
       credentials: 'same-origin'
     }))
     .then(response => {
