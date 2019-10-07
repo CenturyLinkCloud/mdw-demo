@@ -1,0 +1,32 @@
+{"widgets": [
+  {
+    "label": "Events",
+    "name": "WAIT_EVENT_NAMES",
+    "type": "table",
+    "widgets": [
+      {
+        "name": "Event Name",
+        "label": "Event Name",
+        "type": "text"
+      },
+      {
+        "name": "Completion Code",
+        "label": "Completion Code",
+        "type": "text"
+      }
+    ]
+  },
+  {
+    "label": "Received Message Variable (Optional)",
+    "name": "rcvdMsgDocVar",
+    "source": "DocumentVariables",
+    "type": "dropdown",
+    "vw": "160",
+    "vx": "180"
+  },
+  {
+    "name": "Event Check Activity Help",
+    "type": "link",
+    "url": "help/EventCheckActivity.html"
+  }
+]}

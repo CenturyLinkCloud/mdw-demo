@@ -1,0 +1,60 @@
+{"widgets": [
+  {
+    "default": "true",
+    "label": "Synchronous",
+    "name": "synchronous",
+    "type": "checkbox",
+    "vw": "100"
+  },
+  {
+    "label": "Parallel",
+    "name": "parallel",
+    "type": "checkbox",
+    "vw": "100"
+  },
+  {
+    "label": "Delay (sec)",
+    "lw": "200",
+    "name": "delay",
+    "type": "text",
+    "vw": "40",
+    "vx": "220"
+  },
+  {
+    "label": "Events",
+    "name": "WAIT_EVENT_NAMES",
+    "section": "Events",
+    "type": "table",
+    "widgets": [
+      {
+        "name": "Event Name",
+        "label": "Event Name",
+        "type": "text"
+      },
+      {
+        "name": "Completion Code",
+        "label": "Completion Code",
+        "type": "text"
+      }
+    ]
+  },
+  {
+    "default": "Hold",
+    "label": "Status after receiving event",
+    "lw": "175",
+    "name": "STATUS_AFTER_EVENT",
+    "options": [
+      "Hold",
+      "Waiting"
+    ],
+    "section": "Events",
+    "type": "dropdown",
+    "vw": "120",
+    "vx": "200"
+  },
+  {
+    "name": "Microservice Orchestrator Help",
+    "type": "link",
+    "url": "help/MicroserviceOrchestrator.html"
+  }
+]}
