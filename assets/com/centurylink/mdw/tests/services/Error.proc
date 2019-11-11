@@ -3,19 +3,19 @@ activities:
   name: Start
   implementor: com.centurylink.mdw.workflow.activity.process.ProcessStartActivity
   attributes:
-    WORK_DISPLAY_INFO: x=56,y=127,w=60,h=40
+    WORK_DISPLAY_INFO: x=41,y=231,w=60,h=40
   transitions:
   - id: T1
     to: A4
     event: FINISH
     attributes:
-      TRANSITION_DISPLAY_INFO: lx=156,ly=116,type=Elbow,xs=120&181,ys=147&147
+      TRANSITION_DISPLAY_INFO: type=Elbow,lx=135,ly=252,xs=105&166,ys=252&252
 - id: A2
   name: Stop
   implementor: com.centurylink.mdw.workflow.activity.process.ProcessFinishActivity
   attributes:
     DoNotNotifyCaller: 'false'
-    WORK_DISPLAY_INFO: x=555,y=131,w=60,h=40
+    WORK_DISPLAY_INFO: x=540,y=235,w=60,h=40
 - id: A3
   name: Fallout
   implementor: com.centurylink.mdw.workflow.activity.task.AutoFormManualTaskActivity
@@ -24,37 +24,91 @@ activities:
     TASK_PAGELET: com.centurylink.mdw.base/AutoFormManualTask.pagelet
     TASK_TEMPLATE: com.centurylink.mdw.tests.services/Fallout.task
     TASK_TEMPLATE_assetVersion: '[0.1,1)'
-    WORK_DISPLAY_INFO: x=384,y=118,w=100,h=60
+    WORK_DISPLAY_INFO: x=369,y=222,w=100,h=60
     Wait for Task: 'TRUE'
   transitions:
   - id: T2
     to: A2
     event: FINISH
     attributes:
-      TRANSITION_DISPLAY_INFO: lx=523,ly=151,type=Elbow,xs=488&551,ys=151&151
+      TRANSITION_DISPLAY_INFO: type=Elbow,lx=504,ly=256,xs=473&536,ys=256&256
 - id: A4
-  name: Set stackTrace
+  name: Set Values
   implementor: com.centurylink.mdw.workflow.activity.script.ScriptExecutorActivity
   attributes:
-    Output Documents: stackTrace
-    Rule: "import java.io.ByteArrayOutputStream\r\nimport java.io.PrintWriter\r\n\r\ndef baos = new ByteArrayOutputStream()\r\ndef writer = new PrintWriter(baos)\r\nexception.printStackTrace(writer)\r\nwriter.flush()\r\nstackTrace = baos.toString()"
+    Output Documents: '["person","stackTrace","values"]'
+    Rule: "import java.io.ByteArrayOutputStream\nimport java.io.PrintWriter\nimport com.centurylink.mdw.services.ServiceLocator\nimport com.centurylink.mdw.services.WorkflowServices\nimport com.centurylink.mdw.model.variable.DocumentReference\nimport com.centurylink.mdw.model.Jsonable\n\ndef baos = new ByteArrayOutputStream()\ndef writer = new PrintWriter(baos)\nexception.printStackTrace(writer)\nwriter.flush()\nstackTrace = baos.toString()\n\n// populate values map from source process variables\nvalues = [:]\nvalues['message'] = exception.toString()\nif (exception.runtimeContext) {\n    def procInst = exception.runtimeContext.processInstance\n    values['processName'] = procInst.processName\n    values['packageName'] = procInst.packageName\n    values['processInstanceId'] = String.valueOf(procInst.id)\n    \n    // access variables of source process\n    procInst.variables.each { var ->\n        values[var.name] = var.value\n    }\n    \n    // access Jsonable doc var from source process\n    def personDocRef = new DocumentReference(values['person'])\n    def personDoc = ServiceLocator.getWorkflowServices().getDocument(personDocRef.documentId)\n    person = personDoc.getObject(Jsonable.class.name, null)\n}\n"
     SCRIPT: Groovy
-    WORK_DISPLAY_INFO: x=185,y=119,w=100,h=60
+    WORK_DISPLAY_INFO: x=170,y=223,w=100,h=60
   transitions:
   - id: T3
     to: A3
     event: FINISH
     attributes:
-      TRANSITION_DISPLAY_INFO: lx=335,ly=148,type=Elbow,xs=289&380,ys=148&148
+      TRANSITION_DISPLAY_INFO: type=Elbow,lx=319,ly=253,xs=274&365,ys=253&253
+subprocesses:
+- id: P1
+  name: Exception Handler
+  activities:
+  - id: A5
+    name: Start
+    implementor: com.centurylink.mdw.workflow.activity.process.ProcessStartActivity
+    attributes:
+      WORK_DISPLAY_INFO: x=275,y=73,w=60,h=40
+    transitions:
+    - id: T4
+      to: A6
+      event: FINISH
+      attributes:
+        TRANSITION_DISPLAY_INFO: type=Elbow,lx=370,ly=93,xs=339&401,ys=93&93
+  - id: A6
+    name: Handle Fallout
+    implementor: com.centurylink.mdw.workflow.activity.task.AutoFormManualTaskActivity
+    attributes:
+      STATUS_AFTER_EVENT: Cancelled
+      TASK_PAGELET: com.centurylink.mdw.base/AutoFormManualTask.pagelet
+      WORK_DISPLAY_INFO: x=405,y=63,w=100,h=60
+    transitions:
+    - id: T5
+      to: A7
+      event: FINISH
+      attributes:
+        TRANSITION_DISPLAY_INFO: type=Elbow,lx=540,ly=93,xs=509&571,ys=93&93
+  - id: A7
+    name: Stop
+    implementor: com.centurylink.mdw.workflow.activity.process.ProcessFinishActivity
+    attributes:
+      WORK_DISPLAY_INFO: x=575,y=73,w=60,h=40
+  attributes:
+    EMBEDDED_PROCESS_TYPE: Exception Handler
+    PROCESS_VISIBILITY: EMBEDDED
+    WORK_DISPLAY_INFO: x=235,y=33,w=440,h=120
 variables:
   exception:
     type: java.lang.Exception
     category: INPUT
+  person:
+    type: com.centurylink.mdw.model.Jsonable
+    category: LOCAL
   stackTrace:
     type: com.centurylink.mdw.model.StringDocument
+    category: LOCAL
+  values:
+    type: java.util.Map<String,String>
     category: LOCAL
 attributes:
   ArrowStyle: ArrowEnd
   NodeStyle: BoxIcon
   PROCESS_VISIBILITY: PUBLIC
+  PerformanceLevel: '0'
   WORK_DISPLAY_INFO: x=46,y=41,w=48,h=27
+textNotes:
+- id: N1
+  content: |-
+    Always have an embedded
+    Exception Handler in package-
+    level error processes to avoid
+    infinite looping due to exception
+    in error process itself.
+  attributes:
+    WORK_DISPLAY_INFO: x=689,y=41,w=218,h=89
