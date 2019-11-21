@@ -150,6 +150,16 @@ CREATE TABLE ACTIVITY_INSTANCE
   ENGINE_ID             VARCHAR(8)
 ) auto_increment=10000;
 
+CREATE TABLE ACTIVITY_LOG
+(
+  PROCESS_INSTANCE_ID   BIGINT        NOT NULL,
+  ACTIVITY_INSTANCE_ID  BIGINT,       -- empty for process-level logging
+  CREATE_DT             TIMESTAMP(6),
+  LOG_LEVEL             VARCHAR(5),
+  THREAD                VARCHAR(32),
+  MESSAGE               VARCHAR(4000)
+);
+
 CREATE TABLE PROCESS_INSTANCE
 (
   PROCESS_INSTANCE_ID   BIGINT         PRIMARY KEY auto_increment,
@@ -264,7 +274,7 @@ CREATE TABLE DOCUMENT
 -- not used when mongodb is present
 CREATE TABLE DOCUMENT_CONTENT
 (
-  DOCUMENT_ID         BIGINT,
+  DOCUMENT_ID         BIGINT          PRIMARY KEY,
   CONTENT             MEDIUMTEXT      NOT NULL  
 );
 

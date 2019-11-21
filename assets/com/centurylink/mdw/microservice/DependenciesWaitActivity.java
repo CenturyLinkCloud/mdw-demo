@@ -37,7 +37,7 @@ public class DependenciesWaitActivity extends EventWaitActivity {
     protected boolean handleCompletionCode() throws ActivityException {
         Integer exitStatus = WorkStatus.STATUS_COMPLETED;
         if (!dependenciesMet()) {
-            loginfo(getActivityName() + "  *** not met, setting to waiting");
+            getLogger().info(getActivityName() + "  *** not met, setting to waiting");
             exitStatus = WorkStatus.STATUS_WAITING;
             setActivityWaitingOnExit();
         }
@@ -66,8 +66,8 @@ public class DependenciesWaitActivity extends EventWaitActivity {
                 registerWaitEvents(true);
             }
             catch (Exception e) {
-                loginfo("Error in registerWaitEvents - " + e.getMessage());
-                e.printStackTrace();
+                getLogger().info("Error in registerWaitEvents - " + e.getMessage());
+                getLogger().error(e.getMessage(), e);
             }
             return compCode != null && (compCode
                     .startsWith(WorkStatus.STATUSNAME_WAITING + "::" + EventType.EVENTNAME_CORRECT)
@@ -96,7 +96,7 @@ public class DependenciesWaitActivity extends EventWaitActivity {
         if (serviceSummary == null) {
             // No service Summary, so throw exception since we shouldn't proceed
             // if we can't determine if dependencies are met
-            logsevere("Service summary not found");
+            getLogger().error("Service summary not found");
             throw new ActivityException("Unable to determine if dependencies are met, "
                     + "service summary variable not found");
         }
@@ -108,12 +108,12 @@ public class DependenciesWaitActivity extends EventWaitActivity {
 
         try {
             for (String[] microservice : microservices) {
-                loginfo(getActivityName() + "  *** microservice[2] " + microservice[2]);
+                getLogger().info(getActivityName() + "  *** microservice[2] " + microservice[2]);
                 Object expResult = getValueSmart(microservice[2], String.valueOf(tag++));
                 String expString = null;
                 if (expResult instanceof String) {
                     expString = (String) expResult;
-                    loginfo(getActivityName() + "  *** 1st " + expString);
+                    getLogger().info(getActivityName() + "  *** 1st " + expString);
                     if (expString.isEmpty()) {
                         expResult = Boolean.TRUE;
                     }
@@ -127,7 +127,7 @@ public class DependenciesWaitActivity extends EventWaitActivity {
                 }
 
                 Boolean expResultBool = (Boolean) expResult;
-                loginfo(getActivityName() + "  *** expString " + expString + " is " + expResultBool);
+                getLogger().info(getActivityName() + "  *** expString " + expString + " is " + expResultBool);
                 if (Boolean.parseBoolean(microservice[0])) {
                     // if microservice isn't populated then do the check based on the expression
                     if ((StringUtils.isBlank(microservice[1]) && !expResultBool)
@@ -141,7 +141,7 @@ public class DependenciesWaitActivity extends EventWaitActivity {
                     }
                 }
             }
-            loginfo(getActivityName() + "  *** dependenciesMet " + dependenciesMet);
+            getLogger().info(getActivityName() + "  *** dependenciesMet " + dependenciesMet);
             return dependenciesMet;
         }
         catch (PropertyException ex) {
