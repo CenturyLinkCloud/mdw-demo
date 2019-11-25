@@ -4,7 +4,7 @@
     "label": "Workflow",
     "icon": "workflow.png",
     "url": "#/workflow/processes",
-    "routes": ["/workflow", "/workflow/processes", "/workflow/definitions", "/solutions", "/milestones"],
+    "routes": ["/workflow", "/workflow/processes", "/workflow/definitions", "/workflow/versions", "/workflow/activities", "/solutions", "/milestones"],
     "navs": [
       {
         "links": [
@@ -285,8 +285,7 @@
             "path": "/staging/*",
             "href": "#/staging",
             "priority": 2,
-            "condition": "user.hasRole('Asset Design')",
-            "note": "beta"
+            "condition": "user.hasRole('Asset Design')"
           },
           {
             "label": "Testing",
