@@ -6,6 +6,9 @@ import com.centurylink.mdw.model.workflow.ActivityRuntimeContext;
 import com.centurylink.mdw.workflow.activity.DefaultActivityImpl;
 import com.centurylink.mdwdemo.DemoHelper;
 
+/**
+ * Custom activity implementor. 
+ */
 @Activity(value="Cool Activity", icon="com.centurylink.mdw.demo.cool/cool.png",
         pagelet="com.centurylink.mdw.demo.cool/cool.pagelet")
 public class CoolActivity extends DefaultActivityImpl {
