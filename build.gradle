@@ -46,6 +46,12 @@ dependencies {
 }
 
 bootJar {
+    // Include app version in manifest for display in MDWHub
+    manifest {
+        attributes("App-Version": appVersion)
+    }
+    // Exclude assets from packaging to preserve mdw dynamicism
+    // (do not overlap packages between src/main/java and assets).
     def packages = new Packages(file(assetLoc))
     exclude {
         packages.isAssetOutput(it.relativePath.toString())
