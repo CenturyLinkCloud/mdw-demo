@@ -57,12 +57,14 @@ class ChartHeader extends Component {
   }
 
   handleFilterChange(filters) {
+    this.refs.filterPopRef.hide();
     if (this.props.onFilterChange) {
       this.props.onFilterChange(filters);
     }
   }
 
   handleFilterReset() {
+    this.refs.filterPopRef.hide();
     if (this.props.onFilterReset) {
       this.props.onFilterReset();
     }
@@ -91,14 +93,15 @@ class ChartHeader extends Component {
           onSelect={this.handleDropdownSelect} />
 
         {breakdown.units &&
-          <HeaderLabel title={breakdown.units} />
+          <HeaderLabel title={(typeof breakdown.units === 'function') ? breakdown.units(this.props.filters) : breakdown.units} />
         }
 
         <HeaderButtons>
           {breakdown.selectField &&
             <HeaderPopButton label="Select" glyph="ok" rootClose={false} ref="selectPopRef"
               popover={
-                <SelectPop label={breakdown.selectLabel} units={breakdown.units}
+                <SelectPop label={breakdown.selectLabel}
+                  units={(typeof breakdown.units === 'function') ? breakdown.units(this.props.filters) : breakdown.units}
                   tops={this.props.tops}
                   selected={this.props.selected}
                   onSelect={this.handleTopSelect}
@@ -107,7 +110,8 @@ class ChartHeader extends Component {
               } />
           }
           {this.props.breakdownConfig.filters &&
-            <HeaderPopButton label="Filters" glyph="filter"
+            <HeaderPopButton label="Filters" glyph="filter" rootClose={false} ref="filterPopRef"
+              dirty={!this.props.isDefaultFilters}
               popover={
                 <FilterPop filters={this.props.filters}
                   filterOptions={this.props.filterOptions}

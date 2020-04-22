@@ -1,6 +1,14 @@
-## MDW Automated Testing Support
+# MDW Automated Testing Package
 
-### Can be imported as an ad-hoc package from XML on top of Git assets via Designer or AdminUI 
+Required to execute automated tests through MDWHub, CLI or API.
 
-**NOTE:** - This package registers an ActivityMonitor that intercepts every activity execute() call.
-It should not be routinely imported into production.
+## Features
+  - [Automated Testing](https://centurylinkcloud.github.io/mdw/docs/help/automatedTesting.html)
+  - [Test Script Syntax](https://centurylinkcloud.github.io/mdw/docs/help/groovyTestScriptSyntax.html)
+  - [Test Results Format](https://centurylinkcloud.github.io/mdw/docs/help/testResultsFormat.html)
+
+**NOTE:** - This package registers an ActivityMonitor that intercepts activity execute() calls.
+
+## Dependencies
+  - [com.centurylink.mdw.base](https://github.com/CenturyLinkCloud/mdw/blob/master/mdw-workflow/assets/com/centurylink/mdw/base/readme.md)
+

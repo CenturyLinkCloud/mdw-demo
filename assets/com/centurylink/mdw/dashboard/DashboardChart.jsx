@@ -20,7 +20,7 @@ class DashboardChart extends Component {
     this.day_ms = 24 * this.hour_ms;
 
     this.state = {
-      timespan: this.defaultTimespan,
+      timespan: sessionStorage.getItem("mdwDashboardTimespan") || this.defaultTimespan,
       breakdown: this.props.breakdownConfig.breakdowns[0].name,
       tops: [],
       selected: [],
@@ -42,12 +42,15 @@ class DashboardChart extends Component {
     this.handleSelectApply = this.handleSelectApply.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
     this.handleFilterReset = this.handleFilterReset.bind(this);
+    this.isDefaultFilters = this.isDefaultFilters.bind(this);
     this.handleDownload = this.handleDownload.bind(this);
     this.buildUrl = this.buildUrl.bind(this);
     this.update = this.update.bind(this);
     this.updateChart = this.updateChart.bind(this);
     this.retrieveTops = this.retrieveTops.bind(this);
     this.retrieveData = this.retrieveData.bind(this);
+    this.getChartOptions = this.getChartOptions.bind(this);
+    this.getSummaryChartOptions = this.getSummaryChartOptions.bind(this);
     this.getChartColors = this.getChartColors.bind(this);
     this.handleOverviewDataClick = this.handleOverviewDataClick.bind(this);
     this.handleMainDataClick = this.handleMainDataClick.bind(this);
@@ -125,9 +128,10 @@ class DashboardChart extends Component {
   }
 
   handleTimespanChange(timespan) {
-    const filters = Object.assign({}, this.state.filters, { 
-      Ending: this.getDefaultEnd(timespan), 
+    const filters = Object.assign({}, this.state.filters, {
+      Ending: this.getDefaultEnd(timespan),
     });
+    sessionStorage.setItem("mdwDashboardTimespan", timespan);
     this.setState({
       timespan: timespan,
       breakdown: this.state.breakdown,
@@ -200,6 +204,27 @@ class DashboardChart extends Component {
     this.handleFilterChange(filters);
   }
 
+  isDefaultFilters() {
+    const defaultFilters = this.props.breakdownConfig.filters || {};
+    if (defaultFilters.Ending) {
+      defaultFilters.Ending = this.getDefaultEnd(this.defaultTimespan);
+    }
+    for (let key of Object.keys(this.state.filters)) {
+      if (!this.state.filters[key] && !defaultFilters[key]) {
+        continue;
+      }
+      if (this.state.filters[key].getTime) {
+        if (!defaultFilters[key].getTime || (this.state.filters[key].getTime() !== defaultFilters[key].getTime())) {
+          return false;
+        }
+      }
+      else if (this.state.filters[key] !== defaultFilters[key]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   handleDownload() {
     const breakdown = this.getBreakdown();
     if (breakdown) {
@@ -251,7 +276,7 @@ class DashboardChart extends Component {
           url += '&' + key + '=' + val.toISOString();
         }
         else {
-          url += '&' + key + '=' + val;
+          url += '&' + key + '=' + encodeURIComponent(val);
         }
       }
     });
@@ -405,7 +430,7 @@ class DashboardChart extends Component {
     const breakdown = this.getBreakdown();
     if (breakdown.chartOptions) {
       var options = Object.assign({}, this.chartOptions, breakdown.chartOptions);
-      if (this.hostname && options.scales && options.scales.xAxes && options.scales.xAxes.length > 0 
+      if (this.hostname && options.scales && options.scales.xAxes && options.scales.xAxes.length > 0
             && options.scales.xAxes[0].scaleLabel) {
         const scaleLabel = options.scales.xAxes[0].scaleLabel;
         const labelString = scaleLabel.labelString;
@@ -416,6 +441,16 @@ class DashboardChart extends Component {
       return options;
     }
     return this.chartOptions;
+  }
+
+  getSummaryChartOptions() {
+    const breakdown = this.getBreakdown();
+    if (breakdown.summaryChartOptions) {
+      return Object.assign({}, this.chartOptions, breakdown.summaryChartOptions);
+    }
+    else {
+      return this.chartOptions;
+    }
   }
 
   getChartColors() {
@@ -560,6 +595,7 @@ class DashboardChart extends Component {
           onSelectApply={this.handleSelectApply}
           onFilterChange={this.handleFilterChange}
           onFilterReset={this.handleFilterReset}
+          isDefaultFilters={this.isDefaultFilters()}
           onDownload={this.handleDownload}/>
         <div className="mdw-section" style={{display:'flex'}}>
           {topsLoading &&
@@ -571,18 +607,18 @@ class DashboardChart extends Component {
               {(!breakdown.summaryChart || breakdown.summaryChart === 'donut') &&
                 <Doughnut
                   data={overviewData}
-                  options={this.chartOptions}
+                  options={this.getSummaryChartOptions()}
                   width={250} height={250}
                   getElementAtEvent={this.handleOverviewDataClick} />
               }
               {breakdown.summaryChart === 'bar' &&
                 <Bar
                   data={overviewData}
-                  options={this.chartOptions}
+                  options={this.getSummaryChartOptions()}
                   width={250} height={250}
                   getElementAtEvent={this.handleOverviewDataClick} />
               }
-              {breakdown.summaryTitle && 
+              {breakdown.summaryTitle &&
                 <div className="mdw-chart-subtitle" style={{width:'250px'}}>
                   {breakdown.summaryTitle}
                 </div>

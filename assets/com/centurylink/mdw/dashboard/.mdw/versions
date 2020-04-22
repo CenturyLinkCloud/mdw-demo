@@ -1,8 +1,8 @@
 Activities.jsx=4
-ChartHeader.jsx=15
+ChartHeader.jsx=18
 ChartLegend.jsx=5
 CpuMetric.java=3
-DashboardChart.jsx=36
+DashboardChart.jsx=39
 DbConnectionsMetric.java=2
 HeapMemoryMetric.java=2
 InboundRequests.jsx=11
@@ -19,3 +19,4 @@ SystemMetricsStartup.java=1
 Tasks.jsx=4
 ThreadPoolMetric.java=2
 insightOptions.js=1
+readme.md=1
