@@ -1,0 +1,9 @@
+assets/
+temp/
+data/
+.idea/
+.gradle/
+gradle/
+mdw/
+notes/
+testResults/
