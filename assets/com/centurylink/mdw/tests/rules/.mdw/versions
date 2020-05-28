@@ -1,0 +1,17 @@
+DroolsActivity.proc=17
+DroolsActivity.test=3
+DroolsActivity.yaml=2
+DroolsDecisionTable.proc=6
+DroolsDecisionTable.test=3
+DroolsDecisionTable.yaml=3
+DroolsDecisionTableMultisheet.proc=5
+DroolsMultisheetDecisionTable.test=3
+DroolsMultisheetDecisionTable.yaml=1
+Order.java=2
+OrderApi.test=4
+OrderApi.yaml=2
+OrderRequest.json=1
+drools-multiSheetDecisionTable.xlsx=2
+drools-orderRoutingDecisionTable.xlsx=2
+drools-orderRoutingDrool.drl=2
+readme.md=1
