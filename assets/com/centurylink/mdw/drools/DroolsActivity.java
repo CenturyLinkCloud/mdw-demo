@@ -18,10 +18,9 @@ package com.centurylink.mdw.drools;
 import com.centurylink.mdw.activity.ActivityException;
 import com.centurylink.mdw.activity.types.RuleActivity;
 import com.centurylink.mdw.annotations.Activity;
-import com.centurylink.mdw.cache.impl.PackageCache;
+import com.centurylink.mdw.cache.asset.PackageCache;
 import com.centurylink.mdw.config.PropertyException;
 import com.centurylink.mdw.model.asset.AssetVersionSpec;
-import com.centurylink.mdw.model.attribute.Attribute;
 import com.centurylink.mdw.model.variable.Variable;
 import com.centurylink.mdw.model.variable.VariableInstance;
 import com.centurylink.mdw.model.workflow.Package;
@@ -87,7 +86,7 @@ public class DroolsActivity extends DefaultActivityImpl implements RuleActivity 
         kSession.execute(CommandFactory.newInsertElements(facts));
 
         String temp = getAttributeValue(OUTPUTDOCS);
-        setOutputDocuments(temp == null ? new String[0] : Attribute.parseList(temp).toArray(new String[0]));
+        setOutputDocuments(getAttributes().containsKey(OUTPUTDOCS) ? getAttributes().getList(OUTPUTDOCS).toArray(new String[0]) : new String[0]);
 
         // TODO handle document variables
         Process processVO = getProcessDefinition();
@@ -97,7 +96,6 @@ public class DroolsActivity extends DefaultActivityImpl implements RuleActivity 
                 setVariableValue(variable.getName(), variable.getType(), newValue);
         }
     }
-
 
     /**
      * Get knowledge base with no modifiers.
@@ -111,12 +109,11 @@ public class DroolsActivity extends DefaultActivityImpl implements RuleActivity 
      * Override to apply additional or non-standard conditions.
      */
     protected KieBase getKnowledgeBase(String name, String assetVersion, String modifier) throws ActivityException {
-        Map<String,String> customAttrs = null;
         KnowledgeBaseAsset kbrs;
         if (assetVersion == null)
-            kbrs = DroolsKnowledgeBaseCache.getKnowledgeBaseAsset(name, modifier, customAttrs, getClassLoader());
+            kbrs = DroolsKnowledgeBaseCache.getKnowledgeBaseAsset(name, modifier, getClassLoader());
         else
-            kbrs = DroolsKnowledgeBaseCache.getKnowledgeBaseAsset(new AssetVersionSpec(name, assetVersion), modifier, customAttrs, getClassLoader());
+            kbrs = DroolsKnowledgeBaseCache.getKnowledgeBaseAsset(new AssetVersionSpec(name, assetVersion), modifier, getClassLoader());
 
         if (kbrs == null) {
             return null;
@@ -138,9 +135,10 @@ public class DroolsActivity extends DefaultActivityImpl implements RuleActivity 
      */
     protected ClassLoader getClassLoader() {
         ClassLoader loader = null;
-        Package pkg = PackageCache.getProcessPackage(getProcessId());
+        Process process = getMainProcessDefinition();
+        Package pkg = process == null ? null : PackageCache.getPackage(process.getPackageName());
         if (pkg != null) {
-            loader = pkg.getCloudClassLoader();
+            loader = pkg.getClassLoader();
         }
         if (loader == null) {
             loader = getClass().getClassLoader();

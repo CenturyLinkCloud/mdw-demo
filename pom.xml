@@ -3,29 +3,29 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <groupId>com.centurylink.mdwdemo</groupId>
   <artifactId>mdw-demo</artifactId>
   <version>2.1.3</version>
   <packaging>jar</packaging>
-  
+
   <name>mdw-demo</name>
   <description>MDW demonstration app</description>
-  
+
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.0.4.RELEASE</version>
     <relativePath/>
   </parent>
-    
+
   <properties>
     <java.version>1.8</java.version>
     <spring.version>5.0.8.RELEASE</spring.version>
-    <mdw.version>6.1.32</mdw.version>
+    <mdw.version>6.1.36-SNAPSHOT</mdw.version>
     <asset.loc>assets</asset.loc>
   </properties>
-  
+
   <repositories>
     <repository>
       <id>maven-central</id>
@@ -39,7 +39,7 @@
       </snapshots>
     </repository>
   </repositories>
-  
+
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <plugins>
@@ -72,7 +72,7 @@
       </plugin>
     </plugins>
   </build>
-  
+
   <dependencies>
     <dependency>
       <groupId>com.centurylink.mdw</groupId>
@@ -90,14 +90,14 @@
       <version>0.4</version>
       <scope>system</scope>
       <systemPath>${project.basedir}/assets/com/centurylink/mdw/kotlin/script-engine.jar</systemPath>
-    </dependency>        
+    </dependency>
     <dependency>
       <groupId>com.centurylink.mdw.microservice</groupId>
       <artifactId>service-plan.jar</artifactId>
       <version>0.2</version>
       <scope>system</scope>
       <systemPath>${project.basedir}/assets/com/centurylink/mdw/microservice/service-plan.jar</systemPath>
-    </dependency>        
+    </dependency>
   </dependencies>
-    
+
 </project>

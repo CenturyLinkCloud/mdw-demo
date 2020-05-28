@@ -15,18 +15,18 @@
  */
 package com.centurylink.mdw.drools;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.TreeMap;
-
+import com.centurylink.mdw.annotations.RegisteredService;
+import com.centurylink.mdw.cache.CacheService;
+import com.centurylink.mdw.cache.CachingException;
+import com.centurylink.mdw.cache.PreloadableCache;
+import com.centurylink.mdw.cache.asset.AssetCache;
+import com.centurylink.mdw.cache.asset.PackageCache;
+import com.centurylink.mdw.config.PropertyManager;
+import com.centurylink.mdw.model.asset.Asset;
+import com.centurylink.mdw.model.asset.AssetVersionSpec;
+import com.centurylink.mdw.model.workflow.Package;
+import com.centurylink.mdw.util.log.LoggerUtil;
+import com.centurylink.mdw.util.log.StandardLogger;
 import org.kie.api.KieBase;
 import org.kie.api.KieBaseConfiguration;
 import org.kie.api.KieServices;
@@ -36,25 +36,14 @@ import org.kie.api.builder.Message;
 import org.kie.api.builder.Results;
 import org.kie.api.runtime.KieContainer;
 
-import com.centurylink.mdw.annotations.RegisteredService;
-import com.centurylink.mdw.app.Compatibility;
-import com.centurylink.mdw.app.Compatibility.SubstitutionResult;
-import com.centurylink.mdw.cache.CacheService;
-import com.centurylink.mdw.cache.CachingException;
-import com.centurylink.mdw.cache.PreloadableCache;
-import com.centurylink.mdw.cache.impl.AssetCache;
-import com.centurylink.mdw.cache.impl.PackageCache;
-import com.centurylink.mdw.config.PropertyManager;
-import com.centurylink.mdw.model.asset.Asset;
-import com.centurylink.mdw.model.asset.AssetVersionSpec;
-import com.centurylink.mdw.model.workflow.Package;
-import com.centurylink.mdw.util.log.LoggerUtil;
-import com.centurylink.mdw.util.log.StandardLogger;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.*;
 
 @RegisteredService(CacheService.class)
 public class DroolsKnowledgeBaseCache implements PreloadableCache  {
-
-    private static final String[] LANGUAGES = new String[] {Asset.DROOLS, Asset.EXCEL, Asset.EXCEL_2007, Asset.GUIDED};
 
     private static StandardLogger logger = LoggerUtil.getStandardLogger();
     private static volatile Map<String,KnowledgeBaseAsset> kbaseMap = Collections.synchronizedMap(new TreeMap<String,KnowledgeBaseAsset>());
@@ -65,15 +54,11 @@ public class DroolsKnowledgeBaseCache implements PreloadableCache  {
 
     }
 
-    public DroolsKnowledgeBaseCache(Map<String,String> params) {
-
-    }
-
     public void initialize(Map<String,String> params) {
         if (params != null) {
             String preLoadString = params.get("PreLoaded");
             if (preLoadString != null && preLoadString.trim().length() > 0) {
-                List<String> preLoadList = new ArrayList<String>();
+                List<String> preLoadList = new ArrayList<>();
                 preLoaded = preLoadString.split("\\\n");
                 for (int i = 0; i < preLoaded.length; i++) {
                     String preLoad = preLoaded[i].trim();
@@ -93,13 +78,9 @@ public class DroolsKnowledgeBaseCache implements PreloadableCache  {
         return getKnowledgeBaseAsset(name, modifier, null);
     }
 
-    public static KnowledgeBaseAsset getKnowledgeBaseAsset(String name, String modifier, Map<String,String> attributes) {
-        return getKnowledgeBaseAsset(name, modifier, null, getDefaultClassLoader());
-    }
+    public static synchronized KnowledgeBaseAsset getKnowledgeBaseAsset(String name, String modifier, ClassLoader loader) {
 
-    public static synchronized KnowledgeBaseAsset getKnowledgeBaseAsset(String name, String modifier, Map<String,String> attributes, ClassLoader loader) {
-
-        Key key = new Key(name, modifier, attributes, loader);
+        Key key = new Key(name, modifier, loader);
 
         KnowledgeBaseAsset knowledgeBaseAsset = kbaseMap.get(key.toString());
 
@@ -110,15 +91,15 @@ public class DroolsKnowledgeBaseCache implements PreloadableCache  {
                 kbaseMap.put(key.toString(), knowledgeBaseAsset);
             }
             catch (Exception ex) {
-                logger.severeException(ex.getMessage(), ex);
+                logger.error(ex.getMessage(), ex);
             }
         }
         return knowledgeBaseAsset;
     }
 
     // load asset based on specified version/range
-    public static synchronized KnowledgeBaseAsset getKnowledgeBaseAsset(AssetVersionSpec drlAssetVerSpec, String modifier, Map<String,String> attributes, ClassLoader loader) {
-        Key key = new Key(drlAssetVerSpec, modifier, attributes, loader);
+    public static synchronized KnowledgeBaseAsset getKnowledgeBaseAsset(AssetVersionSpec drlAssetVerSpec, String modifier, ClassLoader loader) {
+        Key key = new Key(drlAssetVerSpec, modifier, loader);
         KnowledgeBaseAsset knowledgeBaseAsset = kbaseMap.get(key.toString());
         if (knowledgeBaseAsset == null) {
             try {
@@ -127,22 +108,18 @@ public class DroolsKnowledgeBaseCache implements PreloadableCache  {
                 kbaseMap.put(key.toString(), knowledgeBaseAsset);
             }
             catch (Exception ex) {
-                logger.severeException(ex.getMessage(), ex);
+                logger.error(ex.getMessage(), ex);
             }
         }
         return knowledgeBaseAsset;
     }
 
     public static KieBase getKnowledgeBase(String name) {
-        return getKnowledgeBase(name, null, null);
+        return getKnowledgeBase(name, null);
     }
 
     public static KieBase getKnowledgeBase(String name, String modifier) {
-        return getKnowledgeBase(name, modifier, null);
-    }
-
-    public static KieBase getKnowledgeBase(String name, String modifier, Map<String,String> attributes) {
-        KnowledgeBaseAsset kbrs = getKnowledgeBaseAsset(name, modifier, attributes);
+        KnowledgeBaseAsset kbrs = getKnowledgeBaseAsset(name, modifier);
         if (kbrs == null)
             return null;
         else
@@ -197,35 +174,31 @@ public class DroolsKnowledgeBaseCache implements PreloadableCache  {
         }
 
         String rules = null;
-        String format = asset.getLanguage();
+        String extension = asset.getExtension();
         String name = asset.getName();
 
-        if (format.equals(Asset.EXCEL) || format.equals(Asset.EXCEL_2007) || format.equals(Asset.CSV)) {
+        if (extension.equals("xls") || extension.equals("xlsx") || extension.equals("csv")) {
             // decision table XLS, XLSX or CSV
             byte[] decodeBytes = asset.getContent();
 
             // modifier for decision table must be worksheet name
             DecisionTableProvider dtProvider = new DecisionTableProvider();
             if (key.modifier == null)
-                rules = dtProvider.loadFromInputStream(new ByteArrayInputStream(decodeBytes), format);
+                rules = dtProvider.loadFromInputStream(new ByteArrayInputStream(decodeBytes), extension);
             else
-                rules = dtProvider.loadFromInputStream(new ByteArrayInputStream(decodeBytes), format, key.modifier);
+                rules = dtProvider.loadFromInputStream(new ByteArrayInputStream(decodeBytes), extension, key.modifier);
 
-            if (Compatibility.hasCodeSubstitutions())
-                rules = doCompatibilityCodeSubstitutions(asset.getLabel(), rules);
             if (logger.isDebugEnabled())
-                logger.debug("Converted rule for " + asset.getDescription() + ":\n" + rules + "\n================================");
+                logger.debug("Converted rule for " + asset.getLabel() + ":\n" + rules + "\n================================");
 
             name = name.substring(0, name.lastIndexOf('.')) + ".drl";
         }
-        else if (format.equals(Asset.DROOLS) || format.equals(Asset.GUIDED)) {
+        else if (extension.equals("drl") || extension.equals("brl")) {
             // drools DRL or BRL
-            rules = asset.getStringContent();
-            if (Compatibility.hasCodeSubstitutions())
-                rules = doCompatibilityCodeSubstitutions(asset.getLabel(), rules);
+            rules = asset.getText();
         }
         else {
-            throw new CachingException("Unsupported rules format '" + format + "' for " + asset.getDescription());
+            throw new CachingException("Unsupported rules extension '" + extension + "' for " + asset.getLabel());
         }
 
         KieServices kieServices = KieServices.Factory.get();
@@ -238,9 +211,9 @@ public class DroolsKnowledgeBaseCache implements PreloadableCache  {
         KieBuilder kieBuilder = kieServices.newKieBuilder(kfs, key.loader).buildAll();
         Results results = kieBuilder.getResults();
         if(results.hasMessages(Message.Level.ERROR)) {
-            if (format.equals(Asset.EXCEL) || format.equals(Asset.EXCEL_2007)) {
+            if (extension.equals("xls") || extension.equals("xlsx")) {
                 // log the converted rules
-                logger.severe("Converted rule for " + asset.getDescription() + ":\n" + rules + "\n================================");
+                logger.error("Converted rule for " + asset.getLabel() + ":\n" + rules + "\n================================");
             }
             throw new CachingException("Error parsing knowledge base from rules for " + asset.getLabel() + "\n" + results.getMessages());
         }
@@ -264,7 +237,7 @@ public class DroolsKnowledgeBaseCache implements PreloadableCache  {
             }
             else {
                 Package thisPkg = PackageCache.getPackage(DroolsKnowledgeBaseCache.class.getPackage().getName());
-                properties.load(thisPkg.getCloudClassLoader().getResourceAsStream("drools.packagebuilder.conf"));
+                properties.load(thisPkg.getClassLoader().getResourceAsStream("drools.packagebuilder.conf"));
             }
             for (Object key : properties.keySet())
                 System.setProperty(key.toString(), (String)properties.get(key));
@@ -272,51 +245,39 @@ public class DroolsKnowledgeBaseCache implements PreloadableCache  {
         return properties;
     }
 
-    public static Asset getAsset(Key key) {
+    public static Asset getAsset(Key key) throws IOException {
         Asset asset = null;
 
         if (key.drlVersionSpec != null) {
-            asset = key.attributes == null ? AssetCache.getAsset(key.drlVersionSpec) : AssetCache.getAsset(key.drlVersionSpec, key.attributes);
+            asset = AssetCache.getAsset(key.drlVersionSpec);
         }
         if (asset != null)
             return asset;
 
         String assetName = key.name == null ? key.drlVersionSpec.getQualifiedName() : key.name;
-
-        if (key.attributes == null) {
-            asset = AssetCache.getAsset(assetName, LANGUAGES);
-        }
-        else {
-            for (int i = 0; i < LANGUAGES.length && asset == null; i++) {
-                asset = AssetCache.getLatestAssets(assetName, LANGUAGES[i], key.attributes);
-            }
-        }
-        return asset;
+        return AssetCache.getAsset(assetName);
     }
 
 
     /**
-     * eg: MyRuleName~myModifier{attr1=attr1val,attr2=attr2val}#classLoader
-     * eg with versionspec: MyPackgeName/MyRuleName v[0.1,1)~myModifier{attr1=attr1val,attr2=attr2val}#classLoader
+     * eg: MyRuleName~myModifier#classLoader
+     * eg with versionspec: MyPackgeName/MyRuleName v[0.1,1)~myModifier#classLoader
      */
     static class Key {
         String name;
         String modifier;
-        Map<String,String> attributes;
         AssetVersionSpec drlVersionSpec;
         ClassLoader loader;
 
-        public Key(String name, String mod, Map<String,String> attrs, ClassLoader loader) {
+        public Key(String name, String mod, ClassLoader loader) {
             this.name = name;
             this.modifier = mod;
-            this.attributes = attrs;
             this.loader = loader;
         }
 
-        public Key(AssetVersionSpec drlVersionSepc, String modifier, Map<String, String> attributes, ClassLoader loader) {
+        public Key(AssetVersionSpec drlVersionSepc, String modifier, ClassLoader loader) {
             super();
             this.modifier = modifier;
-            this.attributes = attributes;
             this.drlVersionSpec = drlVersionSepc;
             this.loader = loader;
         }
@@ -327,11 +288,6 @@ public class DroolsKnowledgeBaseCache implements PreloadableCache  {
             if (hash > 0) {
                 //TODO : how to convert a string to class loader
                 toParse = toParse.substring(0, hash);
-            }
-            int brace = toParse.indexOf('{');
-            if (brace >= 0) {
-                attributes = stringToMap(toParse.substring(brace, toParse.lastIndexOf('}') + 1));
-                toParse = toParse.substring(0, brace);
             }
             int squig = toParse.indexOf('~');
             if (squig >= 0) {
@@ -350,57 +306,9 @@ public class DroolsKnowledgeBaseCache implements PreloadableCache  {
             String key = drlVersionSpec != null ? drlVersionSpec.toString() : name;
             if (modifier != null)
                 key += "~" + modifier;
-            if (attributes != null && !attributes.isEmpty())
-                key += mapToString(attributes);
             if (loader != null)
                 key += "#" + loader;
             return key;
         }
-
-        String mapToString(Map<String,String> map) {
-            if (map == null)
-                return "";
-
-            String string = "{";
-            int i = 0;
-            for (String key : map.keySet()) {
-                string += key + "=" + map.get(key);
-                if (i < map.keySet().size() - 1)
-                    string += ",";
-                i++;
-            }
-            string += "}";
-            return string;
-        }
-
-        Map<String,String> stringToMap(String string) {
-            Map<String,String> map = null;
-            if (string != null) {
-                map = new HashMap<String,String>();
-                String toParse = string.substring(string.indexOf('{') + 1, string.lastIndexOf('}'));
-                for (String attr : toParse.split(",")) {
-                    int eq = attr.indexOf('=');
-                    map.put(attr.substring(0, eq), attr.substring(eq + 1));
-                }
-            }
-            return map;
-        }
-    }
-
-    protected static String doCompatibilityCodeSubstitutions(String label, String in) throws IOException {
-        SubstitutionResult substitutionResult = Compatibility.getInstance().performCodeSubstitutions(in);
-        if (!substitutionResult.isEmpty()) {
-            logger.warn("Compatibility substitutions applied for Drools asset " + label + " (details logged at debug level).");
-            if (logger.isDebugEnabled())
-                logger.debug("Compatibility substitutions for " + label + ":\n" + substitutionResult.getDetails());
-            if (logger.isMdwDebugEnabled())
-                logger.mdwDebug("Substitution output for " + label + ":\n" + substitutionResult.getOutput());
-            return substitutionResult.getOutput();
-        }
-        return in;
-    }
-
-    public static ClassLoader getDefaultClassLoader() {
-        return DroolsKnowledgeBaseCache.class.getClassLoader();
     }
 }

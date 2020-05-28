@@ -1,17 +1,16 @@
 package com.centurylink.mdw.demo.bugs;
 
+import com.centurylink.mdw.dataaccess.task.MdwTaskRefData;
+import com.centurylink.mdw.model.task.TaskCategory;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.centurylink.mdw.dataaccess.file.MdwBaselineData;
-import com.centurylink.mdw.model.task.TaskCategory;
-
 /**
- * Custom BaselineData implementation.
- * TODO: Update to TaskRefData with MDW 6.1.36
+ * Custom TaskRefData implementation.
  */
-public class Categories extends MdwBaselineData {
+public class Categories extends MdwTaskRefData {
     private List<TaskCategory> bugCategories;
 
     public Categories() {
@@ -21,9 +20,9 @@ public class Categories extends MdwBaselineData {
 
     private Map<Integer,TaskCategory> taskCategories;
     @Override
-    public Map<Integer,TaskCategory> getTaskCategories() {
+    public Map<Integer,TaskCategory> getCategories() {
         if (taskCategories == null) {
-            taskCategories = super.getTaskCategories();
+            taskCategories = super.getCategories();
             for (TaskCategory bugCategory : bugCategories)
                 taskCategories.put(bugCategory.getId().intValue(), bugCategory);
         }
@@ -32,9 +31,9 @@ public class Categories extends MdwBaselineData {
 
     private Map<Integer,String> taskCategoryCodes;
     @Override
-    public Map<Integer,String> getTaskCategoryCodes() {
+    public Map<Integer,String> getCategoryCodes() {
         if (taskCategoryCodes == null) {
-            taskCategoryCodes = super.getTaskCategoryCodes();
+            taskCategoryCodes = super.getCategoryCodes();
             for (TaskCategory bugCategory : bugCategories)
                 taskCategoryCodes.put(bugCategory.getId().intValue(), bugCategory.getCode());
         }

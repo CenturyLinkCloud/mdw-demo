@@ -8,18 +8,33 @@ class Activities extends Component {
 
   constructor(...args) {
     super(...args);
-    this.handleOverviewDataClick = this.handleOverviewDataClick.bind(this); 
+    this.handleOverviewDataClick = this.handleOverviewDataClick.bind(this);
   }
-  
+
   // TODO populate activity name filter
   handleOverviewDataClick(breakdown, selection, filters) {
-    var activityFilter = sessionStorage.getItem('activityFilter');
-    activityFilter = activityFilter ? JSON.parse(activityFilter) : {};
+    const activityFilter = { descending: true };
     if (breakdown === 'Status') {
       activityFilter.status = selection.name;
+      delete activityFilter.activity;
+      sessionStorage.removeItem('activitySpec');
     }
-    else if (filters.Status) {
+    else {
       activityFilter.status = filters.Status;
+      if (!activityFilter.status) {
+        if (breakdown === 'Stuck Count') {
+          activityFilter.status = '[Stuck]';
+        }
+        else if (breakdown === 'Completion Time'){
+          activityFilter.status = 'Completed';
+        }
+        else {
+          activityFilter.status = '[Any]';
+        }
+      }
+      activityFilter.activity = encodeURIComponent(selection.id);
+      sessionStorage.setItem('activitySpec', selection.processName + ' v' +
+          selection.version + ' ' + selection.activityName + ' (' + selection.definitionId + ')');
     }
     const start = filters.Starting;
     activityFilter.startDate = start.getFullYear().toString() + '-' + constants.months[start.getMonth()] + '-' + start.getDate();
@@ -32,7 +47,7 @@ class Activities extends Component {
     const breakdownConfig = {
       breakdowns: [
         {
-          name: 'Throughput',
+          name: 'Stuck Count',
           selectField: 'id',
           selectLabel: 'Activities',
           tops: '/Activities/tops?by=throughput',
@@ -49,21 +64,32 @@ class Activities extends Component {
           colors: selected => selected.map(sel => statuses.activity[sel.name].color)
         },
         {
-          name: 'Total Throughput',
-          data: '/Activities/breakdown?by=total'
+          name: 'Completion Time',
+          selectField: 'id',
+          selectLabel: 'Activities',
+          tops: '/Activities/tops?by=completionTime',
+          data: '/Activities/breakdown?by=completionTime',
+          instancesParam: 'activityIds',
+          summaryChart: 'bar',
+          summaryTitle: 'Completed Activities',
+          summaryChartOptions: {scales: {yAxes: [{ticks: {beginAtZero: true}}]}},
+          units: filters => filters['Completion Times In']
         }
       ],
       filters: {
         Ending: new Date(),
-        Status: ''
+        Status: '',
+        'Exclude Long-Running': false,
+        'Completion Times In': 'Seconds'
       },
       filterOptions: {
-        Status: Object.keys(statuses.activity)
+        Status: Object.keys(statuses.activity),
+        'Completion Times In': ['Milliseconds', 'Seconds', 'Minutes', 'Hours', 'Days']
       }
     };
 
     return (
-      <DashboardChart title="Stuck Activities"
+      <DashboardChart title="Activities"
         breakdownConfig={breakdownConfig}
         onOverviewDataClick={this.handleOverviewDataClick}
         list="#/workflow/activities" />
