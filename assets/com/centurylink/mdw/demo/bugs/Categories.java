@@ -9,6 +9,7 @@ import com.centurylink.mdw.model.task.TaskCategory;
 
 /**
  * Custom BaselineData implementation.
+ * TODO: Update to TaskRefData with MDW 6.1.36
  */
 public class Categories extends MdwBaselineData {
     private List<TaskCategory> bugCategories;
