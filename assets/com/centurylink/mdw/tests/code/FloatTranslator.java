@@ -15,11 +15,12 @@
  */
 package com.centurylink.mdw.tests.code;
 
+import com.centurylink.mdw.annotations.Variable;
+import com.centurylink.mdw.common.translator.impl.BaseTranslator;
 import com.centurylink.mdw.translator.TranslationException;
-import com.centurylink.mdw.translator.VariableTranslator;
 
-public class MyFloatTranslator extends VariableTranslator {
-
+@Variable(type="java.lang.Float")
+public class FloatTranslator extends BaseTranslator {
     public String toString(Object obj) throws TranslationException {
         return obj.toString();
     }
@@ -28,5 +29,4 @@ public class MyFloatTranslator extends VariableTranslator {
     public Object toObject(String str) throws TranslationException {
         return new Float(str);
     }
-
 }
