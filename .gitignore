@@ -21,5 +21,6 @@ mdw-boot-*.jar
 **/.idea/workspace.xml
 **/.idea/tasks.xml
 **/.idea/azureSettings.xml
+**/.idea/uiDesigner.xml
 mdw.log
 /notes/
