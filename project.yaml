@@ -1,6 +1,6 @@
 # paths are relative to the location of this file
 mdw:
-  version: 6.1.38
+  version: 6.1.39
 
 asset:
   location: assets
